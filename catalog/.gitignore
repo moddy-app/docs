@@ -11,13 +11,9 @@ lib/
 # TypeScript
 tsconfig.tsbuildinfo
 
-# Generated site content (copied from ../docs during build)
-site/about/*.md
-site/about/images/
-site/components/*.md
-site/components/images/
-site/theming/*.md
-site/theming/images/
+# Note: site/about/*.md, site/components/*.md, and site/theming/*.md are generated during build
+# but should NOT be in .gitignore because Eleventy needs to process them!
+# They are listed in .eleventyignore for git but not for Eleventy
 
 # Logs
 *.log
