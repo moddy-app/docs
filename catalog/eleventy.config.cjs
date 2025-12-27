@@ -41,11 +41,14 @@ module.exports = function (eleventyConfig) {
     .addPassthroughCopy('site/theming/images')
     .addPassthroughCopy('site/about/images');
 
-  // add the lit-ssr plugin
-  eleventyConfig.addPlugin(litPlugin, {
-    mode: 'worker',
-    componentModules: [`./${jsDir}/ssr.js`],
-  });
+  // add the lit-ssr plugin (disabled due to SSR compatibility issues with Material Web components)
+  // The site works fine without SSR as the components are hydrated on the client side
+  // if (!DEV) {
+  //   eleventyConfig.addPlugin(litPlugin, {
+  //     mode: 'worker',
+  //     componentModules: [`./${jsDir}/ssr.js`],
+  //   });
+  // }
 
   // Add this for 11ty's --watch flag
   eleventyConfig.addWatchTarget(`./${jsDir}/**/*.js`);
