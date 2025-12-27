@@ -85,17 +85,15 @@ nav-drawer:not(:defined),
 top-app-bar:not(:defined),
 catalog-component-header:not(:defined),
 catalog-component-header-title:not(:defined) {
-  opacity: 0;
-  display: block;
+  visibility: hidden;
 }
 
-/* Show elements once they're defined */
+/* Show elements once they're defined - instant, no transition */
 nav-drawer:defined,
 top-app-bar:defined,
 catalog-component-header:defined,
 catalog-component-header-title:defined {
-  opacity: 1;
-  transition: opacity 0.15s ease-in;
+  visibility: visible;
 }
 
 a {
