@@ -1,7 +1,7 @@
 {
-  "name": "material-web-catalog",
+  "name": "moddy-docs",
   "version": "0.0.1",
-  "description": "The Material Web Catalog.",
+  "description": "Documentation site for Moddy Discord Bot.",
   "main": "_prod/index.html",
   "engines": {
     "node": "20.x.x"
