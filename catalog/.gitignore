@@ -11,9 +11,9 @@ lib/
 # TypeScript
 tsconfig.tsbuildinfo
 
-# Note: site/about/*.md, site/components/*.md, and site/theming/*.md are generated during build
-# but should NOT be in .gitignore because Eleventy needs to process them!
-# They are listed in .eleventyignore for git but not for Eleventy
+# Note: site/about/*.md, site/components/*.md, and site/theming/*.md
+# are generated during build but MUST be committed to git for Vercel deployment
+# Eleventy needs these files to generate the documentation pages
 
 # Logs
 *.log
