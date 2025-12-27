@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+_dev/
+_prod/
+build/
+lib/
+.wireit/
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Generated site content (copied from ../docs during build)
+site/about/*.md
+site/about/images/
+site/components/*.md
+site/components/images/
+site/theming/*.md
+site/theming/images/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
