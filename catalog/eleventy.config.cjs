@@ -111,5 +111,8 @@ module.exports = function (eleventyConfig) {
       input: 'site',
       output: outputFolder,
     },
+    // Disable useGitIgnore so Eleventy can process generated markdown files
+    // that are in .gitignore (generated during build from /docs)
+    useGitIgnore: false,
   };
 };

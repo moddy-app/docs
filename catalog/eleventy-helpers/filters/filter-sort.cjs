@@ -28,6 +28,11 @@
  */
 function filterSort (eleventyConfig) {
   eleventyConfig.addFilter("filtersort", function(arr, attr) {
+    // Handle undefined or null arrays gracefully
+    if (!arr || !Array.isArray(arr)) {
+      return [];
+    }
+
     // get the parts of the attribute to look up
     const attrParts = attr.split(".");
 
