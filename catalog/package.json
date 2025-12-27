@@ -56,9 +56,6 @@
       ],
       "output": [
         "lib"
-      ],
-      "dependencies": [
-        "..:build"
       ]
     },
     "build:type-check": {
@@ -70,9 +67,6 @@
       "clean": "if-file-deleted",
       "output": [
         "tsconfig.tsbuildinfo"
-      ],
-      "dependencies": [
-        "..:build"
       ]
     },
     "build:prod": {
@@ -109,9 +103,6 @@
       ],
       "output": [
         "build"
-      ],
-      "dependencies": [
-        "..:build"
       ]
     },
     "build:copy-docs": {
@@ -193,6 +184,7 @@
     "esbuild": "^0.25.0",
     "esbuild-plugin-minify-html-literals": "^1.0.1",
     "html-minifier": "^4.0.0",
+    "linkedom": "^0.18.12",
     "markdown-it": "^13.0.1",
     "markdown-it-anchor": "^8.6.7",
     "slugify": "^1.6.6",

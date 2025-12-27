@@ -104,6 +104,22 @@ const ssrBuild = esbuild
                        splitting: false,
                        conditions: ['node'],
                        entryPoints: ['src/ssr.ts'],
+                       banner: {
+                         js: `
+// Polyfill for SSR using linkedom
+if (typeof document === 'undefined') {
+  const { parseHTML } = require('linkedom');
+  const dom = parseHTML('<!DOCTYPE html><html><head></head><body></body></html>');
+  globalThis.window = dom.window;
+  globalThis.document = dom.document;
+  globalThis.Document = dom.Document;
+  globalThis.HTMLElement = dom.HTMLElement;
+  globalThis.Element = dom.Element;
+  globalThis.Node = dom.Node;
+  globalThis.customElements = dom.customElements;
+}
+`,
+                       },
                      })
                      .catch(() => process.exit(1));
 
