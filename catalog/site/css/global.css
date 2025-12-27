@@ -80,6 +80,24 @@ body {
   font-size: var(--catalog-body-l-font-size);
 }
 
+/* Prevent FOUC by hiding undefined custom elements */
+nav-drawer:not(:defined),
+top-app-bar:not(:defined),
+catalog-component-header:not(:defined),
+catalog-component-header-title:not(:defined) {
+  opacity: 0;
+  display: block;
+}
+
+/* Show elements once they're defined */
+nav-drawer:defined,
+top-app-bar:defined,
+catalog-component-header:defined,
+catalog-component-header-title:defined {
+  opacity: 1;
+  transition: opacity 0.15s ease-in;
+}
+
 a {
   color: var(--md-sys-color-primary);
   text-decoration: none;
