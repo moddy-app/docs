@@ -181,7 +181,7 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     .spacer {
       position: relative;
-      transition: min-width 0.5s cubic-bezier(0.3, 0, 0, 1);
+      /* Removed transition for instant page changes */
     }
 
     .spacer,
@@ -205,9 +205,7 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     .pane,
     .panes {
-      /* emphasized – duration matching render fn for sidebar */
-      transition: 0.5s cubic-bezier(0.3, 0, 0, 1);
-      transition-property: margin, height, border-radius, max-width, width;
+      /* Removed transitions for instant page changes */
     }
 
     .panes {
@@ -264,7 +262,7 @@ export class NavDrawer extends SignalElement(LitElement) {
     }
 
     aside {
-      transition: transform 0.5s cubic-bezier(0.3, 0, 0, 1);
+      /* Removed transition for instant drawer open/close */
       position: fixed;
       isolation: isolate;
       inset: var(--catalog-top-app-bar-height) 0 0 0;
