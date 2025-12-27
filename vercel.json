@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd catalog && npm run build:prod",
+  "outputDirectory": "catalog/_prod",
+  "installCommand": "cd catalog && npm install --legacy-peer-deps",
+  "framework": null
+}
