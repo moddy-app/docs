@@ -57,6 +57,8 @@
     var(--catalog-top-app-bar-height) + var(--catalog-top-app-bar-padding-block) *
       2
   );
+  /* Smooth scrolling for anchor links */
+  scroll-behavior: smooth;
 }
 
 @media screen and (max-width: 600px) {
