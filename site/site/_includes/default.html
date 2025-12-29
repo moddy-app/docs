@@ -70,43 +70,27 @@
           {% block content %}{{ content | mdMarkdown | safe }}{% endblock %}
         </main>
         <md-list
-            aria-label="List of pages and components"
+            aria-label="List of pages"
             role="menubar"
             class="nav">
-          <!-- About section -->
-          <md-item><div slot="headline">About</div></md-item>
-          {% for file in collections.about|filtersort('data.order') %}
-            <md-list-item
-              href="{{ file.url }}"
-              role="menuitem"
-              {% if file.url == page.url %}selected{% endif %}
-              type="link"
-              tabindex="{% if file.url == page.url %}0{% else %}-1{% endif %}"
-            >{{ file.data.name }}</md-list-item>
-          {% endfor %}
-          <md-divider role="separator"></md-divider>
-          <!-- Theming section -->
-          <md-item><div slot="headline">Theming</div></md-item>
-          {% for file in collections.theming|filtersort('data.order') %}
-            <md-list-item
-              href="{{ file.url }}"
-              type="menuitem"
-              {% if file.url == page.url %}selected{% endif %}
-              type="link"
-              tabindex="{% if file.url == page.url %}0{% else %}-1{% endif %}"
-            >{{ file.data.name }}</md-list-item>
-          {% endfor %}
-          <md-divider role="separator"></md-divider>
-          <!-- Components section -->
-          <md-item><div slot="headline">Components</div></md-item>
-          {% for file in collections.component|filtersort('data.name') %}
-            <md-list-item
-              href="{{ file.url }}"
-              role="menuitem"
-              {% if file.url == page.url %}selected{% endif %}
-              type="link"
-              tabindex="{% if file.url == page.url %}0{% else %}-1{% endif %}"
-            >{{ file.data.name }}</md-list-item>
+          <!-- Dynamically generate sections from all collections -->
+          {% for tag, items in collections %}
+            {% if tag != 'all' and items.length > 0 %}
+              {% set sectionName = tag | capitalize %}
+              <md-item><div slot="headline">{{ sectionName }}</div></md-item>
+              {% for file in items|filtersort('data.order') %}
+                <md-list-item
+                  href="{{ file.url }}"
+                  role="menuitem"
+                  {% if file.url == page.url %}selected{% endif %}
+                  type="link"
+                  tabindex="{% if file.url == page.url %}0{% else %}-1{% endif %}"
+                >{{ file.data.name }}</md-list-item>
+              {% endfor %}
+              {% if not loop.last %}
+                <md-divider role="separator"></md-divider>
+              {% endif %}
+            {% endif %}
           {% endfor %}
         </md-list>
       </nav-drawer>

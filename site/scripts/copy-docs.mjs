@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {cp, mkdir, readFile, writeFile} from 'fs/promises';
+import {cp, mkdir, readdir, readFile, writeFile} from 'fs/promises';
 import {dirname, join, relative} from 'path';
 import tinyGlob from 'tiny-glob';
 
@@ -153,10 +153,51 @@ async function transformReadmes(filepaths, outdir = '', replacements = []) {
   await Promise.all(readmePromises);
 }
 
-const aboutFiles = await getReadmeFiles('.');
-const legalFiles = await getReadmeFiles('Legal', false);
+// Get all subdirectories in /docs/
+async function getSubdirectories(basePath) {
+  try {
+    const entries = await readdir(join('..', basePath), {withFileTypes: true});
+    return entries
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name);
+  } catch (err) {
+    return [];
+  }
+}
 
-console.log('Transforming readmes...');
+// Create config JSON file for a section
+async function createSectionConfig(sectionName) {
+  const configPath = join('site', sectionName, `${sectionName}.json`);
+  const config = {
+    layout: 'layouts/docs.html',
+    tags: sectionName,
+  };
+
+  console.log(`Creating config file: ${configPath}`);
+  await mkdir(dirname(configPath), {recursive: true});
+  await writeFile(configPath, JSON.stringify(config, null, 2));
+}
+
+// Process files from /docs/ root into 'about' section
+const aboutFiles = await getReadmeFiles('.');
+console.log('Transforming about files...');
+await createSectionConfig('about');
 await transformReadmes(aboutFiles, 'about');
-await transformReadmes(legalFiles, 'about');
+
+// Automatically process all subdirectories
+const subdirs = await getSubdirectories('docs');
+console.log(`Found subdirectories: ${subdirs.join(', ')}`);
+
+for (const subdir of subdirs) {
+  const subdirFiles = await getReadmeFiles(subdir, false);
+  if (subdirFiles.length > 0) {
+    const sectionName = subdir.toLowerCase();
+    console.log(`Transforming ${subdir} files...`);
+    await createSectionConfig(sectionName);
+    await transformReadmes(subdirFiles, sectionName, [
+      [new RegExp(`${subdir}/`, 'g'), ''],
+    ]);
+  }
+}
+
 console.log('Transformations complete!');
