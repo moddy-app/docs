@@ -18,8 +18,7 @@
     "build:prod": "wireit",
     "build:prod:eleventy": "wireit",
     "build:prod:ts": "wireit",
-    "build:copy-docs": "wireit",
-    "build:copy-stories": "wireit"
+    "build:copy-docs": "wireit"
   },
   "wireit": {
     "build:dev": {
@@ -35,16 +34,14 @@
         "site",
         "lib",
         "eleventy-helpers",
-        "eleventy.config.cjs",
-        "stories"
+        "eleventy.config.cjs"
       ],
       "output": [
         "_dev"
       ],
       "dependencies": [
         "build:dev:ts",
-        "build:copy-docs",
-        "build:copy-stories"
+        "build:copy-docs"
       ]
     },
     "build:dev:ts": {
@@ -82,16 +79,14 @@
         "site",
         "build",
         "eleventy-helpers",
-        "eleventy.config.cjs",
-        "stories/"
+        "eleventy.config.cjs"
       ],
       "output": [
         "_prod/"
       ],
       "dependencies": [
         "build:prod:ts",
-        "build:copy-docs",
-        "build:copy-stories"
+        "build:copy-docs"
       ]
     },
     "build:prod:ts": {
@@ -133,19 +128,6 @@
           "script": "build:prod",
           "cascade": false
         }
-      ]
-    },
-    "build:copy-stories": {
-      "command": "node scripts/copy-stories.mjs",
-      "files": [
-        "scripts/copy-stories.mjs",
-        "../*/demo",
-        "!node_modules",
-        "!../node_modules"
-      ],
-      "output": [
-        "stories/*/**/*",
-        "!stories/components"
       ]
     }
   },
