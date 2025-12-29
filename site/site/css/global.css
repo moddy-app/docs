@@ -28,6 +28,11 @@
     U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+html {
+  /* Smooth scrolling for anchor links on the main document */
+  scroll-behavior: smooth;
+}
+
 :root {
   font-family: 'Google Sans', Roboto, system-ui;
   --md-ref-typeface-plain: 'Google Sans', Roboto, system-ui;
@@ -57,7 +62,10 @@
     var(--catalog-top-app-bar-height) + var(--catalog-top-app-bar-padding-block) *
       2
   );
-  /* Smooth scrolling for anchor links */
+}
+
+/* Smooth scrolling for all scrollable containers */
+* {
   scroll-behavior: smooth;
 }
 
