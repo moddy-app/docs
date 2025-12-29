@@ -108,12 +108,11 @@
     "build:copy-docs": {
       "command": "node scripts/copy-docs.mjs",
       "files": [
-        "../docs/*.md",
-        "../docs/Legal/**/*.md",
+        "../docs/**/*.md",
         "scripts/copy-docs.mjs"
       ],
       "output": [
-        "site/about/**/*.md"
+        "site/**/*.md"
       ]
     },
     "serve:dev": {
