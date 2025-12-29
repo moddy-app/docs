@@ -171,6 +171,7 @@ async function createSectionConfig(sectionName) {
   const config = {
     layout: 'layouts/docs.html',
     tags: sectionName,
+    hasToc: true,
   };
 
   console.log(`Creating config file: ${configPath}`);
