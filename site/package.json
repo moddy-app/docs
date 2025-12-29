@@ -109,6 +109,7 @@
       "command": "node scripts/copy-docs.mjs",
       "files": [
         "../docs/*.md",
+        "../docs/Legal/**/*.md",
         "scripts/copy-docs.mjs"
       ],
       "output": [
