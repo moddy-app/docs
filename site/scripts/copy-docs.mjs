@@ -152,18 +152,7 @@ async function transformReadmes(filepaths, outdir = '', replacements = []) {
 }
 
 const aboutFiles = await getReadmeFiles('.');
-const componentsReadmes = await getReadmeFiles('components', true);
-const themingFiles = await getReadmeFiles('theming', true);
 
-console.log('Copying images...');
-await copyImages('.', 'about');
-await copyImages('components');
-await copyImages('theming');
-console.log('Images copied!');
 console.log('Transforming readmes...');
 await transformReadmes(aboutFiles, 'about');
-await transformReadmes(componentsReadmes);
-await transformReadmes(themingFiles, '', [
-  ['README', 'material-theming'],
-]);
 console.log('Transformations complete!');

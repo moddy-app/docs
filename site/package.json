@@ -4,7 +4,7 @@
   "description": "Documentation site for Moddy Discord Bot.",
   "main": "_prod/index.html",
   "engines": {
-    "node": "20.x.x"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "start": "npm run serve",
@@ -108,19 +108,11 @@
     "build:copy-docs": {
       "command": "node scripts/copy-docs.mjs",
       "files": [
-        "../docs/components",
-        "../docs/theming",
         "../docs/*.md",
-        "../docs/images/",
         "scripts/copy-docs.mjs"
       ],
       "output": [
-        "site/components/**/*.md",
-        "site/components/images",
-        "site/theming/**/*.md",
-        "site/theming/images",
-        "site/about/**/*.md",
-        "site/about/images"
+        "site/about/**/*.md"
       ]
     },
     "serve:dev": {
