@@ -85,6 +85,42 @@ function determinePageNavigationAutoMode() {
   }
 }
 
+/**
+ * Adds smooth scrolling behavior to anchor links
+ */
+function applySmoothScrolling() {
+  // Handle hash navigation on page load
+  if (window.location.hash) {
+    setTimeout(() => {
+      const target = document.querySelector(window.location.hash);
+      if (target) {
+        target.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }
+    }, 100);
+  }
+
+  // Handle clicks on anchor links
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const anchor = target.closest('a[href^="#"]');
+
+    if (!anchor) return;
+
+    const href = anchor.getAttribute('href');
+    if (!href || href === '#') return;
+
+    event.preventDefault();
+    const element = document.querySelector(href);
+
+    if (element) {
+      element.scrollIntoView({behavior: 'smooth', block: 'start'});
+      // Update URL without jumping
+      history.pushState(null, '', href);
+    }
+  });
+}
+
 applyColorThemeListeners();
 initializeTheme();
 determinePageNavigationAutoMode();
+applySmoothScrolling();
