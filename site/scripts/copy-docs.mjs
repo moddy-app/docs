@@ -152,7 +152,9 @@ async function transformReadmes(filepaths, outdir = '', replacements = []) {
 }
 
 const aboutFiles = await getReadmeFiles('.');
+const legalFiles = await getReadmeFiles('Legal', false);
 
 console.log('Transforming readmes...');
 await transformReadmes(aboutFiles, 'about');
+await transformReadmes(legalFiles, 'about');
 console.log('Transformations complete!');
