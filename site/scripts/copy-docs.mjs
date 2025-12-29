@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {cp, readFile, writeFile} from 'fs/promises';
+import {cp, mkdir, readFile, writeFile} from 'fs/promises';
 import {dirname, join, relative} from 'path';
 import tinyGlob from 'tiny-glob';
 
@@ -145,6 +145,8 @@ async function transformReadmes(filepaths, outdir = '', replacements = []) {
     const outputPath = join('site', outdir, localPath);
 
     console.log(`Writing trasnformed file to: ${outputPath}`);
+    // Create the directory if it doesn't exist
+    await mkdir(dirname(outputPath), {recursive: true});
     return writeFile(outputPath, readme);
   });
 
