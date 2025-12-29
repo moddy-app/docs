@@ -84,30 +84,6 @@
               tabindex="{% if file.url == page.url %}0{% else %}-1{% endif %}"
             >{{ file.data.name }}</md-list-item>
           {% endfor %}
-          <md-divider role="separator"></md-divider>
-          <!-- Theming section -->
-          <md-item><div slot="headline">Theming</div></md-item>
-          {% for file in collections.theming|filtersort('data.order') %}
-            <md-list-item
-              href="{{ file.url }}"
-              type="menuitem"
-              {% if file.url == page.url %}selected{% endif %}
-              type="link"
-              tabindex="{% if file.url == page.url %}0{% else %}-1{% endif %}"
-            >{{ file.data.name }}</md-list-item>
-          {% endfor %}
-          <md-divider role="separator"></md-divider>
-          <!-- Components section -->
-          <md-item><div slot="headline">Components</div></md-item>
-          {% for file in collections.component|filtersort('data.name') %}
-            <md-list-item
-              href="{{ file.url }}"
-              role="menuitem"
-              {% if file.url == page.url %}selected{% endif %}
-              type="link"
-              tabindex="{% if file.url == page.url %}0{% else %}-1{% endif %}"
-            >{{ file.data.name }}</md-list-item>
-          {% endfor %}
         </md-list>
       </nav-drawer>
     </lit-island>

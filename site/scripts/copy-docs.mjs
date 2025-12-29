@@ -158,5 +158,7 @@ const legalFiles = await getReadmeFiles('Legal', false);
 
 console.log('Transforming readmes...');
 await transformReadmes(aboutFiles, 'about');
-await transformReadmes(legalFiles, 'about');
+await transformReadmes(legalFiles, 'about', [
+  ['Legal/', ''],
+]);
 console.log('Transformations complete!');
