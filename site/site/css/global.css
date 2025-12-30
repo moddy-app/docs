@@ -161,6 +161,18 @@ h1 {
   font-size: var(--catalog-display-xl-font-size);
 }
 
+/* Add scroll margin to headings so they don't stick to the top */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  scroll-margin-top: calc(
+    var(--catalog-top-app-bar-height) + var(--catalog-spacing-l)
+  );
+}
+
 .toc ol {
   list-style-type: none;
   font-size: var(--catalog-body-m-font-size);
