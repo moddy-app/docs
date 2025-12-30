@@ -16,7 +16,7 @@ import {live} from 'lit/directives/live.js';
 import {drawerOpenSignal} from '../signals/drawer-open-state.js';
 import {inertContentSignal, inertSidebarSignal} from '../signals/inert.js';
 import {SignalElement} from '../signals/signal-element.js';
-import {materialDesign} from '../svg/material-design-logo.js';
+import {moddyLogo} from '../svg/moddy-logo.js';
 
 /**
  * Top app bar of the catalog.
@@ -53,7 +53,7 @@ export class TopAppBar extends SignalElement(LitElement) {
               class="home-button"
               title="Home"
               aria-label="Home">
-              ${materialDesign}
+              ${moddyLogo}
             </md-icon-button>
           </section>
 
