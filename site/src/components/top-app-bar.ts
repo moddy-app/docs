@@ -205,12 +205,12 @@ export class TopAppBar extends SignalElement(LitElement) {
       align-items: center;
       padding: 0;
       margin-top: -3px;
-      height: 40px;
+      height: 32px;
     }
 
     .logo-link svg {
-      width: 40px;
-      height: 40px;
+      width: 32px;
+      height: 32px;
       color: var(--md-sys-color-primary);
     }
 
