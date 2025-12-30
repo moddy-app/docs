@@ -48,13 +48,13 @@ export class TopAppBar extends SignalElement(LitElement) {
               <md-icon slot="selected">menu</md-icon>
               <md-icon>menu_open</md-icon>
             </md-icon-button>
-            <md-icon-button
+            <a
               href="/"
-              class="home-button"
+              class="logo-link"
               title="Home"
               aria-label="Home">
               ${moddyLogo}
-            </md-icon-button>
+            </a>
           </section>
 
           <a href="/" id="home-link">
@@ -192,20 +192,30 @@ export class TopAppBar extends SignalElement(LitElement) {
     a {
       color: var(--md-sys-color-primary);
       font-size: max(var(--catalog-title-l-font-size), 22px);
-      font-weight: 500;
+      font-weight: 700;
       text-decoration: none;
-      padding-inline: 4px;
+      padding-inline: 2px;
       position: relative;
       outline: none;
       vertical-align: middle;
     }
 
-    .start .menu-button {
-      display: none;
+    .logo-link {
+      display: flex;
+      align-items: center;
+      padding: 0;
+      margin-top: -3px;
+      height: 40px;
     }
 
-    .start .home-button * {
+    .logo-link svg {
+      width: 40px;
+      height: 40px;
       color: var(--md-sys-color-primary);
+    }
+
+    .start .menu-button {
+      display: none;
     }
 
     .end {
@@ -234,7 +244,7 @@ export class TopAppBar extends SignalElement(LitElement) {
     }
 
     @media (max-width: 1500px) {
-      .start .home-button {
+      .start .logo-link {
         display: none;
       }
 
