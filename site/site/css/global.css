@@ -168,9 +168,7 @@ h3,
 h4,
 h5,
 h6 {
-  scroll-margin-top: calc(
-    var(--catalog-top-app-bar-height) + var(--catalog-spacing-l)
-  );
+  scroll-margin-top: calc(var(--catalog-top-app-bar-height) + 5mm);
 }
 
 .toc ol {

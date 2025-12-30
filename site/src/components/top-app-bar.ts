@@ -58,7 +58,7 @@ export class TopAppBar extends SignalElement(LitElement) {
           </section>
 
           <a href="/" id="home-link">
-            Material Web
+            Moddy Docs
             <md-focus-ring for="home-link"></md-focus-ring>
           </a>
 
@@ -74,7 +74,7 @@ export class TopAppBar extends SignalElement(LitElement) {
               <md-icon-button
                 title="GitHub repository"
                 aria-label="GitHub repository"
-                href="https://github.com/material-components/material-web"
+                href="https://github.com/moddy-app/docs"
                 target="_blank">
                 <md-icon>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 96">
