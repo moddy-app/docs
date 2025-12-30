@@ -9,20 +9,8 @@ import {html} from 'lit';
  * The Moddy logo.
  */
 export const moddyLogo = html` <svg
-  viewBox="0 0 100 100"
+  viewBox="0 0 139 139"
   fill="currentColor">
-  <!--
-    REMPLACE CE COMMENTAIRE PAR TON SVG
-
-    IMPORTANT :
-    - Garde fill="currentColor" sur le <svg> OU sur les <path>
-    - Supprime tous les attributs fill="#..." de ton SVG original
-    - Si ton SVG a plusieurs couleurs, utilise :
-      - currentColor pour la couleur principale
-      - var(--md-sys-color-primary) pour d'autres couleurs du thème
-
-    Exemple :
-    <path d="M10 10 L90 90" fill="currentColor" />
-    <circle cx="50" cy="50" r="40" fill="var(--md-sys-color-primary)" />
-  -->
+  <path d="M120.271 0.753845C131.38 -2.94931 141.949 7.61997 138.246 18.7294L101.396 129.281C97.5064 140.948 81.6395 142.502 75.5605 131.811L53.5762 93.1503L75.3037 71.4247C77.4382 69.2903 77.4381 65.8288 75.3037 63.6943C73.1692 61.5598 69.7077 61.5598 67.5732 63.6943L45.8457 85.4208L7.18848 63.4394C-3.50186 57.3606 -1.94778 41.4936 9.71875 37.6044L120.271 0.753845Z" fill="currentColor"/>
 </svg>`;
+
