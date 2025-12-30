@@ -90,14 +90,25 @@ function determinePageNavigationAutoMode() {
  */
 function applySmoothScrolling() {
   // Handle hash navigation on page load
-  if (window.location.hash) {
-    setTimeout(() => {
-      const target = document.querySelector(window.location.hash);
-      if (target) {
-        target.scrollIntoView({behavior: 'smooth', block: 'start'});
-      }
-    }, 100);
+  const scrollToHash = () => {
+    if (window.location.hash) {
+      // Wait for page to be fully loaded and rendered
+      setTimeout(() => {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+          target.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+      }, 300); // Increased timeout for full page load
+    }
+  };
+
+  // Try on DOMContentLoaded and on window load for safety
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scrollToHash);
+  } else {
+    scrollToHash();
   }
+  window.addEventListener('load', scrollToHash);
 
   // Handle clicks on anchor links
   document.addEventListener('click', (event) => {
