@@ -194,7 +194,7 @@ export class TopAppBar extends SignalElement(LitElement) {
       font-size: max(var(--catalog-title-l-font-size), 22px);
       font-weight: 500;
       text-decoration: none;
-      padding-inline: 12px;
+      padding-inline: 4px;
       position: relative;
       outline: none;
       vertical-align: middle;
