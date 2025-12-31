@@ -216,6 +216,6 @@ Website: [www.cnil.fr](https://www.cnil.fr)
 
 ---
 
-**By using Moddy services (Discord bot, website, and associated services), you acknowledge that you have read, understood, and accepted the terms of this Privacy Policy.**
+> **By using Moddy services (Discord bot, website, and associated services), you acknowledge that you have read, understood, and accepted the terms of this Privacy Policy.**
 
 **Effective date: December 29, 2025**
