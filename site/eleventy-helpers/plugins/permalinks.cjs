@@ -15,7 +15,8 @@ const slugifyLib = require('slugify');
  */
 function permalinks(markdownIt) {
   // Use the same slugify as 11ty for markdownItAnchor.
-  const slugify = (s) => slugifyLib(s, { lower: true });
+  // Keep dots in slugs to preserve section numbering (e.g., 4.2)
+  const slugify = (s) => slugifyLib(s, { lower: true, remove: /[*+~()'"!:@]/g });
 
   const linkAfterHeaderBase = markdownItAnchor.permalink.linkAfterHeader({
     style: 'visually-hidden',
