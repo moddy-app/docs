@@ -355,7 +355,7 @@ To the extent permitted by applicable law, Moddy's total liability to you may no
 
 ## 9. Warranties and Representations
 
-### 9.1 Services provided "as is"
+### 9.1 Services provided 'as is'
 
 Moddy services are provided "as is" and "as available", without warranty of any kind, express or implied, including:
 
