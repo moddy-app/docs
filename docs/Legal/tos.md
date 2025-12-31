@@ -10,7 +10,7 @@ order: 1
 
 These Terms of Service (hereinafter "ToS") govern the use of Moddy services, including the Discord bot, website, and all associated services.
 
-## 1. Service Presentation
+## Service Presentation
 
 **Moddy** is a Discord bot offering moderation, server management, customer support, and automation features.
 
@@ -22,7 +22,7 @@ Support: [moddy.app/support](https://moddy.app/support)
 **Open Source Project:**  
 Moddy is an open source project distributed under the **Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA)** license. The source code is publicly accessible and can be viewed, modified, and redistributed in accordance with the terms of this license and these ToS.
 
-## 2. Acceptance of Terms
+## Acceptance of Terms
 
 ### Scope of acceptance
 
@@ -44,7 +44,7 @@ By using Moddy, you declare and guarantee that you meet these conditions.
 
 Continued use of our services after any modification of the ToS constitutes acceptance of the new terms.
 
-## 3. Service Description
+## Service Description
 
 ### Services offered
 
@@ -95,7 +95,7 @@ Our team reserves the right to intervene in users' Discord servers without prior
 
 These interventions are carried out with respect for user privacy and only to the extent necessary to resolve the identified problem.
 
-## 4. Terms of Use
+## Terms of Use
 
 ### User obligations
 
@@ -163,7 +163,7 @@ You are solely responsible for the content you create, share, or distribute via 
 
 Moddy is not responsible for user-created content and acts as a technical host.
 
-## 5. Premium Services and Payments
+## Premium Services and Payments
 
 ### Premium subscriptions
 
@@ -236,7 +236,7 @@ Refunds may be granted on a case-by-case basis in case of:
 - Billing error
 - Exceptional circumstances at Moddy's discretion
 
-## 6. Intellectual Property
+## Intellectual Property
 
 ### Open Source License
 
@@ -295,7 +295,7 @@ Regarding content you create via Moddy:
 - You grant Moddy a worldwide, free, non-exclusive license to host, store, process, and display this content as part of providing the services
 - This license ends when you delete the content or terminate your account
 
-## 7. Personal Data Protection
+## Personal Data Protection
 
 The processing of your personal data is governed by our **Privacy Policy**, accessible at: [moddy.app/privacy](https://moddy.app/privacy)
 
@@ -310,7 +310,7 @@ By using Moddy, you acknowledge having read and accepted this policy.
 
 For more details, please consult the complete Privacy Policy.
 
-## 8. Limitation of Liability
+## Limitation of Liability
 
 ### Moddy's liability
 
@@ -353,7 +353,7 @@ You are invited to consult the terms of use of these third-party platforms.
 
 To the extent permitted by applicable law, Moddy's total liability to you may not exceed the total amount of sums actually paid by you over the 12 months preceding the event giving rise to liability.
 
-## 9. Warranties and Representations
+## Warranties and Representations
 
 ### Services provided 'as is'
 
@@ -374,7 +374,7 @@ Moddy is a tool facilitating Discord server management, but does not guarantee:
 
 The server administrator remains responsible for moderation and compliance with Discord rules.
 
-## 10. Data and Backups
+## Data and Backups
 
 ### Data backup
 
@@ -402,7 +402,7 @@ Data is retained indefinitely until:
 
 See the Privacy Policy for more details.
 
-## 11. ToS Modifications
+## ToS Modifications
 
 ### Right to modify
 
@@ -427,7 +427,7 @@ By continuing to use Moddy after the modifications take effect, you accept the n
 
 If you refuse the modifications, you must stop using the services.
 
-## 12. Termination
+## Termination
 
 ### Termination by user
 
@@ -457,7 +457,7 @@ In case of termination:
 - No refund is made (except legal obligations)
 - ToS clauses that, by nature, must survive (intellectual property, limitation of liability) remain in effect
 
-## 13. General Provisions
+## General Provisions
 
 ### Entire agreement
 
@@ -483,7 +483,7 @@ Moddy may freely assign or transfer its rights and obligations, particularly in 
 
 These ToS are written in English. In case of translation, only the English version is authoritative.
 
-## 14. Applicable Law and Jurisdiction
+## Applicable Law and Jurisdiction
 
 ### Applicable law
 
@@ -509,7 +509,7 @@ For consumers residing in the European Union, you may also seize the courts of y
 **Online Dispute Resolution (ODR) platform:**  
 The European Commission provides an online dispute resolution platform accessible at: [https://ec.europa.eu/consumers/odr](https://ec.europa.eu/consumers/odr)
 
-## 15. Contact
+## Contact
 
 **For any questions regarding these ToS, Moddy services, legal requests, or exercising your rights:**
 
