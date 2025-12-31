@@ -24,13 +24,13 @@ Moddy is an open source project distributed under the **Creative Commons Attribu
 
 ## 2. Acceptance of Terms
 
-### 2.1 Scope of acceptance
+### Scope of acceptance
 
 By using Moddy services (Discord bot, website, API, or any other associated service), you unconditionally accept these ToS as well as our Privacy Policy.
 
 The use of Moddy's source code, whether for consultation, modification, or redistribution, also implies acceptance of these ToS in addition to the CC BY-NC-SA license.
 
-### 2.2 Legal capacity
+### Legal capacity
 
 Use of our services is reserved for:
 
@@ -40,13 +40,13 @@ Use of our services is reserved for:
 
 By using Moddy, you declare and guarantee that you meet these conditions.
 
-### 2.3 Implied acceptance
+### Implied acceptance
 
 Continued use of our services after any modification of the ToS constitutes acceptance of the new terms.
 
 ## 3. Service Description
 
-### 3.1 Services offered
+### Services offered
 
 Moddy offers the following features:
 
@@ -60,7 +60,7 @@ Moddy offers the following features:
 - **Moderation history**: complete tracking of sanctions and moderation cases
 - **Transcripts**: ticket conversation backups
 
-### 3.2 Service availability
+### Service availability
 
 We strive to keep our services accessible 24/7, but cannot guarantee uninterrupted availability.
 
@@ -73,7 +73,7 @@ Services may be temporarily suspended for:
 
 We reserve the right to modify, suspend, or discontinue all or part of the services at any time, with or without notice.
 
-### 3.3 Service evolution
+### Service evolution
 
 Moddy reserves the right to:
 
@@ -83,7 +83,7 @@ Moddy reserves the right to:
 
 Users will be informed of major changes via our official Discord server and/or by email.
 
-### 3.4 Technical intervention in servers
+### Technical intervention in servers
 
 Our team reserves the right to intervene in users' Discord servers without prior notice, but with appropriate justification, particularly for:
 
@@ -97,7 +97,7 @@ These interventions are carried out with respect for user privacy and only to th
 
 ## 4. Terms of Use
 
-### 4.1 User obligations
+### User obligations
 
 By using Moddy, you agree to:
 
@@ -109,7 +109,7 @@ By using Moddy, you agree to:
 - Not attempt to circumvent security measures
 - Report any malfunction or security vulnerability
 
-### 4.2 Source code usage
+### Source code usage
 
 Use of Moddy's source code is subject to the following conditions:
 
@@ -119,7 +119,7 @@ Use of Moddy's source code is subject to the following conditions:
 - Prohibition of commercial use without prior written authorization
 - Sharing of modifications under the same license
 
-### 4.3 Prohibited uses
+### Prohibited uses
 
 It is strictly forbidden to use Moddy for:
 
@@ -132,7 +132,7 @@ It is strictly forbidden to use Moddy for:
 - **Resale**: unauthorized resale of Moddy services
 - **Abusive automation**: using scripts or bots to automate Moddy usage abusively
 
-### 4.4 Moderation and sanctions
+### Moderation and sanctions
 
 In case of non-compliance with these ToS, Moddy reserves the right, **with or without notice, without having to justify itself, and without compensation**, to:
 
@@ -145,13 +145,13 @@ In case of non-compliance with these ToS, Moddy reserves the right, **with or wi
 
 Sanctions applied depend on the severity of the violation and may be applied at Moddy team's sole discretion.
 
-### 4.5 Reporting to authorities
+### Reporting to authorities
 
 In case of serious violation of the law (child pornography, terrorism, death threats, illegal trafficking, etc.), Moddy reserves the right to use collected data to report to competent authorities, in accordance with our legal obligations.
 
 These reports may be made without prior notice or information to the user concerned, in compliance with applicable legislation.
 
-### 4.6 User content responsibility
+### User content responsibility
 
 You are solely responsible for the content you create, share, or distribute via Moddy, including:
 
@@ -165,7 +165,7 @@ Moddy is not responsible for user-created content and acts as a technical host.
 
 ## 5. Premium Services and Payments
 
-### 5.1 Premium subscriptions
+### Premium subscriptions
 
 Moddy offers Premium subscriptions with advanced features:
 
@@ -176,7 +176,7 @@ Moddy offers Premium subscriptions with advanced features:
 
 Details of Premium offers are available on our website and may evolve.
 
-### 5.2 Pricing
+### Pricing
 
 Prices are displayed in euros (EUR) including all taxes (VAT included) on our website and via Stripe.
 
@@ -186,7 +186,7 @@ Moddy reserves the right to modify its prices at any time. Price changes:
 - Apply at next renewal for existing subscriptions
 - Are communicated at least 30 days before their application
 
-### 5.3 Payment methods
+### Payment methods
 
 Payments are processed securely by **Stripe**, our PCI-DSS certified payment provider.
 
@@ -200,7 +200,7 @@ Payments are made:
 - Upon initial subscription
 - Automatically at each renewal period (monthly or annual)
 
-### 5.4 Renewal and cancellation
+### Renewal and cancellation
 
 **Automatic renewal:**  
 Premium subscriptions are automatically renewed at the end of each period, unless previously cancelled.
@@ -210,7 +210,7 @@ You can cancel your subscription at any time via your customer area on our websi
 
 Cancellation takes effect at the end of the current period. No refund is made for the current period, except for legal exceptions.
 
-### 5.5 Right of withdrawal
+### Right of withdrawal
 
 In accordance with European regulations, you have a period of **14 days** from the subscription to exercise your right of withdrawal, without having to justify a reason.
 
@@ -220,7 +220,7 @@ The refund will be made within 14 days following the withdrawal request.
 
 **Exception:** If you have expressly requested immediate execution of the service during the withdrawal period, you will not be able to exercise this right or the refund will be proportional to the use.
 
-### 5.6 Refund policy
+### Refund policy
 
 **No refund** is granted in the following cases:
 
@@ -238,7 +238,7 @@ Refunds may be granted on a case-by-case basis in case of:
 
 ## 6. Intellectual Property
 
-### 6.1 Open Source License
+### Open Source License
 
 Moddy's source code is distributed under the **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)** license.
 
@@ -255,7 +255,7 @@ Under the following conditions:
 
 For more details on this license: [https://creativecommons.org/licenses/by-nc-sa/4.0/](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-### 6.2 Elements excluded from Open Source license
+### Elements excluded from Open Source license
 
 The following are excluded from the Open Source license and remain Moddy's exclusive property:
 
@@ -265,11 +265,11 @@ The following are excluded from the Open Source license and remain Moddy's exclu
 - Commercial and marketing documentation
 - Website-specific editorial content
 
-### 6.3 Moddy property
+### Moddy property
 
 All elements not covered by the Open Source license are and remain Moddy's exclusive property.
 
-### 6.4 Service usage license
+### Service usage license
 
 Using Moddy services (Discord bot, website) grants you a non-exclusive, non-transferable, revocable, and limited license to:
 
@@ -278,7 +278,7 @@ Using Moddy services (Discord bot, website) grants you a non-exclusive, non-tran
 
 This license does not grant you any ownership rights over the services or their content.
 
-### 6.5 Restrictions
+### Restrictions
 
 It is forbidden to:
 
@@ -287,7 +287,7 @@ It is forbidden to:
 - Not comply with the CC BY-NC-SA license attribution conditions
 - Extract or reuse a substantial part of the databases
 
-### 6.6 User content
+### User content
 
 Regarding content you create via Moddy:
 
@@ -312,7 +312,7 @@ For more details, please consult the complete Privacy Policy.
 
 ## 8. Limitation of Liability
 
-### 8.1 Moddy's liability
+### Moddy's liability
 
 Moddy undertakes to provide its services with diligence and according to the rules of the art.
 
@@ -328,7 +328,7 @@ However, **Moddy cannot be held liable** for:
 - Data deletion following legitimate ban
 - Consequences of technical intervention in users' servers
 
-### 8.2 Force majeure
+### Force majeure
 
 Moddy cannot be held liable for non-performance of its obligations in case of force majeure, including:
 
@@ -339,7 +339,7 @@ Moddy cannot be held liable for non-performance of its obligations in case of fo
 - Legislative or regulatory changes
 - Large-scale cyberattacks
 
-### 8.3 Third-party services
+### Third-party services
 
 Moddy uses third-party services (Discord, Railway, Stripe, OpenAI, etc.). We are not responsible for:
 
@@ -349,13 +349,13 @@ Moddy uses third-party services (Discord, Railway, Stripe, OpenAI, etc.). We are
 
 You are invited to consult the terms of use of these third-party platforms.
 
-### 8.4 Legal limitation
+### Legal limitation
 
 To the extent permitted by applicable law, Moddy's total liability to you may not exceed the total amount of sums actually paid by you over the 12 months preceding the event giving rise to liability.
 
 ## 9. Warranties and Representations
 
-### 9.1 Services provided 'as is'
+### Services provided 'as is'
 
 Moddy services are provided "as is" and "as available", without warranty of any kind, express or implied, including:
 
@@ -364,7 +364,7 @@ Moddy services are provided "as is" and "as available", without warranty of any 
 - Correction of defects
 - Compatibility with your equipment
 
-### 9.2 No guarantee of results
+### No guarantee of results
 
 Moddy is a tool facilitating Discord server management, but does not guarantee:
 
@@ -376,13 +376,13 @@ The server administrator remains responsible for moderation and compliance with 
 
 ## 10. Data and Backups
 
-### 10.1 Data backup
+### Data backup
 
 Moddy performs regular backups of its databases to ensure service continuity.
 
 However, **you are responsible for backing up your own important data**.
 
-### 10.2 Data loss
+### Data loss
 
 Moddy cannot be held liable for data loss following:
 
@@ -393,7 +393,7 @@ Moddy cannot be held liable for data loss following:
 
 It is recommended to regularly export your important data (transcripts, role lists, etc.).
 
-### 10.3 Data retention
+### Data retention
 
 Data is retained indefinitely until:
 
@@ -404,7 +404,7 @@ See the Privacy Policy for more details.
 
 ## 11. ToS Modifications
 
-### 11.1 Right to modify
+### Right to modify
 
 Moddy reserves the right to modify these ToS at any time to reflect:
 
@@ -412,7 +412,7 @@ Moddy reserves the right to modify these ToS at any time to reflect:
 - Legislative or regulatory changes
 - Improvement of our practices
 
-### 11.2 Notification of modifications
+### Notification of modifications
 
 Any substantial modification will be:
 
@@ -421,7 +421,7 @@ Any substantial modification will be:
 - Effective immediately for new users
 - Effective after a reasonable notice period (generally 30 days) for existing users
 
-### 11.3 Acceptance of modifications
+### Acceptance of modifications
 
 By continuing to use Moddy after the modifications take effect, you accept the new ToS.
 
@@ -429,7 +429,7 @@ If you refuse the modifications, you must stop using the services.
 
 ## 12. Termination
 
-### 12.1 Termination by user
+### Termination by user
 
 You can stop using Moddy at any time by:
 
@@ -437,7 +437,7 @@ You can stop using Moddy at any time by:
 - Deactivating your account on our website
 - Canceling your Premium subscription
 
-### 12.2 Termination by Moddy
+### Termination by Moddy
 
 Moddy reserves the right to suspend or terminate your access to services, **with or without notice, without having to justify itself**, in case of:
 
@@ -448,7 +448,7 @@ Moddy reserves the right to suspend or terminate your access to services, **with
 - Definitive service closure
 - Any other reason deemed legitimate by Moddy
 
-### 12.3 Consequences of termination
+### Consequences of termination
 
 In case of termination:
 
@@ -459,39 +459,39 @@ In case of termination:
 
 ## 13. General Provisions
 
-### 13.1 Entire agreement
+### Entire agreement
 
 These ToS, together with the Privacy Policy, constitute the entire agreement between you and Moddy regarding the use of the services.
 
-### 13.2 Partial invalidity
+### Partial invalidity
 
 If a provision of these ToS is deemed invalid or unenforceable by a competent court, the other provisions will remain fully in effect.
 
 The invalid provision will be replaced by a valid provision as close as possible to the original intent.
 
-### 13.3 No waiver
+### No waiver
 
 Moddy's failure to exercise a right or provision of these ToS does not constitute a waiver of that right or provision.
 
-### 13.4 Assignment
+### Assignment
 
 You may not assign or transfer your rights or obligations under these ToS without Moddy's prior written consent.
 
 Moddy may freely assign or transfer its rights and obligations, particularly in case of merger, acquisition, or asset sale.
 
-### 13.5 Language
+### Language
 
 These ToS are written in English. In case of translation, only the English version is authoritative.
 
 ## 14. Applicable Law and Jurisdiction
 
-### 14.1 Applicable law
+### Applicable law
 
 These ToS are governed and interpreted in accordance with **French law**, with the exception of its conflict of laws rules.
 
 For consumer users residing in the European Union, nothing in these ToS affects your rights as a consumer under the legislation of your country of residence.
 
-### 14.2 Dispute resolution
+### Dispute resolution
 
 **Prior mediation:**  
 In case of a dispute relating to the interpretation or execution of these ToS, we encourage you to contact us first to try to find an amicable solution via our support.
