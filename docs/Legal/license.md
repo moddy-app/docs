@@ -69,7 +69,7 @@ Any violation of this license automatically terminates your rights under it. Upo
 
 ## Contact
 
-For commercial use requests or any questions regarding this license, please contact the Moddy team through the official repository.
+For commercial use requests or any questions regarding this license, please contact the Moddy team at **hello@moddy.app** or through the official repository.
 
 > Tip: If you're unsure whether your use case falls under commercial use, reach out to us before proceeding!
 
