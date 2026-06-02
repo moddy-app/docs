@@ -37,7 +37,13 @@ module.exports = async function () {
     const metaPath = path.join(contentDir, id, 'meta.json');
     if (!fs.existsSync(metaPath)) continue;
 
-    const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+    let meta;
+    try {
+      meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+    } catch (e) {
+      console.warn(`[authors] Failed to parse ${metaPath}: ${e.message}`);
+      continue;
+    }
 
     const needsDiscord =
       meta.avatar === 'DISCORD' ||
@@ -45,18 +51,27 @@ module.exports = async function () {
       meta.avatar_decoration === 'DISCORD';
 
     if (needsDiscord && meta.discord_id) {
-      const discordData = await fetchDiscordUser(meta.discord_id);
-      if (discordData) {
-        if (meta.avatar === 'DISCORD') meta.avatar = discordData.avatar_url || null;
-        if (meta.banner_url === 'DISCORD') meta.banner_url = discordData.banner_url || null;
-        if (meta.avatar_decoration === 'DISCORD') {
-          meta.avatar_decoration = discordData.avatar_decoration_data?.asset_url || null;
+      try {
+        const discordData = await fetchDiscordUser(meta.discord_id);
+        if (discordData) {
+          if (meta.avatar === 'DISCORD') meta.avatar = discordData.avatar_url || null;
+          if (meta.banner_url === 'DISCORD') meta.banner_url = discordData.banner_url || null;
+          if (meta.avatar_decoration === 'DISCORD') {
+            meta.avatar_decoration = discordData.avatar_decoration_data?.asset_url || null;
+          }
+          if (!meta.username) meta.username = discordData.username;
+          if (!meta.accent_color) meta.accent_color = discordData.accent_color;
+          meta._discord_badges = discordData.badges || [];
         }
-        if (!meta.username) meta.username = discordData.username;
-        if (!meta.accent_color) meta.accent_color = discordData.accent_color;
-        meta._discord_badges = discordData.badges || [];
+      } catch (e) {
+        console.warn(`[authors] Discord API failed for ${meta.discord_id}: ${e.message}`);
       }
     }
+
+    // Fallback: ensure avatar/decoration null instead of 'DISCORD' string
+    if (meta.avatar === 'DISCORD') meta.avatar = null;
+    if (meta.banner_url === 'DISCORD') meta.banner_url = null;
+    if (meta.avatar_decoration === 'DISCORD') meta.avatar_decoration = null;
 
     authors.push(meta);
   }

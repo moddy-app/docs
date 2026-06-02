@@ -22,6 +22,19 @@ const DEV = process.env.NODE_ENV === 'DEV';
 const jsDir = DEV ? 'lib' : 'build';
 const outputFolder = DEV ? '_dev' : '_prod';
 
+/** Slugify a heading text to match markdown-it-anchor output. */
+function slugifyHeading(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[`*_~[\]]/g, '')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 module.exports = function (eleventyConfig) {
   // Passthrough copies
   eleventyConfig
@@ -60,7 +73,7 @@ module.exports = function (eleventyConfig) {
   copyCodeButtonPlugin(md);
   eleventyConfig.setLibrary('md', md);
 
-  // Table of contents
+  // Table of contents (for standard page content)
   eleventyConfig.addPlugin(pluginTOC, {
     tags: ['h2', 'h3', 'h4'],
     wrapper: 'div',
@@ -135,6 +148,44 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter('limit', function (arr, n) {
     if (!arr) return [];
     return arr.slice(0, n);
+  });
+
+  /**
+   * Generate a TOC nav from a markdown string.
+   * Parses ## and ### headings; returns '' if fewer than 2 headings found.
+   * IDs are slugified to match markdown-it-anchor defaults.
+   */
+  eleventyConfig.addFilter('generateToc', function (markdown) {
+    if (!markdown) return '';
+    const lines = markdown.split('\n');
+    const headings = [];
+
+    for (const line of lines) {
+      const m2 = line.match(/^## (.+)$/);
+      const m3 = line.match(/^### (.+)$/);
+      const m = m2 || m3;
+      if (m) {
+        const rawText = m[1]
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // unwrap markdown links
+          .replace(/[`*_~]/g, '') // strip inline formatting
+          .trim();
+        headings.push({
+          level: m2 ? 2 : 3,
+          text: rawText,
+          id: slugifyHeading(rawText),
+        });
+      }
+    }
+
+    if (headings.length < 2) return '';
+
+    let html = '<nav class="article-toc-nav" aria-label="Table des matières"><ul>';
+    for (const h of headings) {
+      const cls = h.level === 3 ? ' class="toc-h3"' : '';
+      html += `<li${cls}><a href="#${h.id}">${h.text}</a></li>`;
+    }
+    html += '</ul></nav>';
+    return html;
   });
 
   // =========================================
