@@ -58,15 +58,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <!-- Favicon -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
-  <!-- Material Web — CDN via importmap -->
-  <script type="importmap">
-    {
-      "imports": {
-        "@material/web/": "https://esm.run/@material/web/"
-      }
-    }
-  </script>
-  <script type="module">
+  <!-- Material Web — bundled by Astro/Vite at build time -->
+  <script>
     import '@material/web/button/filled-button.js';
     import '@material/web/button/outlined-button.js';
     import '@material/web/button/text-button.js';
