@@ -1,0 +1,65 @@
+{# Renders an article card. Expects `article` (or `art`) as the article object. #}
+{% set cardArticle = article or art %}
+<a href="/articles/{{ cardArticle.id }}/" class="article-card" aria-label="{{ cardArticle.title.fr }}">
+  {# Mini banner #}
+  {% set firstLabel = cardArticle.labels[0] %}
+  {% set cardLabelData = labels | filterLabelById(firstLabel) %}
+  <div
+    class="article-card-banner"
+    style="
+      {% if cardArticle.banner %}background-image: url('{{ cardArticle.banner }}');{% else %}background-color: {{ cardLabelData.color if cardLabelData else '#ECAA2E' }};{% endif %}
+    "
+  ></div>
+
+  <div class="article-card-body">
+    {# Labels #}
+    {% if cardArticle.labels and cardArticle.labels.length > 0 %}
+      <div class="article-card-labels">
+        {% for labelId in cardArticle.labels %}
+          {% set ldata = labels | filterLabelById(labelId) %}
+          {% if ldata %}
+            <span class="label-chip label-chip--small" style="--label-color: {{ ldata.color }}">
+              <span class="lang-fr">{{ ldata.name.fr }}</span>
+              <span class="lang-en">{{ ldata.name.en }}</span>
+            </span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# Title #}
+    <h3 class="article-card-title">
+      <span class="lang-fr">{{ cardArticle.title.fr }}</span>
+      <span class="lang-en">{{ cardArticle.title.en }}</span>
+    </h3>
+
+    {# Abstract #}
+    {% if cardArticle.abstract %}
+      <p class="article-card-abstract">
+        <span class="lang-fr">{{ cardArticle.abstract.fr }}</span>
+        <span class="lang-en">{{ cardArticle.abstract.en }}</span>
+      </p>
+    {% endif %}
+
+    {# Footer: date + authors #}
+    <div class="article-card-footer">
+      <time datetime="{{ cardArticle.created_at }}">{{ cardArticle.created_at | formatDate }}</time>
+      {% if cardArticle.authors and cardArticle.authors.length > 0 %}
+        <div class="article-card-authors">
+          {% for authorId in cardArticle.authors %}
+            {% set aData = authors | filterAuthorById(authorId) %}
+            {% if aData and aData.avatar %}
+              <img
+                src="{{ aData.avatar }}"
+                alt="{{ aData.username }}"
+                class="article-card-author-avatar"
+                title="{{ aData.username }}"
+                loading="lazy"
+              />
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</a>

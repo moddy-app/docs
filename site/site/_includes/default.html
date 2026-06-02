@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html lang="fr" data-lang="fr">
   <head>
     <meta charset="utf-8" />
     <meta
@@ -12,88 +11,148 @@
     {% else %}
       {% set pageTitle = title %}
     {% endif %}
-    <!-- Use the 11ty data system to set the title -->
-    <title>Moddy Docs{% if pageTitle %} - {{ pageTitle }}{% endif %}</title>
-    <!-- Set the color of the url bar on mobile to match theme -->
+    <title>Moddy Docs{% if pageTitle %} — {{ pageTitle }}{% endif %}</title>
     <meta name="theme-color" content="#251f16" />
-    <link href="/images/favicon.svg" rel="icon" sizes="any" type="image/svg+xml">
-    <!-- Inlines the global css in site/css/global.css -->
+    <link href="/images/favicon.svg" rel="icon" sizes="any" type="image/svg+xml" />
+
+    {% if visibility == 3 %}
+      <meta name="robots" content="noindex, nofollow" />
+    {% endif %}
+
     {% inlinecss "global.css" %}
-    <!-- MUST be loaded before any lit bundle. allows hydration of SSRd components -->
     <script type="module" src="/js/ssr-utils/lit-hydrate-support.js"></script>
-    <!-- Loads definition for <lit-island>. See docs for @11ty/is-land for usage -->
     <script type="module" src="/js/ssr-utils/lit-island.js"></script>
-    <!-- Inlines the material theming logic since we want to prevent FOUC -->
     {% inlinejs "inline/apply-saved-theme.js" %}
+    {% inlinejs "inline/apply-saved-lang.js" %}
+
     <script type="module" src="/js/pages/global.js"></script>
+
     <noscript>
       <link rel="stylesheet" href="/css/no-js.css" />
     </noscript>
+
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
     />
-    <!-- dsd-pending hides body until the polyfill has run on browsers that do not support DSD -->
+
     <style>
       body[dsd-pending] {
         display: none;
       }
     </style>
-    <!-- If JS is disabled just show the contents without the polyfill -->
     <noscript
       ><style>
         body[dsd-pending] {
           display: block !important;
         }
-      </style>
-    </noscript>
-    <!-- Allows sub-templates to insert into the head -->
+      </style></noscript
+    >
+
     {% block head %}{% endblock %}
   </head>
   <body dsd-pending>
-    <!-- Inlines the declarative shadow dom polyfill for FF since it's performance sensitive -->
     {% inlinejs "ssr-utils/dsd-polyfill.js" %}
-    <!-- Changed from on:idle to on:visible for instant navigation load and prevent FOUC -->
-    <lit-island on:visible import="/js/hydration-entrypoints/navigation.js">
-      <nav-drawer page-title="{{name}}" {% if hasToc %}has-toc{% endif %}>
-        <top-app-bar slot="top-app-bar" baseURI="/">
-          {% block topappbar %}{{ topappbar | safe }}{% endblock %}
-        </top-app-bar>
 
-        {% if hasToc %}
-          <section slot="toc">{% block toc %}{% endblock %}</section>
-        {% endif %}
+    <div class="docs-frame">
+      <div class="docs-surface">
+        <!-- Top App Bar -->
+        <header class="docs-header" role="banner">
+          <a href="/" class="header-brand" aria-label="Moddy Docs — Accueil">
+            <img src="/images/favicon.svg" alt="" class="brand-icon" aria-hidden="true" />
+            <span class="brand-name">Moddy Docs</span>
+          </a>
 
-        <main id="main-content" slot="app-content" tabindex="0">
-          <!-- this is the content of the page -->
-          <!-- unrelated change to components -->
+          <nav class="header-nav" aria-label="Navigation principale">
+            <a href="/" class="nav-link">
+              <span class="material-symbols-outlined" aria-hidden="true">home</span>
+              <span class="lang-fr">Accueil</span>
+              <span class="lang-en">Home</span>
+            </a>
+            <a href="/articles/" class="nav-link">
+              <span class="material-symbols-outlined" aria-hidden="true">article</span>
+              <span class="lang-fr">Articles</span>
+              <span class="lang-en">Articles</span>
+            </a>
+            <a href="/collections/" class="nav-link">
+              <span class="material-symbols-outlined" aria-hidden="true">label</span>
+              <span class="lang-fr">Collections</span>
+              <span class="lang-en">Collections</span>
+            </a>
+          </nav>
+
+          <div class="header-actions">
+            <lit-island on:visible import="/js/hydration-entrypoints/search.js">
+              <docs-search></docs-search>
+            </lit-island>
+            <lit-island on:visible import="/js/hydration-entrypoints/language.js">
+              <language-switcher></language-switcher>
+            </lit-island>
+            <lit-island on:visible import="/js/hydration-entrypoints/navigation.js">
+              <theme-changer></theme-changer>
+            </lit-island>
+          </div>
+
+          <button class="mobile-menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav">
+            <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+          </button>
+        </header>
+
+        <!-- Mobile nav overlay -->
+        <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" hidden>
+          <nav>
+            <a href="/" class="nav-link">
+              <span class="lang-fr">Accueil</span>
+              <span class="lang-en">Home</span>
+            </a>
+            <a href="/articles/" class="nav-link">
+              <span class="lang-fr">Articles</span>
+              <span class="lang-en">Articles</span>
+            </a>
+            <a href="/collections/" class="nav-link">
+              <span class="lang-fr">Collections</span>
+              <span class="lang-en">Collections</span>
+            </a>
+            <a href="/legal/privacy" class="nav-link">
+              <span class="lang-fr">Confidentialité</span>
+              <span class="lang-en">Privacy</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Main content -->
+        <main id="main-content" tabindex="0">
           {% block content %}{{ content | mdMarkdown | safe }}{% endblock %}
         </main>
-        <md-list
-            aria-label="List of pages"
-            role="menubar"
-            class="nav">
-          <!-- Dynamically generate sections from all collections -->
-          {% for tag, items in collections %}
-            {% if tag != 'all' and items.length > 0 %}
-              {% set sectionName = tag | capitalize %}
-              <md-item><div slot="headline">{{ sectionName }}</div></md-item>
-              {% for file in items|filtersort('data.order') %}
-                <md-list-item
-                  href="{{ file.url }}"
-                  role="menuitem"
-                  {% if file.url == page.url %}selected{% endif %}
-                  type="link"
-                  tabindex="{% if file.url == page.url %}0{% else %}-1{% endif %}"
-                >{{ file.data.name }}</md-list-item>
-              {% endfor %}
-              {% if not loop.last %}
-                <md-divider role="separator"></md-divider>
-              {% endif %}
-            {% endif %}
-          {% endfor %}
-        </md-list>
-      </nav-drawer>
-    </lit-island>
+
+        <!-- Footer -->
+        <footer class="docs-footer" role="contentinfo">
+          <div class="footer-nav">
+            <a href="/legal/privacy">
+              <span class="lang-fr">Confidentialité</span>
+              <span class="lang-en">Privacy</span>
+            </a>
+            <span aria-hidden="true">·</span>
+            <a href="/legal/tos">
+              <span class="lang-fr">CGU</span>
+              <span class="lang-en">Terms</span>
+            </a>
+            <span aria-hidden="true">·</span>
+            <a href="/legal/license">
+              <span class="lang-fr">Licence</span>
+              <span class="lang-en">License</span>
+            </a>
+            <span aria-hidden="true">·</span>
+            <a href="https://moddy.app/support/" target="_blank" rel="noopener">
+              <span class="lang-fr">Support</span>
+              <span class="lang-en">Support</span>
+            </a>
+          </div>
+          <p class="footer-copy">© 2025 Moddy — <a href="https://moddy.app">moddy.app</a></p>
+        </footer>
+      </div>
+    </div>
+
+    <script type="module" src="/js/pages/global.js"></script>
   </body>
 </html>

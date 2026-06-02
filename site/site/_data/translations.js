@@ -17,8 +17,7 @@ module.exports = {
     back_to_authors: '← Retour aux auteurs',
     no_articles: 'Aucun article trouvé.',
     home_title: 'Documentation Moddy',
-    home_subtitle:
-      'Tout ce dont vous avez besoin pour utiliser, configurer et contribuer à Moddy.',
+    home_subtitle: 'Tout ce dont vous avez besoin pour utiliser, configurer et contribuer à Moddy.',
     latest_articles: 'Derniers articles',
     all_articles: 'Tous les articles',
     all_collections: 'Toutes les collections',
@@ -28,7 +27,7 @@ module.exports = {
     support: 'Support',
     home: 'Accueil',
     search_no_results: 'Aucun résultat.',
-    search_results: résultats',
+    search_results: 'résultats',
     neutral_mode: 'Neutre',
     light_mode: 'Clair',
     dark_mode: 'Sombre',
@@ -53,8 +52,7 @@ module.exports = {
     back_to_authors: '← Back to authors',
     no_articles: 'No articles found.',
     home_title: 'Moddy Documentation',
-    home_subtitle:
-      'Everything you need to use, configure and contribute to Moddy.',
+    home_subtitle: 'Everything you need to use, configure and contribute to Moddy.',
     latest_articles: 'Latest articles',
     all_articles: 'All articles',
     all_collections: 'All collections',

@@ -1,0 +1,43 @@
+{% extends "default.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/css/md-layout.css" />
+  <link rel="stylesheet" href="/css/article.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="legal-page">
+    <div class="legal-header">
+      <a href="/" class="back-link">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+        <span class="lang-fr">Retour</span>
+        <span class="lang-en">Back</span>
+      </a>
+
+      <div class="legal-labels">
+        <span class="label-chip" style="--label-color: #F4B400">
+          <span class="lang-fr">Légal</span>
+          <span class="lang-en">Legal</span>
+        </span>
+      </div>
+
+      <h1 class="legal-title">
+        <span class="lang-fr">{{ legalPage.title.fr }}</span>
+        <span class="lang-en">{{ legalPage.title.en }}</span>
+      </h1>
+
+      {% if legalPage.updated_at %}
+        <p class="legal-date">
+          <span class="material-symbols-outlined" aria-hidden="true">update</span>
+          <span class="lang-fr">Mis à jour le {{ legalPage.updated_at | formatDate }}</span>
+          <span class="lang-en">Updated {{ legalPage.updated_at | formatDate }}</span>
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="legal-body">
+      <div class="lang-fr">{{ legalPage.content_fr | renderMarkdown | safe }}</div>
+      <div class="lang-en">{{ legalPage.content_en | renderMarkdown | safe }}</div>
+    </div>
+  </div>
+{% endblock %}

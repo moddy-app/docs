@@ -1,0 +1,53 @@
+{% extends "default.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/css/label.css" />
+  <link rel="stylesheet" href="/css/article.css" />
+{% endblock %}
+
+{% block content %}
+  {% set articlesForLabel = articles | filterArticlesByLabel(label.id) %}
+
+  <div class="label-page">
+    <div class="label-hero" style="--label-color: {{ label.color }}">
+      <div class="label-hero-inner">
+        <div class="label-badge" style="background: {{ label.color }}"></div>
+        <h1 class="label-title">
+          <span class="lang-fr">{{ label.name.fr }}</span>
+          <span class="lang-en">{{ label.name.en }}</span>
+        </h1>
+        <p class="label-count">
+          {{ articlesForLabel | length }}
+          <span class="lang-fr">
+            {% if articlesForLabel | length == 1 %}article{% else %}articles{% endif %}
+          </span>
+          <span class="lang-en">
+            {% if articlesForLabel | length == 1 %}article{% else %}articles{% endif %}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="label-articles">
+      <h2 class="section-title">
+        <span class="lang-fr">Articles dans cette collection</span>
+        <span class="lang-en">Articles in this collection</span>
+      </h2>
+
+      {% if articlesForLabel and articlesForLabel.length > 0 %}
+        <div class="articles-grid">
+          {% for art in articlesForLabel %}
+            {% if art.visibility <= 2 %}
+              {% include "partials/article-card.html" %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="empty-state">
+          <span class="lang-fr">Aucun article dans cette collection.</span>
+          <span class="lang-en">No articles in this collection.</span>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

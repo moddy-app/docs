@@ -1,0 +1,103 @@
+{% extends "default.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/css/author.css" />
+  <link rel="stylesheet" href="/css/article.css" />
+{% endblock %}
+
+{% block content %}
+  {% set articlesForAuthor = articles | filterArticlesByAuthor(author.discord_id or author.id) %}
+
+  <div class="author-page">
+    {# Profile Header #}
+    <div
+      class="author-hero"
+      style="{{ ('background-color: ' + author.banner_color + ';') if author.banner_color else '' }}{{ ('background-image: url(' + author.banner_url + ');') if author.banner_url else '' }}"
+    >
+      <div class="author-hero-inner">
+        <div class="author-avatar-wrapper">
+          {% if author.avatar %}
+            <img
+              src="{{ author.avatar }}"
+              alt="{{ author.username }}"
+              class="author-avatar-large"
+              loading="lazy"
+            />
+          {% else %}
+            <div class="author-avatar-large author-avatar-placeholder">
+              <span class="material-symbols-outlined">person</span>
+            </div>
+          {% endif %}
+          {% if author.avatar_decoration %}
+            <img
+              src="{{ author.avatar_decoration }}"
+              alt=""
+              class="author-avatar-decoration"
+              aria-hidden="true"
+            />
+          {% endif %}
+        </div>
+
+        <div class="author-info">
+          <h1 class="author-username">{{ author.username }}</h1>
+          {% if author.post %}
+            <p class="author-post">
+              <span class="lang-fr">{{ author.post.fr if author.post.fr else author.post }}</span>
+              <span class="lang-en">{{ author.post.en if author.post.en else author.post }}</span>
+            </p>
+          {% endif %}
+          {% if author.bio %}
+            <p class="author-bio">
+              <span class="lang-fr">{{ author.bio.fr if author.bio.fr else author.bio }}</span>
+              <span class="lang-en">{{ author.bio.en if author.bio.en else author.bio }}</span>
+            </p>
+          {% endif %}
+
+          {# Links #}
+          {% if author.links and author.links.length > 0 %}
+            <div class="author-links">
+              {% for link in author.links %}
+                <a
+                  href="{{ link.url }}"
+                  class="author-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="{{ link.name }}"
+                >
+                  {% if link.icon %}
+                    <span class="author-link-icon">{{ link.icon | safe }}</span>
+                  {% endif %}
+                  <span>{{ link.name }}</span>
+                </a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {# Author's articles #}
+    <div class="author-articles">
+      <h2 class="section-title">
+        <span class="lang-fr">Articles de cet auteur</span>
+        <span class="lang-en">Articles by this author</span>
+      </h2>
+
+      {% if articlesForAuthor and articlesForAuthor.length > 0 %}
+        <div class="articles-grid">
+          {% for art in articlesForAuthor %}
+            {% if art.visibility <= 2 %}
+              {% set article = art %}
+              {% include "partials/article-card.html" %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="empty-state">
+          <span class="lang-fr">Aucun article de cet auteur.</span>
+          <span class="lang-en">No articles by this author.</span>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
