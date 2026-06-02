@@ -1,20 +1,16 @@
 {
-  "name": "blog",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "build": "cd voidcannon&&npm run generate-icon-font&&cd ../pagex&&npm run build ../",
-    "build-prod": "cd voidcannon&&npm run generate-icon-font&&cd ../pagex&&npm run build-prod ../",
-    "dev": "cd voidcannon&&npm run generate-full-icon-font&&cd ../pagex&&npm run dev ../"
-  },
+  "name": "moddy-docs",
   "type": "module",
-  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
   "dependencies": {
-    "gm3": "file:gm3",
-    "pagex": "file:pagex",
-    "pagex_commons": "file:pagex_commons",
-    "voidcannon": "file:voidcannon",
-    "webfont": "file:webfont",
-    "webicons": "file:webicons"
+    "@astrojs/sitemap": "^3.0.0",
+    "@material/web": "^2.4.1",
+    "astro": "^5.0.0",
+    "marked": "^14.0.0"
   }
 }

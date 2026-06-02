@@ -1,0 +1,164 @@
+---
+import type { ArticleMeta, LabelMeta } from '../utils/content.ts';
+import type { Lang } from '../i18n/translations.ts';
+
+interface Props {
+  article: ArticleMeta;
+  labels?: LabelMeta[];
+  lang: Lang;
+}
+
+const { article, labels = [], lang } = Astro.props;
+
+const title = article.title[lang] ?? article.title['fr'];
+const summary = article.summary[lang] ?? article.summary['fr'];
+
+const d = new Date(article.createdAt);
+const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const dateShort = `${months[d.getMonth()]} ${d.getDate()}`;
+
+const primaryLabel = labels[0];
+const bannerSrc = article.banner
+  ? `/content/articles/${article.id}/assets/${article.banner}`
+  : null;
+---
+
+<div class="vNoZxk">
+  <a href={`/articles/${article.id}`} class="uPd4UK" tabindex="-1" aria-hidden="true">
+    {bannerSrc
+      ? <img draggable="false" src={bannerSrc} alt="" loading="lazy" />
+      : null
+    }
+  </a>
+  <div class="zv98UQ">
+    <div class="uHxFYS">
+      <span class="card-date">{dateShort}</span>
+    </div>
+    <a href={`/articles/${article.id}`}><h2>{title}</h2></a>
+    <span class="card-summary">{summary}</span>
+    <div class="uHxFYS wCqovU">
+      {primaryLabel ? (
+        <a href={`/collections/${primaryLabel.id}`} class="v2EOKK"
+          style={`background-color: color-mix(in srgb, ${primaryLabel.color} 15%, var(--md-sys-color-surface-container-highest)); color: ${primaryLabel.color}`}>
+          <md-ripple></md-ripple>
+          {primaryLabel.name}
+        </a>
+      ) : <span></span>}
+      <md-text-button trailing-icon href={`/articles/${article.id}`}>
+        <md-icon slot="icon">arrow_forward</md-icon>
+        View Article
+      </md-text-button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .vNoZxk {
+    background-color: var(--md-sys-color-surface-container);
+    border-radius: 16px;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .uPd4UK {
+    user-select: none;
+    background-color: var(--md-sys-color-surface-container-high);
+    width: 100%;
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+    display: block;
+  }
+  .uPd4UK img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    display: block;
+    transition: scale .3s cubic-bezier(.2,.29,.27,1.55);
+    scale: 1.01;
+    position: absolute;
+    inset: 0;
+  }
+  .uPd4UK::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 40%, color-mix(in srgb, var(--md-sys-color-surface-container) 50%, transparent) 100%);
+    pointer-events: none;
+  }
+  .vNoZxk:hover .uPd4UK img { scale: 1.05; }
+
+  .zv98UQ {
+    flex-direction: column;
+    height: 100%;
+    padding: 24px;
+    display: flex;
+    gap: 6px;
+  }
+
+  .uHxFYS {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: .5em;
+    display: flex;
+  }
+
+  .wCqovU {
+    margin-top: auto;
+    margin-bottom: 0;
+    padding-top: 1em;
+  }
+
+  .card-date {
+    font-weight: 600;
+    font-size: .8rem;
+    color: var(--md-sys-color-on-surface-variant);
+    letter-spacing: .03em;
+  }
+
+  .zv98UQ a {
+    text-decoration: none;
+    color: var(--md-sys-color-on-surface);
+  }
+  .zv98UQ a:hover h2 { text-decoration: underline; }
+
+  .zv98UQ h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--md-sys-color-on-surface);
+    margin-bottom: .1em;
+  }
+
+  .card-summary {
+    font-size: .875rem;
+    color: var(--md-sys-color-on-surface-variant);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 75%;
+  }
+
+  .v2EOKK {
+    width: fit-content;
+    font-size: .875rem;
+    font-weight: 500;
+    border-radius: 8px;
+    user-select: none;
+    padding: 5px 11px;
+    line-height: 1.25rem;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .v2EOKK:hover { text-decoration: none; }
+</style>

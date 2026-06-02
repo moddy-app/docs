@@ -1,0 +1,172 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getAllLabels, getLabel, getArticlesByLabel } from '../../utils/content.ts';
+
+export async function getStaticPaths() {
+  const labels = await getAllLabels();
+  return labels.map(l => ({ params: { id: l.id } }));
+}
+
+const { id } = Astro.params;
+const label = await getLabel(id!);
+if (!label) return Astro.redirect('/404');
+
+const articles = await getArticlesByLabel(id!);
+const publicArticles = articles.filter(a => a.referencing !== 3);
+
+const allLabels = await getAllLabels();
+const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
+---
+
+<Base
+  title={label.name}
+  description={`Collection ${label.name} — ${publicArticles.length} article(s)`}
+  themeColor={label.color}
+  lang="fr"
+>
+  <Nav slot="nav" slug={id} />
+
+  <div class="xTOiZi">
+    <div class="v504Ku vQDqKq">
+      <!-- Label header — .wHkEay like maquette -->
+      <div class="wHkEay">
+        <div class="xrrrHQ">
+          <!-- Colored icon box — .vCEVuQ.uMRQIO like maquette -->
+          <div class="vCEVuQ" style={`background-color: color-mix(in srgb, ${label.color} 20%, var(--md-sys-color-surface-container)); color: ${label.color}`}>
+            <md-icon aria-hidden="true">label</md-icon>
+          </div>
+          <div class="x2G3eO">
+            <h1>{label.name}</h1>
+            <span>{publicArticles.length} article{publicArticles.length !== 1 ? 's' : ''}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Articles grid — .vFPEhk like maquette -->
+      <div class="vFPEhk">
+        {publicArticles.length > 0 ? (
+          publicArticles.map(article => (
+            <ArticleCard
+              article={article}
+              labels={article.labels.map(id => labelsMap[id]).filter(Boolean)}
+              lang="fr"
+            />
+          ))
+        ) : (
+          <div class="empty-state">
+            <md-icon style="font-size:48px;color:var(--md-sys-color-outline)">inbox</md-icon>
+            <p>Aucun article dans cette collection.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .xTOiZi {
+    --xs2rQG: min(1200px, calc(100vw - 2em));
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    display: flex;
+    gap: 1em;
+    padding-top: 1em;
+  }
+
+  .v504Ku {
+    max-width: var(--xs2rQG);
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Label header ────────────────────────────────────────── */
+  .vQDqKq {
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    margin-top: 1em;
+    display: flex;
+  }
+
+  .wHkEay {
+    width: 100%;
+    margin-bottom: .5em;
+  }
+
+  .xrrrHQ {
+    background-color: var(--md-sys-color-surface-container);
+    border-radius: 28px;
+    gap: 24px;
+    margin-bottom: 1em;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+  }
+
+  @media (max-width: 600px) {
+    .xrrrHQ { text-align: center; flex-direction: column; align-items: center; }
+  }
+
+  /* Icon box — squircle shape like maquette */
+  .vCEVuQ {
+    aspect-ratio: 1;
+    width: 128px;
+    height: 128px;
+    border-radius: 28px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    font-size: 3rem;
+  }
+
+  .vCEVuQ md-icon {
+    font-size: 2.5em;
+    width: 1em;
+    height: 1em;
+  }
+
+  .x2G3eO {
+    flex-direction: column;
+    gap: 5px;
+    display: flex;
+  }
+
+  .x2G3eO h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: var(--md-sys-color-on-surface);
+  }
+
+  .x2G3eO span {
+    font-size: .95rem;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  /* ── Articles grid ───────────────────────────────────────── */
+  .vFPEhk {
+    --vczvgq: min(375px, calc(100vw - 2em));
+    grid-template-columns: repeat(auto-fill, minmax(var(--vczvgq), 1fr));
+    justify-items: center;
+    gap: 1em;
+    width: 100%;
+    display: grid;
+  }
+
+  /* ── Empty state ─────────────────────────────────────────── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 200px;
+    color: var(--md-sys-color-on-surface-variant);
+    text-align: center;
+    grid-column: 1 / -1;
+  }
+</style>

@@ -1,0 +1,388 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import { getAllArticles, getArticle, getArticleContent, getAuthor, getLabel } from '../../utils/content.ts';
+import { fetchDiscordUser, accentColorToHex } from '../../utils/discord.ts';
+import { marked } from 'marked';
+
+export async function getStaticPaths() {
+  const articles = await getAllArticles();
+  return articles.map(a => ({ params: { id: a.id } }));
+}
+
+const { id } = Astro.params;
+const meta = await getArticle(id!);
+if (!meta) return Astro.redirect('/404');
+
+const frMd = await getArticleContent(id!, 'fr');
+const enMd = await getArticleContent(id!, 'en');
+const frHtml = await marked(frMd);
+const enHtml = await marked(enMd);
+
+const authorsList = await Promise.all(
+  meta.authors.map(async (authorId) => {
+    const author = await getAuthor(authorId);
+    if (!author) return null;
+    const needsDiscord = author.avatarUrl === 'DISCORD' || author.avatarDecorationUrl === 'DISCORD' || author.bannerColor === 'DISCORD';
+    let discord = null;
+    if (needsDiscord && author.discordId) discord = await fetchDiscordUser(author.discordId);
+    return {
+      ...author,
+      resolvedAvatarUrl: author.avatarUrl === 'DISCORD' ? (discord?.avatar_url ?? null) : author.avatarUrl,
+      resolvedAvatarDecoration: author.avatarDecorationUrl === 'DISCORD' ? (discord?.avatar_decoration_data?.asset_url ?? null) : author.avatarDecorationUrl,
+    };
+  })
+);
+const authors = authorsList.filter(Boolean) as NonNullable<typeof authorsList[number]>[];
+
+const labels = (await Promise.all(meta.labels.map(id => getLabel(id)))).filter(Boolean);
+
+const themeColor = labels[0]?.color ?? '#5B7BFA';
+
+const d = new Date(meta.createdAt);
+const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const dateShort = `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+
+const titleFr = meta.title['fr'];
+const titleEn = meta.title['en'] ?? titleFr;
+const summaryFr = meta.summary['fr'];
+const summaryEn = meta.summary['en'] ?? summaryFr;
+
+const bannerUrl = meta.banner
+  ? (meta.banner.startsWith('http') ? meta.banner : `/content/articles/${id}/assets/${meta.banner}`)
+  : null;
+---
+
+<Base
+  title={titleFr}
+  description={summaryFr}
+  themeColor={themeColor}
+  lang="fr"
+  ogImage={bannerUrl ?? undefined}
+  noIndex={meta.referencing === 3}
+>
+  <Nav slot="nav" slug={id} />
+
+  <div class="xTOiZi xAs6Ae">
+    <!-- Article header — height 512px like maquette -->
+    <div class="yzxB9O" style={`--z8hk0y: ${themeColor}`}>
+      <div class="voRrnK">
+        {bannerUrl && <img draggable="false" src={bannerUrl} fetchpriority="high" alt="Article Header" />}
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="v504Ku xXvHqe">
+      <h1 data-lang="fr">{titleFr}</h1>
+      <h1 data-lang="en" style="display:none">{titleEn}</h1>
+    </div>
+
+    <!-- Date + summary -->
+    <div class="v504Ku zR1x8w">
+      <div>
+        <span class="article-date">{dateShort}</span>
+      </div>
+      <span class="article-summary" data-lang="fr">{summaryFr}</span>
+      <span class="article-summary" data-lang="en" style="display:none">{summaryEn}</span>
+    </div>
+
+    <!-- Authors + share -->
+    {authors.length > 0 && (
+      <div class="v504Ku wEaTMe">
+        <div class="wojHNc">
+          <div class="wrmXco">
+            {authors.map(author => (
+              <a href={`/authors/${author.id}`} class="wACuEA" title={author.username}>
+                <md-ripple></md-ripple>
+                {author.resolvedAvatarUrl
+                  ? <img draggable="false" aria-label={`${author.username}'s Avatar`} src={author.resolvedAvatarUrl} alt={`${author.username}'s Avatar`} />
+                  : <span class="author-fallback">{author.username.charAt(0).toUpperCase()}</span>
+                }
+                {author.resolvedAvatarDecoration && (
+                  <img class="author-deco" src={author.resolvedAvatarDecoration} alt="" aria-hidden="true" />
+                )}
+              </a>
+            ))}
+          </div>
+          {authors[0] && (
+            <div class="xSRyrW">
+              <div class="wndRmO">
+                <a href={`/authors/${authors[0].id}`}>{authors[0].username}</a>
+              </div>
+              {authors[0].role?.['fr'] && <span>{authors[0].role['fr']}</span>}
+            </div>
+          )}
+        </div>
+      </div>
+    )}
+
+    <!-- Article content -->
+    <div class="v504Ku xkQrFg">
+      <div class="wmvtgi" data-lang="fr" set:html={frHtml}></div>
+      <div class="wmvtgi" data-lang="en" style="display:none" set:html={enHtml}></div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  /* ── Content wrapper ──────────────────────────────────────── */
+  .xTOiZi {
+    --xs2rQG: min(1200px, calc(100vw - 2em));
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    display: flex;
+  }
+
+  .xAs6Ae {
+    --yPh9aE: 100%;
+  }
+
+  .v504Ku {
+    max-width: var(--xs2rQG);
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Article header ───────────────────────────────────────── */
+  .yzxB9O {
+    --header-w: 1500px;
+    --header-h: 512px;
+    margin-top: 1em;
+    width: 100%;
+    height: var(--header-h);
+    justify-content: center;
+    display: flex;
+    position: relative;
+  }
+
+  @media (max-width: 1650px) {
+    .yzxB9O { --header-w: min(1300px, calc(100vw - 8em)); --header-h: 445px; }
+  }
+  @media (max-width: 900px) {
+    .yzxB9O { --header-h: 300px; }
+  }
+
+  .voRrnK {
+    max-width: min(var(--header-w), 100%);
+    background-color: var(--z8hk0y, var(--md-sys-color-surface-container-high));
+    width: 100%;
+    height: var(--header-h);
+    border-radius: 48px;
+    position: absolute;
+    overflow: hidden;
+  }
+
+  .voRrnK img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    display: block;
+  }
+
+  /* Gradient at bottom of banner */
+  .voRrnK::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 50%, color-mix(in srgb, var(--md-sys-color-background) 60%, transparent) 100%);
+    pointer-events: none;
+  }
+
+  /* ── Title ───────────────────────────────────────────────── */
+  .xXvHqe {
+    margin-top: 2em;
+  }
+
+  .xXvHqe h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.15;
+    text-wrap: balance;
+    color: var(--md-sys-color-on-background);
+    letter-spacing: -.02em;
+    margin-block: .5em 0;
+    margin-inline: auto;
+  }
+
+  /* ── Date + summary ──────────────────────────────────────── */
+  .zR1x8w {
+    flex-direction: row;
+    gap: 1em;
+    margin-top: 1em;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 640px) {
+    .zR1x8w { flex-direction: column; }
+  }
+
+  .article-date {
+    font-weight: 600;
+    font-size: .9rem;
+    color: var(--md-sys-color-on-surface-variant);
+    white-space: nowrap;
+  }
+
+  .article-summary {
+    font-size: .95rem;
+    color: var(--md-sys-color-on-surface-variant);
+    line-height: 1.6;
+  }
+
+  /* ── Authors row ─────────────────────────────────────────── */
+  .wEaTMe {
+    flex-direction: row;
+    gap: 1em;
+    margin-top: 1em;
+    margin-bottom: 2em;
+    display: flex;
+  }
+
+  .wojHNc {
+    flex-direction: row;
+    gap: 12px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Stacked avatars row-reverse like maquette */
+  .wrmXco {
+    user-select: none;
+    flex-direction: row-reverse;
+    padding-right: 22px;
+    display: flex;
+    align-items: center;
+  }
+
+  .wACuEA {
+    color: inherit;
+    border: 3px solid var(--md-sys-color-surface);
+    border-radius: 9999px;
+    width: 42px;
+    height: 42px;
+    max-height: 42px;
+    margin-right: -22px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--md-sys-color-surface-container);
+    flex-shrink: 0;
+  }
+
+  .wACuEA img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .author-fallback {
+    font-weight: 700;
+    font-size: .9rem;
+    color: var(--md-sys-color-on-primary-container);
+    background: var(--md-sys-color-primary-container);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .author-deco {
+    position: absolute;
+    inset: -4px;
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    pointer-events: none;
+  }
+
+  .xSRyrW {
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+  }
+
+  .wndRmO {
+    font-weight: 600;
+    font-size: .95rem;
+  }
+
+  .wndRmO a {
+    color: var(--md-sys-color-on-surface);
+    text-decoration: none;
+  }
+  .wndRmO a:hover { text-decoration: underline; }
+
+  .xSRyrW > span {
+    font-size: .8rem;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  /* ── Article content ─────────────────────────────────────── */
+  .xkQrFg {
+    margin-bottom: 10em;
+  }
+
+  .wmvtgi {
+    color: var(--md-sys-color-on-surface);
+    line-height: 1.625;
+    font-size: 1rem;
+    word-wrap: break-word;
+  }
+
+  /* Prose typography */
+  .wmvtgi :global(h1) { font-size: 2rem; font-weight: 800; margin: 2rem 0 1rem; letter-spacing: -.02em; }
+  .wmvtgi :global(h2) {
+    font-size: 1.5rem; font-weight: 700; margin: 2.5rem 0 1rem;
+    padding-bottom: .5rem; border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  .wmvtgi :global(h3) { font-size: 1.2rem; font-weight: 700; margin: 2rem 0 .75rem; }
+  .wmvtgi :global(h4) { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+  .wmvtgi :global(p) { margin: 1rem 0; }
+  .wmvtgi :global(a) { color: var(--md-sys-color-primary); text-decoration: underline; text-underline-offset: 3px; }
+  .wmvtgi :global(ul), .wmvtgi :global(ol) { padding-left: 1.5rem; margin: 1rem 0; }
+  .wmvtgi :global(li) { margin: .4rem 0; }
+  .wmvtgi :global(blockquote) {
+    border-left: 3px solid var(--md-sys-color-primary);
+    padding: .75rem 1rem;
+    margin: 1.5rem 0;
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border-radius: 0 8px 8px 0;
+  }
+  .wmvtgi :global(code) {
+    font-family: 'Google Sans Code', monospace;
+    font-size: .875em;
+    background: var(--md-sys-color-surface-container-highest);
+    padding: .15em .4em;
+    border-radius: 4px;
+    color: var(--md-sys-color-primary);
+  }
+  .wmvtgi :global(pre) {
+    background: var(--md-sys-color-surface-container-highest);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .wmvtgi :global(pre code) { background: none; padding: 0; color: var(--md-sys-color-on-surface); }
+  .wmvtgi :global(img) { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
+  .wmvtgi :global(hr) { border: none; border-top: 1px solid var(--md-sys-color-outline-variant); margin: 2rem 0; }
+  .wmvtgi :global(table) { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .9rem; }
+  .wmvtgi :global(th) {
+    background: var(--md-sys-color-surface-container);
+    padding: .75rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 2px solid var(--md-sys-color-outline-variant);
+  }
+  .wmvtgi :global(td) { padding: .75rem 1rem; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+</style>

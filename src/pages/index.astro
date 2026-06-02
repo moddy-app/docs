@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { getAllArticles, getAllLabels } from '../utils/content.ts';
+
+const allArticles = await getAllArticles();
+const publicArticles = allArticles.filter(a => a.referencing === 1);
+
+const allLabels = await getAllLabels();
+const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
+---
+
+<Base title="Accueil" lang="fr" themeColor="#5B7BFA">
+  <Nav slot="nav" slug="home" />
+
+  <div class="xTOiZi xtspfm">
+    <!-- Editorial intro -->
+    <div class="v504Ku">
+      <div class="wmvtgi">
+        <h1>Moddy Docs</h1>
+        <p>
+          Documentation officielle de Moddy, le bot Discord conçu pour votre communauté.
+          Retrouvez ici toutes les informations pour bien démarrer et tirer le meilleur parti de Moddy.
+        </p>
+      </div>
+    </div>
+
+    <!-- Recent articles -->
+    <div class="v504Ku">
+      <div class="xYSxXU">
+        <md-icon aria-hidden="true">history</md-icon>
+        <h1>Articles récents</h1>
+        <md-text-button trailing-icon href="/articles" style="margin-left:auto">
+          <md-icon slot="icon">arrow_forward</md-icon>
+          Voir tout
+        </md-text-button>
+      </div>
+
+      {publicArticles.length > 0 ? (
+        <div class="wUTVKK">
+          {publicArticles.slice(0, 9).map(article => (
+            <ArticleCard
+              article={article}
+              labels={article.labels.map(id => labelsMap[id]).filter(Boolean)}
+              lang="fr"
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <md-icon style="font-size:48px;color:var(--md-sys-color-outline)">article</md-icon>
+          <p>Aucun article pour le moment.</p>
+        </div>
+      )}
+    </div>
+  </div>
+</Base>
+
+<style>
+  /* ── Content wrapper ─────────────────────────────────────── */
+  .xTOiZi {
+    --xs2rQG: min(1200px, calc(100vw - 2em));
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    display: flex;
+  }
+
+  .xtspfm {
+    gap: 1em;
+    padding-top: 1em;
+  }
+
+  .v504Ku {
+    max-width: var(--xs2rQG);
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Editorial intro ─────────────────────────────────────── */
+  .wmvtgi h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--md-sys-color-on-surface);
+    margin-bottom: .5em;
+  }
+
+  .wmvtgi p {
+    font-size: 1rem;
+    color: var(--md-sys-color-on-surface-variant);
+    line-height: 1.6;
+    max-width: 640px;
+  }
+
+  /* ── Section header ──────────────────────────────────────── */
+  .xYSxXU {
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    margin-bottom: 1em;
+  }
+
+  .xYSxXU h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--md-sys-color-on-surface);
+  }
+
+  .xYSxXU md-icon {
+    color: var(--md-sys-color-primary);
+  }
+
+  /* ── Articles grid ───────────────────────────────────────── */
+  .wUTVKK {
+    --vczvgq: min(375px, calc(100vw - 2em));
+    grid-template-columns: repeat(auto-fill, minmax(var(--vczvgq), 1fr));
+    justify-items: center;
+    gap: 1em;
+    margin-top: 1em;
+    display: grid;
+  }
+
+  /* ── Empty state ─────────────────────────────────────────── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-height: 200px;
+    color: var(--md-sys-color-on-surface-variant);
+    text-align: center;
+  }
+</style>

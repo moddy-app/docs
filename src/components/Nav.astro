@@ -1,0 +1,103 @@
+---
+interface Props {
+  slug?: string;
+}
+
+const { slug = 'home' } = Astro.props;
+---
+
+<nav class="nav-bar" id="site-nav">
+  <div class="nav-logo">
+    <a href="/" class="nav-logo-link">
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="10" y="20" width="80" height="55" rx="12" ry="12"/>
+        <circle cx="35" cy="47" r="7" fill="var(--md-sys-color-surface)"/>
+        <circle cx="65" cy="47" r="7" fill="var(--md-sys-color-surface)"/>
+        <path d="M10 65 Q50 90 90 65" stroke="var(--md-sys-color-surface)" stroke-width="4" fill="none"/>
+        <rect x="30" y="75" width="8" height="12" rx="3" fill="currentColor"/>
+        <rect x="62" y="75" width="8" height="12" rx="3" fill="currentColor"/>
+      </svg>
+      <span>Moddy Docs</span>
+    </a>
+  </div>
+  <span class="nav-sep" aria-hidden="true">/</span>
+  <span class="nav-slug">{slug}</span>
+  <div class="nav-actions">
+    <md-icon-button id="theme-toggle" aria-label="Toggle theme">
+      <md-icon>dark_mode</md-icon>
+    </md-icon-button>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('theme-toggle') as HTMLElement;
+  if (btn) {
+    const updateIcon = () => {
+      const theme = document.documentElement.getAttribute('data-theme') || 'light';
+      const icon = btn.querySelector('md-icon') as HTMLElement;
+      if (icon) icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+    };
+    updateIcon();
+    btn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('moddy-theme', next);
+      updateIcon();
+    });
+  }
+</script>
+
+<style>
+  .nav-bar {
+    box-sizing: border-box;
+    background-color: var(--md-sys-color-background);
+    z-index: 5;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 64px;
+    padding: 0 1em;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .nav-logo-link {
+    box-sizing: border-box;
+    width: fit-content;
+    color: var(--md-sys-color-on-surface);
+    user-select: none;
+    flex-direction: row;
+    gap: 8px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  .nav-logo-link:hover { text-decoration: none; }
+
+  .nav-sep {
+    user-select: none;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 1rem;
+  }
+
+  .nav-slug {
+    white-space: pre;
+    text-overflow: ellipsis;
+    font-weight: 500;
+    overflow: hidden;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: .9rem;
+    max-width: 300px;
+  }
+
+  .nav-actions {
+    margin-left: auto;
+  }
+</style>

@@ -1,0 +1,28 @@
+{
+  "id": "1164597199594852395",
+  "discordId": "1164597199594852395",
+  "username": "Jules",
+  "avatarUrl": "DISCORD",
+  "avatarDecorationUrl": "DISCORD",
+  "bannerColor": "#5B7BFA",
+  "role": {
+    "fr": "Product Manager & Développeur",
+    "en": "Product Manager & Developer"
+  },
+  "bio": {
+    "fr": "Je suis le PM et développeur de Moddy — un bot Discord conçu pour simplifier la gestion de votre communauté.",
+    "en": "I'm the PM and developer behind Moddy — a Discord bot designed to simplify your community management."
+  },
+  "links": [
+    {
+      "name": "Discord",
+      "url": "https://discord.gg/moddy",
+      "icon": "chat_bubble"
+    },
+    {
+      "name": "moddy.app",
+      "url": "https://moddy.app",
+      "icon": "language"
+    }
+  ]
+}

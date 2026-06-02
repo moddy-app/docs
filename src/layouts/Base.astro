@@ -1,0 +1,317 @@
+---
+import type { Lang } from '../i18n/translations.ts';
+import { SUPPORTED_LANGS } from '../i18n/translations.ts';
+
+interface Props {
+  title: string;
+  description?: string;
+  themeColor?: string;
+  lang?: Lang;
+  ogImage?: string;
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description = 'Documentation officielle de Moddy — le bot Discord conçu pour votre communauté.',
+  themeColor = '#5B7BFA',
+  lang = 'fr',
+  ogImage,
+  noIndex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang={lang} data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content={themeColor} id="meta-theme-color" />
+
+  <title>{title} — Moddy Docs</title>
+  <meta name="description" content={description} />
+
+  {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={`${title} — Moddy Docs`} />
+  <meta property="og:description" content={description} />
+  {ogImage && <meta property="og:image" content={ogImage} />}
+
+  <!-- Alternate languages -->
+  {SUPPORTED_LANGS.map(l => (
+    <link rel="alternate" hreflang={l} href={canonicalURL} />
+  ))}
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+  <!-- Material Web — bundled by Astro/Vite at build time -->
+  <script>
+    import '@material/web/button/filled-button.js';
+    import '@material/web/button/outlined-button.js';
+    import '@material/web/button/text-button.js';
+    import '@material/web/button/filled-tonal-button.js';
+    import '@material/web/button/elevated-button.js';
+    import '@material/web/iconbutton/icon-button.js';
+    import '@material/web/iconbutton/filled-icon-button.js';
+    import '@material/web/iconbutton/filled-tonal-icon-button.js';
+    import '@material/web/iconbutton/outlined-icon-button.js';
+    import '@material/web/icon/icon.js';
+    import '@material/web/fab/fab.js';
+    import '@material/web/chips/chip-set.js';
+    import '@material/web/chips/assist-chip.js';
+    import '@material/web/chips/filter-chip.js';
+    import '@material/web/textfield/outlined-text-field.js';
+    import '@material/web/select/filled-select.js';
+    import '@material/web/select/select-option.js';
+    import '@material/web/tabs/tabs.js';
+    import '@material/web/tabs/primary-tab.js';
+    import '@material/web/list/list.js';
+    import '@material/web/list/list-item.js';
+    import '@material/web/divider/divider.js';
+    import '@material/web/dialog/dialog.js';
+    import '@material/web/progress/linear-progress.js';
+    import '@material/web/progress/circular-progress.js';
+    import '@material/web/menu/menu.js';
+    import '@material/web/menu/menu-item.js';
+    import '@material/web/ripple/ripple.js';
+  </script>
+
+  <style>
+    /* ── MD3 System Tokens ─────────────────────────────────────── */
+    :root {
+      --md-sys-typescale-display-large-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-display-medium-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-display-small-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-headline-large-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-headline-medium-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-headline-small-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-title-large-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-title-medium-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-title-small-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-body-large-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-body-medium-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-body-small-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-label-large-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-label-medium-font: 'Google Sans', sans-serif;
+      --md-sys-typescale-label-small-font: 'Google Sans', sans-serif;
+      --md-icon-font: 'Material Symbols Outlined';
+      --md-sys-shape-corner-full: 9999px;
+      --md-sys-shape-corner-extra-large: 28px;
+      --md-sys-shape-corner-large: 16px;
+      --md-sys-shape-corner-medium: 12px;
+      --md-sys-shape-corner-small: 8px;
+      --md-sys-shape-corner-extra-small: 4px;
+      --md-sys-shape-corner-none: 0;
+
+      /* Light theme — Moddy blue */
+      --md-sys-color-primary: #4A5FD5;
+      --md-sys-color-on-primary: #ffffff;
+      --md-sys-color-primary-container: #DDE1FF;
+      --md-sys-color-on-primary-container: #00105C;
+      --md-sys-color-secondary: #5A5D72;
+      --md-sys-color-on-secondary: #ffffff;
+      --md-sys-color-secondary-container: #DFE1F9;
+      --md-sys-color-on-secondary-container: #161B2C;
+      --md-sys-color-surface: #FBF8FF;
+      --md-sys-color-surface-container: #EDEAF4;
+      --md-sys-color-surface-container-high: #E7E4EE;
+      --md-sys-color-surface-container-highest: #E2DFE9;
+      --md-sys-color-surface-container-low: #F3F0FA;
+      --md-sys-color-on-surface: #1B1B21;
+      --md-sys-color-on-surface-variant: #45464F;
+      --md-sys-color-outline: #767680;
+      --md-sys-color-outline-variant: #C6C5D0;
+      --md-sys-color-background: #FBF8FF;
+      --md-sys-color-on-background: #1B1B21;
+    }
+
+    [data-theme="dark"] {
+      --md-sys-color-primary: #BAC3FF;
+      --md-sys-color-on-primary: #1D2578;
+      --md-sys-color-primary-container: #353D8F;
+      --md-sys-color-on-primary-container: #DDE1FF;
+      --md-sys-color-secondary: #C3C5DD;
+      --md-sys-color-on-secondary: #2B2F42;
+      --md-sys-color-secondary-container: #424559;
+      --md-sys-color-on-secondary-container: #DFE1F9;
+      --md-sys-color-surface: #131318;
+      --md-sys-color-surface-container: #1F1F25;
+      --md-sys-color-surface-container-high: #29292F;
+      --md-sys-color-surface-container-highest: #34343A;
+      --md-sys-color-surface-container-low: #191920;
+      --md-sys-color-on-surface: #E4E1E9;
+      --md-sys-color-on-surface-variant: #C7C5D0;
+      --md-sys-color-outline: #90909A;
+      --md-sys-color-outline-variant: #45464F;
+      --md-sys-color-background: #131318;
+      --md-sys-color-on-background: #E4E1E9;
+    }
+
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      font-family: 'Google Sans', 'Roboto', system-ui, sans-serif;
+      background: var(--md-sys-color-background);
+      color: var(--md-sys-color-on-background);
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: var(--md-sys-color-primary);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Scrollbar ──────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: var(--md-sys-color-outline-variant);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <slot name="nav" />
+
+  <!-- 64px spacer for fixed nav -->
+  <span class="nav-spacer"></span>
+
+  <!-- Main content + footer -->
+  <div class="vISiAi">
+    <slot />
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-links">
+        <md-filled-icon-button href="https://discord.gg/moddy" target="_blank" aria-label="Discord">
+          <md-icon>forum</md-icon>
+        </md-filled-icon-button>
+        <md-filled-icon-button href="https://moddy.app" target="_blank" aria-label="moddy.app">
+          <md-icon>public</md-icon>
+        </md-filled-icon-button>
+      </div>
+      <div class="footer-brand">
+        <a href="/" class="footer-logo-link">
+          <svg width="22" height="22" viewBox="0 0 14 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M7 1C3.69 1 1 3.69 1 7s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10.5c-2.49 0-4.5-2.01-4.5-4.5S4.51 2.5 7 2.5 11.5 4.51 11.5 7 9.49 11.5 7 11.5z"/>
+          </svg>
+          <span>Moddy Docs</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <style>
+    .nav-spacer {
+      height: 64px;
+      display: block;
+    }
+
+    /* ── Main content column ──────────────────────────────────── */
+    .vISiAi {
+      flex-direction: column;
+      align-items: center;
+      gap: 1em;
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      position: relative;
+      overflow-x: hidden;
+      flex: 1;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    .site-footer {
+      background-color: var(--md-sys-color-surface-container);
+      --safe-area-max-inset-bottom: env(safe-max-area-inset-bottom, 0px);
+      height: 360px;
+      padding: 3em 3em calc(1em + env(safe-area-inset-bottom, 1em) - var(--safe-area-max-inset-bottom));
+      box-sizing: border-box;
+      border-radius: 24px 24px 0 0;
+      flex-direction: column;
+      gap: 1em;
+      width: 100%;
+      max-width: 1300px;
+      margin: auto;
+      display: flex;
+    }
+
+    .footer-links {
+      gap: 10px;
+      display: flex;
+    }
+
+    .footer-brand {
+      margin-top: auto;
+    }
+
+    .footer-logo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--md-sys-color-on-surface-variant);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 500;
+    }
+    .footer-logo-link:hover { text-decoration: none; color: var(--md-sys-color-on-surface); }
+
+    @media (max-width: 1200px) {
+      .site-footer {
+        padding: 2em 2em calc(1em + env(safe-area-inset-bottom, 1em) - var(--safe-area-max-inset-bottom));
+      }
+    }
+    @media (max-width: 600px) {
+      .site-footer { height: auto; min-height: 200px; }
+    }
+  </style>
+
+  <script>
+    // Theme persistence
+    (function () {
+      const stored = localStorage.getItem('moddy-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = stored || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+      // Update theme toggle icon
+      const icon = document.querySelector('#theme-toggle md-icon') as HTMLElement;
+      if (icon) icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+    })();
+
+    // Language persistence
+    (function () {
+      const stored = localStorage.getItem('moddy-lang');
+      if (stored) {
+        document.documentElement.lang = stored;
+        document.querySelectorAll('[data-lang]').forEach(el => {
+          (el as HTMLElement).style.display = (el as HTMLElement).dataset.lang === stored ? '' : 'none';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

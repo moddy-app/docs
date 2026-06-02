@@ -1,0 +1,16 @@
+{
+  "id": "getting-started",
+  "title": {
+    "fr": "Débuter avec Moddy",
+    "en": "Getting Started with Moddy"
+  },
+  "summary": {
+    "fr": "Guide complet pour inviter Moddy sur votre serveur Discord et effectuer la configuration initiale en quelques minutes.",
+    "en": "Complete guide to invite Moddy to your Discord server and complete the initial setup in just a few minutes."
+  },
+  "authors": ["DISCORD"],
+  "createdAt": "2026-06-01",
+  "labels": ["guide"],
+  "banner": null,
+  "referencing": 1
+}

@@ -1,0 +1,46 @@
+---
+/**
+ * Catch-all redirect: /{id} → /articles/{id}, /authors/{id}, or /collections/{id}
+ * Handles docs.moddy.app/{anything} → proper canonical URL
+ */
+import { getAllArticles, getAllAuthors, getAllLabels } from '../utils/content.ts';
+
+export async function getStaticPaths() {
+  const [articles, authors, labels] = await Promise.all([
+    getAllArticles(),
+    getAllAuthors(),
+    getAllLabels(),
+  ]);
+
+  const paths: Array<{ params: { slug: string }; props: { destination: string } }> = [];
+
+  for (const article of articles) {
+    paths.push({
+      params: { slug: article.id },
+      props: { destination: `/articles/${article.id}` },
+    });
+  }
+  for (const author of authors) {
+    // Only add if not already taken by an article
+    if (!articles.find(a => a.id === author.id)) {
+      paths.push({
+        params: { slug: author.id },
+        props: { destination: `/authors/${author.id}` },
+      });
+    }
+  }
+  for (const label of labels) {
+    if (!articles.find(a => a.id === label.id) && !authors.find(a => a.id === label.id)) {
+      paths.push({
+        params: { slug: label.id },
+        props: { destination: `/collections/${label.id}` },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { destination } = Astro.props;
+return Astro.redirect(destination, 301);
+---

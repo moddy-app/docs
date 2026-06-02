@@ -1,0 +1,40 @@
+---
+import type { LabelMeta } from '../utils/content.ts';
+
+interface Props {
+  label: LabelMeta;
+  href?: boolean;
+}
+
+const { label, href = true } = Astro.props;
+---
+
+{href ? (
+  <a class="v2EOKK" href={`/collections/${label.id}`}
+    style={`background-color: color-mix(in srgb, ${label.color} 15%, var(--md-sys-color-surface-container-highest)); color: ${label.color}`}>
+    <md-ripple></md-ripple>
+    {label.name}
+  </a>
+) : (
+  <span class="v2EOKK"
+    style={`background-color: color-mix(in srgb, ${label.color} 15%, var(--md-sys-color-surface-container-highest)); color: ${label.color}`}>
+    {label.name}
+  </span>
+)}
+
+<style>
+  .v2EOKK {
+    width: fit-content;
+    font-size: .875rem;
+    font-weight: 500;
+    border-radius: 8px;
+    user-select: none;
+    padding: 5px 11px;
+    line-height: 1.25rem;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  a.v2EOKK:hover { text-decoration: none; }
+</style>

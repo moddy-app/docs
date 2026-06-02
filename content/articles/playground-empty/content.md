@@ -1,1 +1,0 @@
-This article is configured to have the bare minimum of what's required for it to render properly.
