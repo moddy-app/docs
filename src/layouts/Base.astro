@@ -120,26 +120,29 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       /* Content width token shared across pages and footer */
       --page-max-width: min(1200px, calc(100vw - 3em));
 
-      /* Light theme — Moddy blue */
-      --md-sys-color-primary: #4A5FD5;
+      /* Light theme — Moddy vivid blue on light gray */
+      --md-sys-color-primary: #0046F8;
       --md-sys-color-on-primary: #ffffff;
-      --md-sys-color-primary-container: #DDE1FF;
-      --md-sys-color-on-primary-container: #00105C;
-      --md-sys-color-secondary: #5A5D72;
+      --md-sys-color-primary-container: #D6E4FF;
+      --md-sys-color-on-primary-container: #001870;
+      --md-sys-color-secondary: #555E7A;
       --md-sys-color-on-secondary: #ffffff;
-      --md-sys-color-secondary-container: #DFE1F9;
-      --md-sys-color-on-secondary-container: #161B2C;
-      --md-sys-color-surface: #FBF8FF;
-      --md-sys-color-surface-container: #EDEAF4;
-      --md-sys-color-surface-container-high: #E7E4EE;
-      --md-sys-color-surface-container-highest: #E2DFE9;
-      --md-sys-color-surface-container-low: #F3F0FA;
-      --md-sys-color-on-surface: #1B1B21;
-      --md-sys-color-on-surface-variant: #45464F;
-      --md-sys-color-outline: #767680;
-      --md-sys-color-outline-variant: #C6C5D0;
-      --md-sys-color-background: #FBF8FF;
-      --md-sys-color-on-background: #1B1B21;
+      --md-sys-color-secondary-container: #DAE2FF;
+      --md-sys-color-on-secondary-container: #0F1B3C;
+      /* surface = white (cards, panels) */
+      --md-sys-color-surface: #FFFFFF;
+      /* surface-container = slightly off-white for nav/footer/chips */
+      --md-sys-color-surface-container: #EAEBF0;
+      --md-sys-color-surface-container-high: #E0E1E8;
+      --md-sys-color-surface-container-highest: #D6D7DF;
+      --md-sys-color-surface-container-low: #F0F1F6;
+      --md-sys-color-on-surface: #191A22;
+      --md-sys-color-on-surface-variant: #43454E;
+      --md-sys-color-outline: #73747E;
+      --md-sys-color-outline-variant: #C3C4CE;
+      /* background = light gray page background */
+      --md-sys-color-background: #F2F2F7;
+      --md-sys-color-on-background: #191A22;
     }
 
     [data-theme="dark"] {
@@ -253,8 +256,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     /* ── Footer ───────────────────────────────────────────────── */
     .site-footer {
-      background-color: var(--md-sys-color-surface-container);
-      border-radius: 24px 24px 0 0;
+      background-color: var(--md-sys-color-surface);
+      border-top: 1px solid var(--md-sys-color-outline-variant);
       width: 100%;
       margin-top: 5em;
       padding: 2em 0;
@@ -263,7 +266,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     .footer-inner {
       max-width: var(--page-max-width);
       margin: 0 auto;
-      padding: 0 1.5em;
+      padding: 0 2em;
       display: flex;
       align-items: center;
       justify-content: space-between;

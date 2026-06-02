@@ -11,25 +11,24 @@ const allLabels = await getAllLabels();
 const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
 ---
 
-<Base title="Accueil" lang="fr" themeColor="#4A5FD5">
+<Base title="Accueil" lang="fr" themeColor="#0046F8">
   <Nav slot="nav" slug="home" />
 
   <div class="page-wrapper">
 
-    <!-- Hero banner -->
-    <div class="hero-section">
-      <div class="hero-card">
-        <div class="hero-content">
-          <svg class="hero-logo" viewBox="0 0 190 190" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M142.39 0H94.9335L47.4565 47.4564H0V94.9129H94.9335L142.39 47.4564V0Z" fill="white"/>
-            <path d="M94.9335 94.9129L47.4568 142.39V189.846H94.9339L142.39 142.39H189.847V94.9128L94.9335 94.9129Z" fill="white"/>
-          </svg>
-          <div class="hero-text">
-            <h1>Moddy Docs</h1>
-            <p>Documentation officielle de Moddy, le bot Discord conçu pour votre communauté. Retrouvez ici toutes les informations pour bien démarrer et tirer le meilleur parti de Moddy.</p>
-          </div>
-        </div>
+    <!-- Editorial intro -->
+    <div class="intro-section">
+      <div class="intro-logo" aria-hidden="true">
+        <svg width="48" height="48" viewBox="0 0 190 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M142.39 0H94.9335L47.4565 47.4564H0V94.9129H94.9335L142.39 47.4564V0Z" fill="#0046F8"/>
+          <path d="M94.9335 94.9129L47.4568 142.39V189.846H94.9339L142.39 142.39H189.847V94.9128L94.9335 94.9129Z" fill="#0046F8"/>
+        </svg>
       </div>
+      <h1 class="intro-title">Moddy Docs</h1>
+      <p class="intro-desc">
+        Documentation officielle de Moddy, le bot Discord conçu pour votre communauté.
+        Retrouvez ici toutes les informations pour bien démarrer et tirer le meilleur parti de Moddy.
+      </p>
     </div>
 
     <!-- Recent articles -->
@@ -60,116 +59,67 @@ const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
         </div>
       )}
     </div>
+
   </div>
 </Base>
 
 <style>
   .page-wrapper {
-    --content-w: var(--page-max-width);
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: 4em;
-    padding: 2em 0 0;
+    gap: 3em;
+    padding: 3em 0 0;
   }
 
-  /* ── Hero ────────────────────────────────────────────────── */
-  .hero-section {
+  /* ── Editorial intro ─────────────────────────────────────── */
+  .intro-section {
     width: 100%;
-    max-width: var(--content-w);
-    padding: 0 1.5em;
+    max-width: var(--page-max-width);
+    padding: 0 2em;
   }
 
-  .hero-card {
-    width: 100%;
-    min-height: 280px;
-    background: linear-gradient(135deg, var(--md-sys-color-primary) 0%, color-mix(in srgb, var(--md-sys-color-primary) 70%, #0046F8) 100%);
-    border-radius: 32px;
-    display: flex;
-    align-items: flex-end;
-    padding: 3em;
-    position: relative;
-    overflow: hidden;
+  .intro-logo {
+    margin-bottom: 1.25em;
   }
 
-  .hero-card::before {
-    content: '';
-    position: absolute;
-    top: -40px;
-    right: -40px;
-    width: 300px;
-    height: 300px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 50%;
-  }
-
-  .hero-card::after {
-    content: '';
-    position: absolute;
-    bottom: -60px;
-    right: 120px;
-    width: 200px;
-    height: 200px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 50%;
-  }
-
-  .hero-content {
-    display: flex;
-    align-items: flex-end;
-    gap: 2em;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-logo {
-    width: 64px;
-    height: 64px;
-    flex-shrink: 0;
-    opacity: 0.9;
-  }
-
-  .hero-text h1 {
-    font-size: clamp(2rem, 4vw, 2.75rem);
+  .intro-title {
+    font-size: 2.75rem;
     font-weight: 800;
-    color: #ffffff;
+    color: var(--md-sys-color-on-surface);
     letter-spacing: -0.03em;
     line-height: 1.1;
-    margin-bottom: 0.4em;
+    margin-bottom: 0.6em;
   }
 
-  .hero-text p {
-    font-size: 1rem;
-    color: rgba(255,255,255,0.8);
-    line-height: 1.65;
-    max-width: 560px;
-  }
-
-  @media (max-width: 600px) {
-    .hero-card { padding: 2em; min-height: 220px; }
-    .hero-content { flex-direction: column; align-items: flex-start; gap: 1em; }
-    .hero-logo { width: 48px; height: 48px; }
+  .intro-desc {
+    font-size: 1.1rem;
+    color: var(--md-sys-color-on-surface-variant);
+    line-height: 1.7;
+    max-width: 600px;
   }
 
   /* ── Content section ─────────────────────────────────────── */
   .content-section {
     width: 100%;
-    max-width: var(--content-w);
-    padding: 0 1.5em;
+    max-width: var(--page-max-width);
+    padding: 0 2em;
   }
 
   /* ── Section header ──────────────────────────────────────── */
   .section-header {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 1.5em;
   }
 
+  /* icon same color as title */
   .section-header md-icon {
-    color: var(--md-sys-color-primary);
-    font-size: 22px;
+    color: var(--md-sys-color-on-surface);
+    font-size: 1.4rem;
+    line-height: 1;
   }
 
   .section-header h2 {
@@ -177,13 +127,14 @@ const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
     font-weight: 700;
     color: var(--md-sys-color-on-surface);
     letter-spacing: -0.01em;
+    line-height: 1;
   }
 
   /* ── Articles grid ───────────────────────────────────────── */
   .articles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
-    gap: 1.25em;
+    grid-template-columns: repeat(auto-fill, minmax(min(410px, 100%), 1fr));
+    gap: 20px;
   }
 
   /* ── Empty state ─────────────────────────────────────────── */
@@ -196,6 +147,6 @@ const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
     min-height: 240px;
     color: var(--md-sys-color-on-surface-variant);
     text-align: center;
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 </style>

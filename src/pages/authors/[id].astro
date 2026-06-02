@@ -21,7 +21,7 @@ if (needsDiscord && author.discordId) discord = await fetchDiscordUser(author.di
 const avatarUrl = author.avatarUrl === 'DISCORD' ? (discord?.avatar_url ?? null) : author.avatarUrl;
 const avatarDecoration = author.avatarDecorationUrl === 'DISCORD' ? (discord?.avatar_decoration_data?.asset_url ?? null) : author.avatarDecorationUrl;
 const bannerColor = author.bannerColor === 'DISCORD' ? accentColorToHex(discord?.accent_color ?? null) : author.bannerColor;
-const themeColor = bannerColor ?? '#5B7BFA';
+const themeColor = bannerColor ?? '#0046F8';
 
 const allArticles = await getArticlesByAuthor(id!);
 const publicArticles = allArticles.filter(a => a.referencing !== 3);
@@ -38,50 +38,53 @@ const roleFr = author.role?.['fr'] ?? '';
 
   <div class="page-wrapper">
 
-    <!-- Author header card -->
     <div class="content-col">
-      <div class="author-header">
-        <!-- Banner -->
-        <div class="author-banner" style={`background: linear-gradient(135deg, color-mix(in srgb, ${themeColor} 40%, var(--md-sys-color-surface-container)) 0%, color-mix(in srgb, ${themeColor} 20%, var(--md-sys-color-surface-container)) 100%)`}>
-          <h1 class="author-username">{author.username}</h1>
-        </div>
 
-        <!-- Avatar — positioned overlapping the banner bottom -->
+      <!-- Profile card -->
+      <div class="profile-card">
+
+        <!-- Banner -->
+        <div
+          class="profile-banner"
+          style={`background: linear-gradient(140deg, color-mix(in srgb, ${themeColor} 80%, #000) 0%, ${themeColor} 60%, color-mix(in srgb, ${themeColor} 60%, #fff) 100%)`}
+        ></div>
+
+        <!-- Avatar overlapping banner bottom -->
         <div class="avatar-outer">
-          <!-- Circular clip for avatar image -->
           <div class="avatar-circle">
             {avatarUrl
               ? <img draggable="false" src={avatarUrl} alt={author.username} />
               : <span class="avatar-fallback">{author.username.charAt(0).toUpperCase()}</span>
             }
           </div>
-          <!-- Decoration overlaps outside the circle — NOT clipped -->
           {avatarDecoration && (
             <img class="avatar-deco" src={avatarDecoration} alt="" aria-hidden="true" />
           )}
         </div>
-      </div>
 
-      <!-- Action links (right of avatar area) -->
-      <div class="author-actions">
-        {author.links?.map(link => (
-          <md-filled-tonal-icon-button href={link.url} target="_blank" aria-label={link.name}>
-            <md-icon>{link.icon ?? 'link'}</md-icon>
-          </md-filled-tonal-icon-button>
-        ))}
-      </div>
-
-      <!-- Bio + role -->
-      {(roleFr || bioFr) && (
-        <div class="author-bio-section">
-          {roleFr && <p class="author-role">{roleFr}</p>}
-          {bioFr && <p class="author-bio">{bioFr}</p>}
+        <!-- Info below banner -->
+        <div class="profile-info">
+          <div class="profile-name-row">
+            <div class="profile-text">
+              <h1>{author.username}</h1>
+              {roleFr && <p class="profile-role">{roleFr}</p>}
+            </div>
+            <div class="profile-links">
+              {author.links?.map(link => (
+                <md-filled-tonal-icon-button href={link.url} target="_blank" aria-label={link.name}>
+                  <md-icon>{link.icon ?? 'link'}</md-icon>
+                </md-filled-tonal-icon-button>
+              ))}
+            </div>
+          </div>
+          {bioFr && <p class="profile-bio">{bioFr}</p>}
         </div>
-      )}
+
+      </div>
     </div>
 
-    <!-- Articles grid -->
-    <div class="content-col articles-section">
+    <!-- Articles -->
+    <div class="content-col">
       <div class="section-header">
         <md-icon aria-hidden="true">article</md-icon>
         <h2>Articles ({publicArticles.length})</h2>
@@ -104,67 +107,57 @@ const roleFr = author.role?.['fr'] ?? '';
         </div>
       )}
     </div>
+
   </div>
 </Base>
 
 <style>
   .page-wrapper {
-    --content-w: var(--page-max-width);
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: 4em;
-    padding: 2em 0 0;
+    gap: 3em;
+    padding: 3em 0 0;
   }
 
   .content-col {
-    max-width: var(--content-w);
+    max-width: var(--page-max-width);
     width: 100%;
-    padding: 0 1.5em;
+    padding: 0 2em;
   }
 
-  /* ── Author header ───────────────────────────────────────── */
-  .author-header {
+  /* ══ Profile card ══════════════════════════════════════════ */
+  .profile-card {
+    background: var(--md-sys-color-surface);
+    border-radius: 24px;
+    overflow: visible;
+    box-shadow: 0 1px 4px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.04);
     position: relative;
-    margin-bottom: calc(1.5em + 80px);
   }
 
-  .author-banner {
-    border-radius: 32px;
-    width: 100%;
-    height: 240px;
-    display: flex;
-    align-items: flex-end;
-    padding: 1.5em 1.5em 1.5em calc(3em + 160px);
+  /* ── Banner ──────────────────────────────────────────────── */
+  .profile-banner {
+    height: 180px;
+    border-radius: 24px 24px 0 0;
   }
 
-  .author-username {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--md-sys-color-on-surface);
-    word-break: break-word;
-    line-height: 1.1;
-  }
-
-  /* Avatar outer — NO overflow:hidden so decoration bleeds out */
+  /* ── Avatar ──────────────────────────────────────────────── */
   .avatar-outer {
     position: absolute;
-    bottom: -80px;
-    left: 2.5em;
-    width: 160px;
-    height: 160px;
+    top: calc(180px - 50px); /* banner height - half avatar */
+    left: 28px;
+    width: 100px;
+    height: 100px;
   }
 
-  /* The visual circle for background + avatar clip */
   .avatar-circle {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 6px solid var(--md-sys-color-background);
+    border: 5px solid var(--md-sys-color-background);
     overflow: hidden;
-    background: var(--md-sys-color-surface-container-high);
+    background: var(--md-sys-color-surface-container);
     position: relative;
     z-index: 1;
   }
@@ -182,70 +175,87 @@ const roleFr = author.role?.['fr'] ?? '';
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     font-weight: 800;
     background: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
   }
 
-  /* Decoration — positioned relative to .avatar-outer (no overflow:hidden) */
+  /* Decoration sits OUTSIDE avatar-circle (no overflow clip) */
   .avatar-deco {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 125%;
-    height: 125%;
+    width: 128%;
+    height: 128%;
     pointer-events: none;
     z-index: 2;
   }
 
-  /* ── Action links ────────────────────────────────────────── */
-  .author-actions {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    padding-left: calc(2.5em + 160px + 1em);
-    margin-top: calc(-80px + 1em);
-    margin-bottom: calc(80px - 1em);
-  }
-
-  /* ── Bio section ─────────────────────────────────────────── */
-  .author-bio-section {
+  /* ── Info section below banner ───────────────────────────── */
+  .profile-info {
+    /* top padding = avatar overlap below banner (50px) + gap */
+    padding: calc(50px + 16px) 28px 28px calc(28px + 100px + 20px);
+    border-radius: 0 0 24px 24px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-top: 1.25em;
+    gap: 12px;
   }
 
-  .author-role {
+  .profile-name-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .profile-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .profile-text h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--md-sys-color-on-surface);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  .profile-role {
     font-size: 1rem;
     font-weight: 600;
     color: var(--md-sys-color-primary);
   }
 
-  .author-bio {
-    font-size: .975rem;
+  .profile-links {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .profile-bio {
+    font-size: 1rem;
     color: var(--md-sys-color-on-surface-variant);
     line-height: 1.7;
-    max-width: 600px;
+    max-width: 580px;
   }
 
-  /* ── Articles section ────────────────────────────────────── */
-  .articles-section {
-    padding-top: 0;
-  }
-
+  /* ══ Articles ══════════════════════════════════════════════ */
   .section-header {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 1.5em;
   }
 
   .section-header md-icon {
-    color: var(--md-sys-color-primary);
-    font-size: 22px;
+    color: var(--md-sys-color-on-surface);
+    font-size: 1.4rem;
+    line-height: 1;
   }
 
   .section-header h2 {
@@ -253,15 +263,15 @@ const roleFr = author.role?.['fr'] ?? '';
     font-weight: 700;
     color: var(--md-sys-color-on-surface);
     letter-spacing: -0.01em;
+    line-height: 1;
   }
 
   .articles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
-    gap: 1.25em;
+    grid-template-columns: repeat(auto-fill, minmax(min(410px, 100%), 1fr));
+    gap: 20px;
   }
 
-  /* ── Empty state ─────────────────────────────────────────── */
   .empty-state {
     display: flex;
     flex-direction: column;
@@ -271,26 +281,15 @@ const roleFr = author.role?.['fr'] ?? '';
     min-height: 240px;
     color: var(--md-sys-color-on-surface-variant);
     text-align: center;
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   /* ── Responsive ──────────────────────────────────────────── */
-  @media (max-width: 700px) {
-    .author-banner {
-      padding: 1.5em;
-      align-items: flex-end;
-      justify-content: flex-end;
-      height: 180px;
+  @media (max-width: 640px) {
+    .profile-info {
+      padding: calc(50px + 16px) 20px 20px 20px;
     }
-    .author-username { font-size: 1.75rem; }
-    .avatar-outer {
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: -70px;
-      width: 140px;
-      height: 140px;
-    }
-    .author-header { margin-bottom: calc(1.5em + 70px); }
-    .author-actions { padding-left: 0; justify-content: center; margin-top: calc(-70px + 1em); margin-bottom: calc(70px - 1em); }
+    .avatar-outer { left: 20px; }
+    .profile-text h1 { font-size: 1.5rem; }
   }
 </style>

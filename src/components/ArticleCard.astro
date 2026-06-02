@@ -24,12 +24,13 @@ const bannerSrc = article.banner
 ---
 
 <div class="card">
-  <a href={`/articles/${article.id}`} class="card-banner" tabindex="-1" aria-hidden="true">
-    {bannerSrc
-      ? <img draggable="false" src={bannerSrc} alt="" loading="lazy" />
-      : null
-    }
-  </a>
+  <!-- Banner only shown when an image actually exists -->
+  {bannerSrc && (
+    <a href={`/articles/${article.id}`} class="card-banner" tabindex="-1" aria-hidden="true">
+      <img draggable="false" src={bannerSrc} alt="" loading="lazy" />
+    </a>
+  )}
+
   <div class="card-body">
     <div class="card-meta">
       <span class="card-date">{dateShort}</span>
@@ -44,10 +45,13 @@ const bannerSrc = article.banner
         </a>
       )}
     </div>
+
     <a href={`/articles/${article.id}`} class="card-title-link">
       <h2>{title}</h2>
     </a>
+
     <p class="card-summary">{summary}</p>
+
     <div class="card-footer">
       <md-text-button trailing-icon href={`/articles/${article.id}`}>
         <md-icon slot="icon">arrow_forward</md-icon>
@@ -59,84 +63,78 @@ const bannerSrc = article.banner
 
 <style>
   .card {
-    background-color: var(--md-sys-color-surface-container);
-    border-radius: 24px;
-    flex-direction: column;
+    background: var(--md-sys-color-surface);
+    border-radius: 20px;
     width: 100%;
-    height: 100%;
     display: flex;
+    flex-direction: column;
     overflow: hidden;
-    transition: box-shadow .2s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.04);
+    transition: box-shadow .2s ease, transform .2s ease;
   }
 
   .card:hover {
-    box-shadow: 0 4px 24px color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+    box-shadow: 0 4px 12px rgba(0,0,0,.10), 0 8px 32px rgba(0,0,0,.06);
+    transform: translateY(-2px);
   }
 
+  /* ── Banner — 190 px tall, hidden when no image ──────────── */
   .card-banner {
-    user-select: none;
-    background-color: var(--md-sys-color-surface-container-high);
-    width: 100%;
-    min-height: 200px;
-    position: relative;
-    overflow: hidden;
     display: block;
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    background: var(--md-sys-color-surface-container);
   }
 
   .card-banner img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 50%;
+    object-position: center;
     display: block;
     transition: scale .35s cubic-bezier(.2,.29,.27,1.55);
     scale: 1.01;
-    position: absolute;
-    inset: 0;
   }
 
-  .card-banner::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(transparent 40%, color-mix(in srgb, var(--md-sys-color-surface-container) 55%, transparent) 100%);
-    pointer-events: none;
-  }
+  .card:hover .card-banner img { scale: 1.06; }
 
-  .card:hover .card-banner img { scale: 1.05; }
-
+  /* ── Body — 260 px min, 10 px horizontal padding ─────────── */
   .card-body {
-    flex-direction: column;
-    height: 100%;
-    padding: 1.5em;
     display: flex;
+    flex-direction: column;
+    min-height: 260px;
+    padding: 20px 20px 16px;
     gap: 8px;
   }
 
-  /* ── Meta row (date + badge) ─────────────────────────────── */
+  /* ── Meta row ────────────────────────────────────────────── */
   .card-meta {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
 
   .card-date {
-    font-weight: 600;
     font-size: .8rem;
+    font-weight: 600;
     color: var(--md-sys-color-on-surface-variant);
     letter-spacing: .04em;
+    text-transform: uppercase;
   }
 
-  /* ── Label badge — outlined + full radius ────────────────── */
+  /* ── Label badge ─────────────────────────────────────────── */
   .label-badge {
     font-size: .75rem;
     font-weight: 600;
     border-radius: 9999px;
     border: 1.5px solid currentColor;
-    background-color: color-mix(in srgb, currentColor 10%, transparent);
-    padding: 3px 10px;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+    padding: 3px 11px;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -144,22 +142,22 @@ const bannerSrc = article.banner
     overflow: hidden;
     letter-spacing: .02em;
     white-space: nowrap;
-    transition: background-color .15s ease;
+    transition: background .15s;
   }
   .label-badge:hover {
     text-decoration: none;
-    background-color: color-mix(in srgb, currentColor 18%, transparent);
+    background: color-mix(in srgb, currentColor 18%, transparent);
   }
 
   /* ── Title ───────────────────────────────────────────────── */
   .card-title-link {
     text-decoration: none;
-    color: var(--md-sys-color-on-surface);
+    color: inherit;
   }
   .card-title-link:hover h2 { text-decoration: underline; }
 
   .card-title-link h2 {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
     line-height: 1.35;
     color: var(--md-sys-color-on-surface);
@@ -168,7 +166,7 @@ const bannerSrc = article.banner
 
   /* ── Summary ─────────────────────────────────────────────── */
   .card-summary {
-    font-size: .9rem;
+    font-size: .95rem;
     color: var(--md-sys-color-on-surface-variant);
     line-height: 1.65;
     display: -webkit-box;
@@ -180,6 +178,6 @@ const bannerSrc = article.banner
   /* ── Footer ──────────────────────────────────────────────── */
   .card-footer {
     margin-top: auto;
-    padding-top: .75em;
+    padding-top: .5em;
   }
 </style>
