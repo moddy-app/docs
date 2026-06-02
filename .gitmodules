@@ -1,18 +1,18 @@
 [submodule "webfont"]
 	path = webfont
-	url =  ../webfont
+	url = https://github.com/moddy-app/webfont
 [submodule "pagex"]
 	path = pagex
-	url = ../pagex
+	url = https://github.com/moddy-app/pagex
 [submodule "voidcannon"]
 	path = voidcannon
-	url = ../voidcannon
+	url = https://github.com/moddy-app/voidcannon
 [submodule "webicons"]
 	path = webicons
-	url = ../webicons
+	url = https://github.com/moddy-app/webicons
 [submodule "gm3"]
 	path = gm3
-	url = ../gm3
+	url = https://github.com/moddy-app/gm3
 [submodule "pagex_commons"]
 	path = pagex_commons
-	url = ../pagex_commons
+	url = https://github.com/moddy-app/pagex_commons

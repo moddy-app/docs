@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "installCommand": "git submodule update --init --recursive && npm ci",
+  "buildCommand": "npm run build-prod",
+  "outputDirectory": "dist"
+}
