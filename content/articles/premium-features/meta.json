@@ -1,0 +1,16 @@
+{
+  "id": "premium-features",
+  "title": {
+    "fr": "Fonctionnalités Premium",
+    "en": "Premium Features"
+  },
+  "authors": [],
+  "created_at": "2025-10-01",
+  "abstract": {
+    "fr": "Découvrez toutes les fonctionnalités exclusives de Moddy Premium : IA, limites étendues, tableau de bord avancé et priorité au support.",
+    "en": "Discover all exclusive Moddy Premium features: AI, extended limits, advanced dashboard, and priority support."
+  },
+  "banner": null,
+  "visibility": 1,
+  "labels": ["premium"]
+}

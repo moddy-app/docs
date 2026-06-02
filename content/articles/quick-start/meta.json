@@ -1,0 +1,16 @@
+{
+  "id": "quick-start",
+  "title": {
+    "fr": "Guide de démarrage rapide",
+    "en": "Quick Start Guide"
+  },
+  "authors": [],
+  "created_at": "2025-12-29",
+  "abstract": {
+    "fr": "Démarrez avec Moddy en quelques étapes simples.",
+    "en": "Get started with Moddy in a few simple steps."
+  },
+  "banner": null,
+  "visibility": 1,
+  "labels": ["documentation"]
+}

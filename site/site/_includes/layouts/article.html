@@ -1,0 +1,119 @@
+{% extends "default.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/css/md-layout.css" />
+  <link rel="stylesheet" href="/css/syntax-highlight.css" />
+  <link rel="stylesheet" href="/css/article.css" />
+  <script type="module" src="/js/pages/article-page.js"></script>
+  {% if article.title %}
+    <meta property="og:title" content="{{ article.title.fr }}" />
+    <meta name="description" content="{{ article.abstract.fr }}" />
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <article class="article-page" data-visibility="{{ article.visibility }}">
+
+    {# Banner #}
+    {% if article.banner %}
+      <div
+        class="article-banner article-banner--image"
+        style="background-image: url('{{ article.banner }}')"
+        role="img"
+        aria-label="Banner"
+      ></div>
+    {% else %}
+      {% set firstLabel = article.labels[0] %}
+      {% set labelData = labels | filterLabelById(firstLabel) %}
+      <div
+        class="article-banner article-banner--color"
+        style="--banner-color: {{ labelData.color if labelData else '#ECAA2E' }}"
+      ></div>
+    {% endif %}
+
+    {# Article header #}
+    <div class="article-header">
+
+      {# Labels #}
+      {% if article.labels and article.labels.length > 0 %}
+        <div class="article-labels" aria-label="Labels">
+          {% for labelId in article.labels %}
+            {% set labelData = labels | filterLabelById(labelId) %}
+            {% if labelData %}
+              <a
+                href="/collections/{{ labelId }}/"
+                class="label-chip"
+                style="--label-color: {{ labelData.color }}"
+              >
+                <span class="lang-fr">{{ labelData.name.fr }}</span>
+                <span class="lang-en">{{ labelData.name.en }}</span>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {# Title #}
+      <h1 class="article-title">
+        <span class="lang-fr">{{ article.title.fr }}</span>
+        <span class="lang-en">{{ article.title.en }}</span>
+      </h1>
+
+      {# Abstract #}
+      {% if article.abstract %}
+        <p class="article-abstract">
+          <span class="lang-fr">{{ article.abstract.fr }}</span>
+          <span class="lang-en">{{ article.abstract.en }}</span>
+        </p>
+      {% endif %}
+
+      {# Meta: date + authors #}
+      <div class="article-meta">
+        <time class="article-date" datetime="{{ article.created_at }}">
+          <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
+          {{ article.created_at | formatDate }}
+        </time>
+
+        {% if article.authors and article.authors.length > 0 %}
+          <div class="article-authors">
+            {% for authorId in article.authors %}
+              {% set authorData = authors | filterAuthorById(authorId) %}
+              {% if authorData %}
+                <a href="/authors/{{ authorId }}/" class="author-chip">
+                  {% if authorData.avatar %}
+                    <img
+                      src="{{ authorData.avatar }}"
+                      alt="{{ authorData.username }}"
+                      class="author-avatar"
+                      loading="lazy"
+                    />
+                  {% else %}
+                    <div class="author-avatar-placeholder" aria-hidden="true">
+                      <span class="material-symbols-outlined">person</span>
+                    </div>
+                  {% endif %}
+                  <div class="author-chip-info">
+                    <span class="author-name">{{ authorData.username }}</span>
+                    {% if authorData.post %}
+                      <span class="author-post">
+                        <span class="lang-fr">{{ authorData.post.fr if authorData.post.fr else authorData.post }}</span>
+                        <span class="lang-en">{{ authorData.post.en if authorData.post.en else authorData.post }}</span>
+                      </span>
+                    {% endif %}
+                  </div>
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {# Content (bilingual) #}
+    <div class="article-body">
+      <div class="lang-fr">{{ article.content_fr | renderMarkdown | safe }}</div>
+      <div class="lang-en">{{ article.content_en | renderMarkdown | safe }}</div>
+    </div>
+
+  </article>
+{% endblock %}

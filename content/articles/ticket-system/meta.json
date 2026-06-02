@@ -1,0 +1,16 @@
+{
+  "id": "ticket-system",
+  "title": {
+    "fr": "Système de tickets",
+    "en": "Ticket System"
+  },
+  "authors": [],
+  "created_at": "2025-11-20",
+  "abstract": {
+    "fr": "Mettez en place un système de support performant avec les tickets Moddy : panels personnalisés, catégories et transcripts automatiques.",
+    "en": "Set up a powerful support system with Moddy tickets: custom panels, categories, and automatic transcripts."
+  },
+  "banner": null,
+  "visibility": 1,
+  "labels": ["documentation", "tickets"]
+}

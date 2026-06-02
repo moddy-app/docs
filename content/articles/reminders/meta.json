@@ -1,0 +1,16 @@
+{
+  "id": "reminders",
+  "title": {
+    "fr": "Système de rappels",
+    "en": "Reminder System"
+  },
+  "authors": [],
+  "created_at": "2025-09-10",
+  "abstract": {
+    "fr": "Utilisez les rappels Moddy pour ne plus rien oublier : rappels ponctuels, récurrents et partagés avec votre serveur.",
+    "en": "Use Moddy reminders to never forget anything: one-time, recurring, and server-wide reminders."
+  },
+  "banner": null,
+  "visibility": 2,
+  "labels": ["documentation"]
+}
