@@ -1,0 +1,20 @@
+---
+permalink: /search-index.json
+eleven tyIgnore: false
+---
+[
+  {%- for article in articles -%}
+  {%- if article.visibility < 3 -%}
+  {
+    "id": {{ article.id | dump | safe }},
+    "title_fr": {{ article.title.fr | dump | safe }},
+    "title_en": {{ article.title.en | dump | safe }},
+    "abstract_fr": {{ article.abstract.fr | dump | safe }},
+    "abstract_en": {{ article.abstract.en | dump | safe }},
+    "labels": {{ article.labels | dump | safe }},
+    "url": "/articles/{{ article.id }}/",
+    "date": {{ article.created_at | dump | safe }}
+  }{%- if not loop.last -%},{%- endif -%}
+  {%- endif -%}
+  {%- endfor -%}
+]

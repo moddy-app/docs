@@ -1,0 +1,31 @@
+---
+layout: default.html
+title: Articles
+---
+
+<div class="page-articles">
+  <div class="page-hero">
+    <h1>
+      <span class="lang-fr">Tous les articles</span>
+      <span class="lang-en">All articles</span>
+    </h1>
+    <p>
+      <span class="lang-fr">Découvrez tous les articles de la documentation Moddy.</span>
+      <span class="lang-en">Explore all Moddy documentation articles.</span>
+    </p>
+  </div>
+
+  {% set publicArticles = articles | filterByVisibility(1) %}
+  {% if publicArticles and publicArticles.length > 0 %}
+    <div class="articles-grid">
+      {% for article in publicArticles %}
+        {% include "partials/article-card.html" %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty-state">
+      <span class="lang-fr">Aucun article pour le moment.</span>
+      <span class="lang-en">No articles yet.</span>
+    </p>
+  {% endif %}
+</div>

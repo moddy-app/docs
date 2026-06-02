@@ -1,0 +1,48 @@
+---
+layout: default.html
+title: Collections
+---
+
+<div class="page-collections">
+  <div class="page-hero">
+    <h1>
+      <span class="lang-fr">Collections</span>
+      <span class="lang-en">Collections</span>
+    </h1>
+    <p>
+      <span class="lang-fr">Parcourez les articles par catégorie.</span>
+      <span class="lang-en">Browse articles by category.</span>
+    </p>
+  </div>
+
+  {% if labels and labels.length > 0 %}
+    <div class="collections-grid">
+      {% for label in labels %}
+        {% set labelArticles = articles | filterArticlesByLabel(label.id) %}
+        <a href="/collections/{{ label.id }}/" class="collection-card" style="--label-color: {{ label.color }}">
+          <div class="collection-card-accent" style="background: {{ label.color }}"></div>
+          <div class="collection-card-body">
+            <h2 class="collection-card-title">
+              <span class="lang-fr">{{ label.name.fr }}</span>
+              <span class="lang-en">{{ label.name.en }}</span>
+            </h2>
+            <span class="collection-card-count">
+              {{ labelArticles | length }}
+              <span class="lang-fr">
+                {% if labelArticles | length == 1 %}article{% else %}articles{% endif %}
+              </span>
+              <span class="lang-en">
+                {% if labelArticles | length == 1 %}article{% else %}articles{% endif %}
+              </span>
+            </span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty-state">
+      <span class="lang-fr">Aucune collection pour le moment.</span>
+      <span class="lang-en">No collections yet.</span>
+    </p>
+  {% endif %}
+</div>

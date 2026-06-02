@@ -1,21 +1,79 @@
-{% extends 'default.html' %}
+---
+layout: default.html
+---
+<link rel="stylesheet" href="/css/home-page.css" />
 
-{% block head %}
-  <script type="module" src="/js/pages/home-page.js"></script>
-  <link rel="stylesheet" href="/css/home-page.css">
-{% endblock %}
+<section class="home-hero">
+  <div class="home-hero-content">
+    <img src="/images/favicon.svg" alt="Moddy" class="home-hero-logo" />
+    <h1 class="home-hero-title">
+      <span class="lang-fr">Documentation Moddy</span>
+      <span class="lang-en">Moddy Documentation</span>
+    </h1>
+    <p class="home-hero-subtitle">
+      <span class="lang-fr">Tout ce dont vous avez besoin pour utiliser, configurer et contribuer à Moddy.</span>
+      <span class="lang-en">Everything you need to use, configure and contribute to Moddy.</span>
+    </p>
+    <div class="home-hero-actions">
+      <a href="/articles/quick-start/" class="md-btn md-btn--filled">
+        <span class="material-symbols-outlined" aria-hidden="true">rocket_launch</span>
+        <span class="lang-fr">Démarrer</span>
+        <span class="lang-en">Get started</span>
+      </a>
+      <a href="https://moddy.app/support/" target="_blank" rel="noopener" class="md-btn md-btn--outlined">
+        <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+        <span class="lang-fr">Support</span>
+        <span class="lang-en">Support</span>
+      </a>
+    </div>
+  </div>
+</section>
 
-{% block content %}
+{% set recentArticles = articles | filterByVisibility(1) %}
+{% if recentArticles and recentArticles.length > 0 %}
+  <section class="home-articles">
+    <div class="section-header">
+      <h2>
+        <span class="lang-fr">Derniers articles</span>
+        <span class="lang-en">Latest articles</span>
+      </h2>
+      <a href="/articles/" class="see-all-link">
+        <span class="lang-fr">Voir tout</span>
+        <span class="lang-en">See all</span>
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+      </a>
+    </div>
+    <div class="articles-grid">
+      {% for article in recentArticles | limit(6) %}
+        {% include "partials/article-card.html" %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
 
-<h2>Welcome to the Moddy documentation !</h2>
-<div class="subtitle">
-  <p>
-    Here you'll find everything you need to learn how to use <strong>Moddy</strong>, install it, configure it, and contribute to the open-source project.
-  </p>
-
-  <p>
-    If you have any questions or requests, you can open a ticket on the <a href="https://moddy.app/support/" target="_blank"><strong>support server</strong></a> or contact us by email at <strong><a href="mailto:hello@moddy.app">hello@moddy.app</a></strong>.
-  </p>
-</div>
-
-{% endblock %}
+{% if labels and labels.length > 0 %}
+  <section class="home-collections">
+    <div class="section-header">
+      <h2>
+        <span class="lang-fr">Collections</span>
+        <span class="lang-en">Collections</span>
+      </h2>
+      <a href="/collections/" class="see-all-link">
+        <span class="lang-fr">Voir tout</span>
+        <span class="lang-en">See all</span>
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+      </a>
+    </div>
+    <div class="collections-row">
+      {% for label in labels %}
+        {% set labelArticles = articles | filterArticlesByLabel(label.id) %}
+        <a href="/collections/{{ label.id }}/" class="collection-pill" style="--label-color: {{ label.color }}">
+          <span class="collection-pill-dot" style="background: {{ label.color }}"></span>
+          <span class="lang-fr">{{ label.name.fr }}</span>
+          <span class="lang-en">{{ label.name.en }}</span>
+          <span class="collection-pill-count">{{ labelArticles | length }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
