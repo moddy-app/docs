@@ -4,46 +4,25 @@
   "outputDirectory": "site/_prod",
   "installCommand": "cd site && npm install",
   "redirects": [
-    {
-      "source": "/quick-start",
-      "destination": "/articles/quick-start",
-      "permanent": true
-    },
-    {
-      "source": "/documentation",
-      "destination": "/collections/documentation",
-      "permanent": true
-    },
-    {
-      "source": "/changelog",
-      "destination": "/collections/changelog",
-      "permanent": true
-    },
-    {
-      "source": "/privacy",
-      "destination": "/legal/privacy",
-      "permanent": true
-    },
-    {
-      "source": "/tos",
-      "destination": "/legal/tos",
-      "permanent": true
-    },
-    {
-      "source": "/license",
-      "destination": "/legal/license",
-      "permanent": true
-    }
+    { "source": "/quick-start", "destination": "/articles/quick-start", "permanent": true },
+    { "source": "/v1-changelog", "destination": "/articles/v1-changelog", "permanent": true },
+    { "source": "/moderation-setup", "destination": "/articles/moderation-setup", "permanent": true },
+    { "source": "/ticket-system", "destination": "/articles/ticket-system", "permanent": true },
+    { "source": "/premium-features", "destination": "/articles/premium-features", "permanent": true },
+    { "source": "/reminders", "destination": "/articles/reminders", "permanent": true },
+    { "source": "/documentation", "destination": "/collections/documentation", "permanent": true },
+    { "source": "/changelog", "destination": "/collections/changelog", "permanent": true },
+    { "source": "/moderation", "destination": "/collections/moderation", "permanent": true },
+    { "source": "/tickets", "destination": "/collections/tickets", "permanent": true },
+    { "source": "/premium", "destination": "/collections/premium", "permanent": true },
+    { "source": "/privacy", "destination": "/legal/privacy", "permanent": true },
+    { "source": "/tos", "destination": "/legal/tos", "permanent": true },
+    { "source": "/license", "destination": "/legal/license", "permanent": true }
   ],
   "headers": [
     {
       "source": "/search-index.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=300"
-        }
-      ]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=300" }]
     }
   ]
 }

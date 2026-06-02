@@ -1,0 +1,16 @@
+{
+  "id": "moderation-setup",
+  "title": {
+    "fr": "Configurer la modération automatique",
+    "en": "Setting Up Auto-Moderation"
+  },
+  "authors": [],
+  "created_at": "2025-11-15",
+  "abstract": {
+    "fr": "Apprenez à configurer et personnaliser la modération automatique de Moddy pour protéger efficacement votre serveur Discord.",
+    "en": "Learn how to configure and customize Moddy's auto-moderation to effectively protect your Discord server."
+  },
+  "banner": null,
+  "visibility": 1,
+  "labels": ["documentation", "moderation"]
+}
