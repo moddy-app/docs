@@ -135,7 +135,7 @@ const bannerUrl = meta.banner
   }
 
   .xAs6Ae {
-    --yPh9aE: min(100%, 726px);
+    --yPh9aE: 100%;
   }
 
   .v504Ku {
@@ -202,7 +202,8 @@ const bannerUrl = meta.banner
     text-wrap: balance;
     color: var(--md-sys-color-on-background);
     letter-spacing: -.02em;
-    max-width: var(--yPh9aE, min(100%, 726px));
+    margin-block: .5em 0;
+    margin-inline: auto;
   }
 
   /* ── Date + summary ──────────────────────────────────────── */
@@ -229,7 +230,6 @@ const bannerUrl = meta.banner
     font-size: .95rem;
     color: var(--md-sys-color-on-surface-variant);
     line-height: 1.6;
-    max-width: 600px;
   }
 
   /* ── Authors row ─────────────────────────────────────────── */
@@ -334,7 +334,7 @@ const bannerUrl = meta.banner
     color: var(--md-sys-color-on-surface);
     line-height: 1.625;
     font-size: 1rem;
-    max-width: var(--yPh9aE, min(100%, 726px));
+    word-wrap: break-word;
   }
 
   /* Prose typography */
