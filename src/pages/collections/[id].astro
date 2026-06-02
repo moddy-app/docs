@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
-import { getAllLabels, getLabel, getArticlesByLabel, getAllAuthors } from '../../utils/content.ts';
+import { getAllLabels, getLabel, getArticlesByLabel } from '../../utils/content.ts';
 
 export async function getStaticPaths() {
   const labels = await getAllLabels();
@@ -16,11 +16,7 @@ if (!label) return Astro.redirect('/404');
 const articles = await getArticlesByLabel(id!);
 const publicArticles = articles.filter(a => a.referencing !== 3);
 
-const allAuthors = await getAllAuthors();
-const authorsMap = Object.fromEntries(allAuthors.map(a => [a.id, a]));
-
-const { getAllLabels: getLabels } = await import('../../utils/content.ts');
-const allLabels = await getLabels();
+const allLabels = await getAllLabels();
 const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
 ---
 
@@ -30,182 +26,138 @@ const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
   themeColor={label.color}
   lang="fr"
 >
-  <Nav slot="nav" lang="fr" />
+  <Nav slot="nav" slug={id} />
 
-  <!-- Collection header -->
-  <div class="collection-header" style={`--collection-color: ${label.color}`}>
-    <div class="header-bg"></div>
-    <div class="header-gradient"></div>
-
-    <div class="header-content page-container">
-      <a href="/" class="back-btn">
-        <md-icon>arrow_back</md-icon>
-        <span data-lang="fr">Retour</span>
-        <span data-lang="en" style="display:none">Back</span>
-      </a>
-
-      <div class="collection-identity">
-        <div class="collection-icon-wrap">
-          <md-icon class="collection-icon">label</md-icon>
-        </div>
-        <div>
-          <div class="collection-type">
-            <span data-lang="fr">Collection</span>
-            <span data-lang="en" style="display:none">Collection</span>
+  <div class="xTOiZi">
+    <div class="v504Ku vQDqKq">
+      <!-- Label header — .wHkEay like maquette -->
+      <div class="wHkEay">
+        <div class="xrrrHQ">
+          <!-- Colored icon box — .vCEVuQ.uMRQIO like maquette -->
+          <div class="vCEVuQ" style={`background-color: color-mix(in srgb, ${label.color} 20%, var(--md-sys-color-surface-container)); color: ${label.color}`}>
+            <md-icon aria-hidden="true">label</md-icon>
           </div>
-          <h1 class="collection-name">{label.name}</h1>
+          <div class="x2G3eO">
+            <h1>{label.name}</h1>
+            <span>{publicArticles.length} article{publicArticles.length !== 1 ? 's' : ''}</span>
+          </div>
         </div>
       </div>
 
-      <div class="collection-stats">
-        <span class="stat">
-          <md-icon style="font-size:18px">article</md-icon>
-          <strong>{publicArticles.length}</strong>
-          <span data-lang="fr"> article{publicArticles.length !== 1 ? 's' : ''}</span>
-          <span data-lang="en" style="display:none"> article{publicArticles.length !== 1 ? 's' : ''}</span>
-        </span>
+      <!-- Articles grid — .vFPEhk like maquette -->
+      <div class="vFPEhk">
+        {publicArticles.length > 0 ? (
+          publicArticles.map(article => (
+            <ArticleCard
+              article={article}
+              labels={article.labels.map(id => labelsMap[id]).filter(Boolean)}
+              lang="fr"
+            />
+          ))
+        ) : (
+          <div class="empty-state">
+            <md-icon style="font-size:48px;color:var(--md-sys-color-outline)">inbox</md-icon>
+            <p>Aucun article dans cette collection.</p>
+          </div>
+        )}
       </div>
     </div>
   </div>
-
-  <!-- Articles grid -->
-  <section class="articles-section page-container">
-    <h2 class="section-title">
-      <span data-lang="fr">Articles</span>
-      <span data-lang="en" style="display:none">Articles</span>
-    </h2>
-
-    {publicArticles.length > 0 ? (
-      <div class="articles-grid">
-        {publicArticles.map(article => (
-          <ArticleCard
-            article={article}
-            authors={article.authors.map(id => authorsMap[id]).filter(Boolean)}
-            labels={article.labels.map(id => labelsMap[id]).filter(Boolean)}
-            lang="fr"
-          />
-        ))}
-      </div>
-    ) : (
-      <div class="empty-state">
-        <md-icon style="font-size:48px">inbox</md-icon>
-        <p data-lang="fr">Aucun article dans cette collection.</p>
-        <p data-lang="en" style="display:none">No articles in this collection.</p>
-      </div>
-    )}
-  </section>
 </Base>
 
 <style>
-  .collection-header {
-    position: relative;
-    min-height: 280px;
+  .xTOiZi {
+    --xs2rQG: min(1200px, calc(100vw - 2em));
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
     display: flex;
-    align-items: flex-end;
+    gap: 1em;
+    padding-top: 1em;
+  }
+
+  .v504Ku {
+    max-width: var(--xs2rQG);
+    width: 100%;
     overflow: hidden;
   }
-  .header-bg {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--collection-color) 25%, var(--md-sys-color-background)),
-      var(--md-sys-color-background) 65%
-    );
-  }
-  .header-gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 30%, var(--md-sys-color-background) 100%);
-  }
 
-  .header-content {
-    position: relative;
-    z-index: 1;
-    padding-top: 32px;
-    padding-bottom: 40px;
-    display: flex;
+  /* ── Label header ────────────────────────────────────────── */
+  .vQDqKq {
     flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    gap: 1em;
+    margin-top: 1em;
+    display: flex;
+  }
+
+  .wHkEay {
     width: 100%;
+    margin-bottom: .5em;
   }
 
-  .back-btn {
-    display: inline-flex;
+  .xrrrHQ {
+    background-color: var(--md-sys-color-surface-container);
+    border-radius: 28px;
+    gap: 24px;
+    margin-bottom: 1em;
+    padding: 24px;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 14px 6px 8px;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--md-sys-color-surface) 80%, transparent);
-    backdrop-filter: blur(8px);
-    color: var(--md-sys-color-on-surface);
-    text-decoration: none;
-    font-size: .85rem;
-    font-weight: 600;
-    width: fit-content;
-    border: 1px solid var(--md-sys-color-outline-variant);
-    transition: background .15s;
   }
-  .back-btn:hover { background: var(--md-sys-color-surface-container-high); text-decoration: none; }
 
-  .collection-identity {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  @media (max-width: 600px) {
+    .xrrrHQ { text-align: center; flex-direction: column; align-items: center; }
   }
-  .collection-icon-wrap {
-    width: 64px; height: 64px;
-    border-radius: 18px;
-    background: color-mix(in srgb, var(--collection-color) 20%, var(--md-sys-color-surface));
-    border: 2px solid color-mix(in srgb, var(--collection-color) 40%, transparent);
-    display: flex;
-    align-items: center;
+
+  /* Icon box — squircle shape like maquette */
+  .vCEVuQ {
+    aspect-ratio: 1;
+    width: 128px;
+    height: 128px;
+    border-radius: 28px;
     justify-content: center;
+    align-items: center;
+    display: flex;
     flex-shrink: 0;
+    font-size: 3rem;
   }
-  .collection-icon { color: var(--collection-color); font-size: 30px; }
-  .collection-type {
-    font-size: .78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    color: var(--collection-color);
+
+  .vCEVuQ md-icon {
+    font-size: 2.5em;
+    width: 1em;
+    height: 1em;
   }
-  .collection-name {
-    font-size: 2.2rem;
+
+  .x2G3eO {
+    flex-direction: column;
+    gap: 5px;
+    display: flex;
+  }
+
+  .x2G3eO h1 {
+    font-size: 2rem;
     font-weight: 800;
     letter-spacing: -.02em;
-    color: var(--md-sys-color-on-background);
-  }
-
-  .collection-stats {
-    display: flex;
-    gap: 20px;
-  }
-  .stat {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: .9rem;
-    color: var(--md-sys-color-on-surface-variant);
-  }
-  .stat strong { color: var(--md-sys-color-on-surface); }
-
-  .articles-section {
-    padding-top: 40px;
-    padding-bottom: 40px;
-  }
-  .section-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 24px;
     color: var(--md-sys-color-on-surface);
   }
-  .articles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+
+  .x2G3eO span {
+    font-size: .95rem;
+    color: var(--md-sys-color-on-surface-variant);
   }
+
+  /* ── Articles grid ───────────────────────────────────────── */
+  .vFPEhk {
+    --vczvgq: min(375px, calc(100vw - 2em));
+    grid-template-columns: repeat(auto-fill, minmax(var(--vczvgq), 1fr));
+    justify-items: center;
+    gap: 1em;
+    width: 100%;
+    display: grid;
+  }
+
+  /* ── Empty state ─────────────────────────────────────────── */
   .empty-state {
     display: flex;
     flex-direction: column;
@@ -214,16 +166,7 @@ const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
     gap: 12px;
     min-height: 200px;
     color: var(--md-sys-color-on-surface-variant);
-  }
-
-  .page-container {
-    max-width: var(--page-max-width);
-    margin: 0 auto;
-    padding: 0 var(--page-padding);
-  }
-
-  @media (max-width: 640px) {
-    .collection-name { font-size: 1.6rem; }
-    .articles-grid { grid-template-columns: 1fr; }
+    text-align: center;
+    grid-column: 1 / -1;
   }
 </style>

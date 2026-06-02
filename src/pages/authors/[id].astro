@@ -2,8 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
-import LabelChip from '../../components/LabelChip.astro';
-import { getAllAuthors, getAuthor, getArticlesByAuthor, getLabel } from '../../utils/content.ts';
+import { getAllAuthors, getAuthor, getArticlesByAuthor, getAllLabels } from '../../utils/content.ts';
 import { fetchDiscordUser, accentColorToHex } from '../../utils/discord.ts';
 
 export async function getStaticPaths() {
@@ -15,228 +14,183 @@ const { id } = Astro.params;
 const author = await getAuthor(id!);
 if (!author) return Astro.redirect('/404');
 
-// Discord data resolution
-const needsDiscord =
-  author.avatarUrl === 'DISCORD' ||
-  author.avatarDecorationUrl === 'DISCORD' ||
-  author.bannerColor === 'DISCORD';
+const needsDiscord = author.avatarUrl === 'DISCORD' || author.avatarDecorationUrl === 'DISCORD' || author.bannerColor === 'DISCORD';
 let discord = null;
-if (needsDiscord && author.discordId) {
-  discord = await fetchDiscordUser(author.discordId);
-}
-const avatarUrl = author.avatarUrl === 'DISCORD'
-  ? (discord?.avatar_url ?? null)
-  : author.avatarUrl;
-const avatarDecoration = author.avatarDecorationUrl === 'DISCORD'
-  ? (discord?.avatar_decoration_data?.asset_url ?? null)
-  : author.avatarDecorationUrl;
-const bannerColor = author.bannerColor === 'DISCORD'
-  ? accentColorToHex(discord?.accent_color ?? null)
-  : author.bannerColor;
+if (needsDiscord && author.discordId) discord = await fetchDiscordUser(author.discordId);
+
+const avatarUrl = author.avatarUrl === 'DISCORD' ? (discord?.avatar_url ?? null) : author.avatarUrl;
+const avatarDecoration = author.avatarDecorationUrl === 'DISCORD' ? (discord?.avatar_decoration_data?.asset_url ?? null) : author.avatarDecorationUrl;
+const bannerColor = author.bannerColor === 'DISCORD' ? accentColorToHex(discord?.accent_color ?? null) : author.bannerColor;
 const themeColor = bannerColor ?? '#5B7BFA';
 
-// Articles by this author (public only)
 const allArticles = await getArticlesByAuthor(id!);
 const publicArticles = allArticles.filter(a => a.referencing !== 3);
 
-// Load labels for articles
-const { getAllLabels } = await import('../../utils/content.ts');
 const allLabels = await getAllLabels();
 const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
 
 const bioFr = author.bio?.['fr'] ?? '';
-const bioEn = author.bio?.['en'] ?? bioFr;
 const roleFr = author.role?.['fr'] ?? '';
-const roleEn = author.role?.['en'] ?? roleFr;
-
-const badges = discord?.badges ?? [];
 ---
 
-<Base
-  title={author.username}
-  description={bioFr}
-  themeColor={themeColor}
-  lang="fr"
->
-  <Nav slot="nav" lang="fr" />
+<Base title={author.username} description={bioFr} themeColor={themeColor} lang="fr">
+  <Nav slot="nav" slug={id} />
 
-  <!-- Author header -->
-  <div class="author-header" style={`--banner-color: ${themeColor}`}>
-    <div class="author-header-bg"></div>
-    <div class="header-gradient"></div>
-
-    <div class="header-content page-container">
-      <a href="/" class="back-btn">
-        <md-icon>arrow_back</md-icon>
-        <span data-lang="fr">Retour</span>
-        <span data-lang="en" style="display:none">Back</span>
-      </a>
-
-      <div class="author-profile">
-        <!-- Avatar -->
-        <div class="avatar-container">
-          {avatarUrl
-            ? <img class="author-avatar" src={avatarUrl} alt={author.username} />
-            : <span class="author-avatar author-avatar-fallback">
-                {author.username.charAt(0).toUpperCase()}
-              </span>
-          }
-          {avatarDecoration && (
-            <img class="avatar-decoration" src={avatarDecoration} alt="" aria-hidden="true" />
-          )}
+  <div class="xTOiZi">
+    <div class="v504Ku">
+      <!-- Author header card — .ykKuca like maquette -->
+      <div class="ykKuca">
+        <div class="yCfcFC" style={`background-color: color-mix(in srgb, ${themeColor} 20%, var(--md-sys-color-surface-container))`}>
+          <h1>{author.username}</h1>
         </div>
-
-        <!-- Info -->
-        <div class="author-info">
-          <!-- Discord badges -->
-          {badges.length > 0 && (
-            <div class="author-badges">
-              {badges.slice(0, 4).map(badge => (
-                <span class="badge-pill" title={badge.replace(/_/g, ' ')}>{badge.split('_')[0]}</span>
-              ))}
-            </div>
-          )}
-
-          <h1 class="author-name">{author.username}</h1>
-
-          <div data-lang="fr">
-            {roleFr && <p class="author-role">{roleFr}</p>}
-            {bioFr && <p class="author-bio">{bioFr}</p>}
+        <div class="zMARbA">
+          <div class="yWPGoq">
+            {avatarUrl
+              ? <img draggable="false" src={avatarUrl} alt={author.username} />
+              : <span class="avatar-fallback">{author.username.charAt(0).toUpperCase()}</span>
+            }
+            {avatarDecoration && (
+              <img class="avatar-deco" src={avatarDecoration} alt="" aria-hidden="true" />
+            )}
           </div>
-          <div data-lang="en" style="display:none">
-            {roleEn && <p class="author-role">{roleEn}</p>}
-            {bioEn && <p class="author-bio">{bioEn}</p>}
-          </div>
-
-          <!-- Links -->
-          {author.links && author.links.length > 0 && (
-            <div class="author-links">
-              {author.links.map(link => (
-                <a href={link.url} class="author-link" target="_blank" rel="noopener noreferrer">
-                  <md-icon style="font-size:16px">{link.icon}</md-icon>
-                  {link.name}
-                </a>
-              ))}
-            </div>
-          )}
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Articles section -->
-  <section class="articles-section page-container">
-    <h2 class="section-title">
-      <span data-lang="fr">Articles ({publicArticles.length})</span>
-      <span data-lang="en" style="display:none">Articles ({publicArticles.length})</span>
-    </h2>
-
-    {publicArticles.length > 0 ? (
-      <div class="articles-grid">
-        {publicArticles.map(article => (
-          <ArticleCard
-            article={article}
-            authors={[author]}
-            labels={article.labels.map(id => labelsMap[id]).filter(Boolean)}
-            lang="fr"
-          />
+      <!-- Action links — .w1fZiO -->
+      <div class="w1fZiO">
+        {author.links?.map(link => (
+          <md-filled-tonal-icon-button href={link.url} target="_blank" aria-label={link.name}>
+            <md-icon>{link.icon ?? 'link'}</md-icon>
+          </md-filled-tonal-icon-button>
         ))}
       </div>
-    ) : (
-      <div class="empty-state">
-        <md-icon style="font-size:48px">article</md-icon>
-        <p data-lang="fr">Aucun article publié.</p>
-        <p data-lang="en" style="display:none">No articles published yet.</p>
+
+      <!-- Bio + role -->
+      {(roleFr || bioFr) && (
+        <div class="author-bio-section">
+          {roleFr && <p class="author-role">{roleFr}</p>}
+          {bioFr && <p class="author-bio">{bioFr}</p>}
+        </div>
+      )}
+    </div>
+
+    <!-- Articles grid — .w2Ym6Y -->
+    <div class="v504Ku">
+      <div class="xYSxXU">
+        <md-icon aria-hidden="true">article</md-icon>
+        <h1>Articles ({publicArticles.length})</h1>
       </div>
-    )}
-  </section>
+
+      {publicArticles.length > 0 ? (
+        <div class="w2Ym6Y">
+          {publicArticles.map(article => (
+            <ArticleCard
+              article={article}
+              labels={article.labels.map(id => labelsMap[id]).filter(Boolean)}
+              lang="fr"
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <md-icon style="font-size:48px;color:var(--md-sys-color-outline)">article</md-icon>
+          <p>Aucun article publié.</p>
+        </div>
+      )}
+    </div>
+  </div>
 </Base>
 
 <style>
-  .author-header {
-    position: relative;
-    min-height: 350px;
+  .xTOiZi {
+    --xs2rQG: min(1200px, calc(100vw - 2em));
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
     display: flex;
-    align-items: flex-end;
+    gap: 1em;
+    padding-top: 1em;
+  }
+
+  .v504Ku {
+    max-width: var(--xs2rQG);
+    width: 100%;
     overflow: hidden;
   }
-  .author-header-bg {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--banner-color) 30%, var(--md-sys-color-background)),
-      var(--md-sys-color-background) 70%
-    );
-  }
-  .header-gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 40%, var(--md-sys-color-background) 100%);
-  }
 
-  .header-content {
-    position: relative;
-    z-index: 1;
-    padding-top: 32px;
-    padding-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  /* ── Author header card ──────────────────────────────────── */
+  .ykKuca {
     width: 100%;
-  }
-
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px 6px 8px;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--md-sys-color-surface) 80%, transparent);
-    backdrop-filter: blur(8px);
-    color: var(--md-sys-color-on-surface);
-    text-decoration: none;
-    font-size: .85rem;
-    font-weight: 600;
-    width: fit-content;
-    border: 1px solid var(--md-sys-color-outline-variant);
-    transition: background .15s;
-  }
-  .back-btn:hover { background: var(--md-sys-color-surface-container-high); text-decoration: none; }
-
-  .author-profile {
-    display: flex;
-    align-items: flex-start;
-    gap: 28px;
-    flex-wrap: wrap;
-  }
-
-  /* Avatar */
-  .avatar-container {
+    height: 300px;
+    margin-top: 1em;
+    margin-bottom: calc(1em + 75px);
     position: relative;
-    width: 100px;
-    height: 100px;
-    flex-shrink: 0;
   }
-  .author-avatar {
-    width: 100px; height: 100px;
+
+  .yCfcFC {
+    border-radius: 48px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    color: var(--md-sys-color-on-surface);
+    align-items: flex-end;
+    padding: 1em 1em 1em calc(4.5em + 300px);
+    display: flex;
+  }
+
+  .yCfcFC h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: inherit;
+    word-break: break-word;
+  }
+
+  /* Avatar container — positioned outside the card at bottom-left */
+  .zMARbA {
+    aspect-ratio: 1;
+    background-color: var(--md-sys-color-outline-variant);
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    display: flex;
+    position: absolute;
+    bottom: -75px;
+    left: 3em;
     border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid var(--md-sys-color-background);
-    box-shadow: 0 4px 20px color-mix(in srgb, var(--banner-color, #000) 30%, transparent);
+    overflow: hidden;
   }
-  .author-avatar-fallback {
-    background: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
+
+  .yWPGoq {
+    position: relative;
+    inset: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .yWPGoq img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .avatar-fallback {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+    font-size: 4rem;
     font-weight: 800;
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
     border-radius: 50%;
-    border: 4px solid var(--md-sys-color-background);
   }
-  .avatar-decoration {
+
+  .avatar-deco {
     position: absolute;
     inset: -8px;
     width: calc(100% + 16px);
@@ -244,85 +198,67 @@ const badges = discord?.badges ?? [];
     pointer-events: none;
   }
 
-  .author-info {
+  /* ── Action links ────────────────────────────────────────── */
+  .w1fZiO {
+    box-sizing: border-box;
+    flex-direction: row;
+    gap: 1em;
+    width: 100%;
+    margin-top: -75px;
+    margin-bottom: 75px;
+    padding-left: calc(4.5em + 300px);
+    display: flex;
+  }
+
+  /* ── Bio section ─────────────────────────────────────────── */
+  .author-bio-section {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    flex: 1;
-    min-width: 200px;
-  }
-
-  .author-badges {
-    display: flex;
     gap: 6px;
-    flex-wrap: wrap;
-  }
-  .badge-pill {
-    font-size: .7rem;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 9999px;
-    background: var(--md-sys-color-secondary-container);
-    color: var(--md-sys-color-on-secondary-container);
-    text-transform: uppercase;
-    letter-spacing: .04em;
+    margin-top: 1em;
   }
 
-  .author-name {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -.02em;
-    color: var(--md-sys-color-on-background);
-  }
   .author-role {
     font-size: 1rem;
     font-weight: 600;
-    color: color-mix(in srgb, var(--banner-color) 80%, var(--md-sys-color-on-surface));
+    color: var(--md-sys-color-primary);
   }
+
   .author-bio {
     font-size: .95rem;
     color: var(--md-sys-color-on-surface-variant);
     line-height: 1.6;
-    max-width: 600px;
+    max-width: 640px;
   }
 
-  .author-links {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .author-link {
-    display: flex;
+  /* ── Section header ──────────────────────────────────────── */
+  .xYSxXU {
     align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border-radius: 9999px;
-    background: var(--md-sys-color-surface-container);
-    border: 1px solid var(--md-sys-color-outline-variant);
-    color: var(--md-sys-color-on-surface);
-    font-size: .85rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: background .15s;
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    margin-bottom: 1em;
   }
-  .author-link:hover { background: var(--md-sys-color-surface-container-high); text-decoration: none; }
 
-  /* Articles section */
-  .articles-section {
-    padding-top: 40px;
-    padding-bottom: 40px;
-  }
-  .section-title {
-    font-size: 1.4rem;
+  .xYSxXU h1 {
+    font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 24px;
     color: var(--md-sys-color-on-surface);
   }
-  .articles-grid {
+
+  .xYSxXU md-icon { color: var(--md-sys-color-primary); }
+
+  /* ── Articles grid ───────────────────────────────────────── */
+  .w2Ym6Y {
+    --vczvgq: min(375px, calc(100vw - 2em));
+    grid-template-columns: repeat(auto-fill, minmax(var(--vczvgq), 1fr));
+    justify-items: center;
+    gap: 1em;
+    margin-top: 1em;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
   }
+
+  /* ── Empty state ─────────────────────────────────────────── */
   .empty-state {
     display: flex;
     flex-direction: column;
@@ -334,17 +270,12 @@ const badges = discord?.badges ?? [];
     text-align: center;
   }
 
-  .page-container {
-    max-width: var(--page-max-width);
-    margin: 0 auto;
-    padding: 0 var(--page-padding);
-  }
-
-  @media (max-width: 640px) {
-    .author-name { font-size: 1.5rem; }
-    .author-profile { gap: 16px; }
-    .avatar-container { width: 72px; height: 72px; }
-    .author-avatar { width: 72px; height: 72px; }
-    .articles-grid { grid-template-columns: 1fr; }
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .yCfcFC { padding: 0; align-items: center; justify-content: center; }
+    .yCfcFC h1 { font-size: 2rem; text-align: center; }
+    .zMARbA { right: unset; left: 50%; transform: translate(-50%); }
+    .w1fZiO { justify-content: center; width: 100%; margin: 0; padding-left: 0; margin-top: -75px; margin-bottom: 75px; }
+    .ykKuca { height: 200px; margin-bottom: calc(1em + 150px); }
   }
 </style>

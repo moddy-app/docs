@@ -4,7 +4,7 @@ import Nav from '../components/Nav.astro';
 ---
 
 <Base title="Page introuvable" noIndex={true}>
-  <Nav slot="nav" lang="fr" />
+  <Nav slot="nav" slug="404" />
 
   <div class="not-found page-container">
     <div class="nf-code" aria-hidden="true">404</div>
@@ -56,8 +56,8 @@ import Nav from '../components/Nav.astro';
   }
 
   .page-container {
-    max-width: var(--page-max-width);
+    max-width: min(1200px, calc(100vw - 2em));
     margin: 0 auto;
-    padding: 0 var(--page-padding);
+    padding: 0 1em;
   }
 </style>

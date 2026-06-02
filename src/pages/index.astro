@@ -2,338 +2,135 @@
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import ArticleCard from '../components/ArticleCard.astro';
-import LabelChip from '../components/LabelChip.astro';
-import { getAllArticles, getAllAuthors, getAllLabels, getAuthor, getLabel } from '../utils/content.ts';
+import { getAllArticles, getAllLabels } from '../utils/content.ts';
 
-// Load all content at build time
 const allArticles = await getAllArticles();
-// Filter by referencing level: home shows level 1 only
 const publicArticles = allArticles.filter(a => a.referencing === 1);
-const featuredArticles = publicArticles.slice(0, 9);
 
-const allAuthors = await getAllAuthors();
 const allLabels = await getAllLabels();
-
-// Build lookup maps
-const authorsMap = Object.fromEntries(allAuthors.map(a => [a.id, a]));
 const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
-
-// Build search index for /search-index.json (written separately in a static route)
 ---
 
-<Base
-  title="Accueil"
-  lang="fr"
-  themeColor="#5B7BFA"
->
-  <Nav slot="nav" lang="fr" currentPath="/" />
+<Base title="Accueil" lang="fr" themeColor="#5B7BFA">
+  <Nav slot="nav" slug="home" />
 
-  <!-- Hero section -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-badge">
-        <md-icon style="font-size:16px">auto_awesome</md-icon>
-        Documentation officielle
-      </div>
-
-      <!-- French content -->
-      <div data-lang="fr">
-        <h1 class="hero-title">Documentation <span class="hero-accent">Moddy</span></h1>
-        <p class="hero-subtitle">
-          Tout ce que vous devez savoir sur Moddy, le bot Discord conçu pour votre communauté.
+  <div class="xTOiZi xtspfm">
+    <!-- Editorial intro -->
+    <div class="v504Ku">
+      <div class="wmvtgi">
+        <h1>Moddy Docs</h1>
+        <p>
+          Documentation officielle de Moddy, le bot Discord conçu pour votre communauté.
+          Retrouvez ici toutes les informations pour bien démarrer et tirer le meilleur parti de Moddy.
         </p>
       </div>
-      <!-- English content -->
-      <div data-lang="en" style="display:none">
-        <h1 class="hero-title">Moddy <span class="hero-accent">Documentation</span></h1>
-        <p class="hero-subtitle">
-          Everything you need to know about Moddy, the Discord bot built for your community.
-        </p>
+    </div>
+
+    <!-- Recent articles -->
+    <div class="v504Ku">
+      <div class="xYSxXU">
+        <md-icon aria-hidden="true">history</md-icon>
+        <h1>Articles récents</h1>
+        <md-text-button trailing-icon href="/articles" style="margin-left:auto">
+          <md-icon slot="icon">arrow_forward</md-icon>
+          Voir tout
+        </md-text-button>
       </div>
 
-      <div class="hero-actions">
-        <md-filled-button href="/articles/v1-changelog">
-          <md-icon slot="icon">rocket_launch</md-icon>
-          <span data-lang="fr">Commencer</span>
-          <span data-lang="en" style="display:none">Get started</span>
-        </md-filled-button>
-        <md-outlined-button href="https://discord.gg/moddy" target="_blank">
-          <md-icon slot="icon">discord</md-icon>
-          <span data-lang="fr">Rejoindre Discord</span>
-          <span data-lang="en" style="display:none">Join Discord</span>
-        </md-outlined-button>
-      </div>
-
-      <!-- Labels quick filter -->
-      {allLabels.length > 0 && (
-        <div class="hero-labels">
-          {allLabels.map(label => <LabelChip label={label} />)}
+      {publicArticles.length > 0 ? (
+        <div class="wUTVKK">
+          {publicArticles.slice(0, 9).map(article => (
+            <ArticleCard
+              article={article}
+              labels={article.labels.map(id => labelsMap[id]).filter(Boolean)}
+              lang="fr"
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <md-icon style="font-size:48px;color:var(--md-sys-color-outline)">article</md-icon>
+          <p>Aucun article pour le moment.</p>
         </div>
       )}
     </div>
-
-    <!-- Decorative background grid -->
-    <div class="hero-bg" aria-hidden="true">
-      <div class="hero-bg-grid"></div>
-      <div class="hero-bg-glow"></div>
-    </div>
-  </section>
-
-  <!-- Articles grid -->
-  {featuredArticles.length > 0 ? (
-    <section class="articles-section page-container">
-      <div class="section-header">
-        <h2 class="section-title">
-          <span data-lang="fr">Articles récents</span>
-          <span data-lang="en" style="display:none">Recent articles</span>
-        </h2>
-        <a href="/articles" class="section-link">
-          <span data-lang="fr">Voir tout</span>
-          <span data-lang="en" style="display:none">See all</span>
-          <md-icon style="font-size:16px">arrow_forward</md-icon>
-        </a>
-      </div>
-
-      <div class="articles-grid">
-        {featuredArticles.map((article, i) => (
-          <ArticleCard
-            article={article}
-            authors={article.authors.map(id => authorsMap[id]).filter(Boolean)}
-            labels={article.labels.map(id => labelsMap[id]).filter(Boolean)}
-            lang="fr"
-            featured={i === 0 && featuredArticles.length > 2}
-          />
-        ))}
-      </div>
-    </section>
-  ) : (
-    <section class="page-container empty-state">
-      <md-icon style="font-size:64px;color:var(--md-sys-color-outline)">article</md-icon>
-      <p data-lang="fr">Aucun article pour le moment.</p>
-      <p data-lang="en" style="display:none">No articles yet.</p>
-    </section>
-  )}
-
-  <!-- Collections section -->
-  {allLabels.length > 0 && (
-    <section class="collections-section page-container">
-      <div class="section-header">
-        <h2 class="section-title">
-          <span data-lang="fr">Collections</span>
-          <span data-lang="en" style="display:none">Collections</span>
-        </h2>
-      </div>
-      <div class="collections-grid">
-        {allLabels.map(label => (
-          <a href={`/collections/${label.id}`} class="collection-card">
-            <span class="collection-dot" style={`background:${label.color}`}></span>
-            <span class="collection-name">{label.name}</span>
-            <span class="collection-count">
-              {allArticles.filter(a => a.labels.includes(label.id)).length}
-              <span data-lang="fr"> articles</span>
-              <span data-lang="en" style="display:none"> articles</span>
-            </span>
-            <md-icon class="collection-arrow">arrow_forward</md-icon>
-            <md-ripple></md-ripple>
-          </a>
-        ))}
-      </div>
-    </section>
-  )}
+  </div>
 </Base>
 
 <style>
-  /* ── Hero ─────────────────────────────────────────────────────── */
-  .hero {
-    position: relative;
-    padding: 80px var(--page-padding) 60px;
-    overflow: hidden;
-    min-height: 420px;
-    display: flex;
+  /* ── Content wrapper ─────────────────────────────────────── */
+  .xTOiZi {
+    --xs2rQG: min(1200px, calc(100vw - 2em));
+    flex-direction: column;
     align-items: center;
-  }
-  .hero-inner {
-    position: relative;
-    z-index: 1;
-    max-width: var(--page-max-width);
-    margin: 0 auto;
     width: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 20px;
   }
 
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 14px;
-    border-radius: 9999px;
-    background: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
-    font-size: .8rem;
-    font-weight: 600;
-    width: fit-content;
+  .xtspfm {
+    gap: 1em;
+    padding-top: 1em;
   }
 
-  .hero-title {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    font-weight: 800;
-    line-height: 1.15;
-    color: var(--md-sys-color-on-background);
-    letter-spacing: -.02em;
-    max-width: 700px;
+  .v504Ku {
+    max-width: var(--xs2rQG);
+    width: 100%;
+    overflow: hidden;
   }
-  .hero-accent { color: var(--md-sys-color-primary); }
 
-  .hero-subtitle {
-    font-size: 1.1rem;
+  /* ── Editorial intro ─────────────────────────────────────── */
+  .wmvtgi h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--md-sys-color-on-surface);
+    margin-bottom: .5em;
+  }
+
+  .wmvtgi p {
+    font-size: 1rem;
     color: var(--md-sys-color-on-surface-variant);
     line-height: 1.6;
-    max-width: 600px;
+    max-width: 640px;
   }
 
-  .hero-actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+  /* ── Section header ──────────────────────────────────────── */
+  .xYSxXU {
     align-items: center;
-  }
-
-  .hero-labels {
+    gap: 10px;
+    width: 100%;
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+    margin-bottom: 1em;
   }
 
-  /* Hero background */
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-  .hero-bg-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--md-sys-color-outline-variant) 1px, transparent 1px),
-      linear-gradient(90deg, var(--md-sys-color-outline-variant) 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: .25;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 100%);
-  }
-  .hero-bg-glow {
-    position: absolute;
-    top: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 400px;
-    background: radial-gradient(ellipse, color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent), transparent 70%);
-    pointer-events: none;
-  }
-
-  /* ── Common ───────────────────────────────────────────────────── */
-  .page-container {
-    max-width: var(--page-max-width);
-    margin: 0 auto;
-    padding: 32px var(--page-padding);
-  }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  .section-title {
-    font-size: 1.4rem;
+  .xYSxXU h1 {
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--md-sys-color-on-surface);
   }
-  .section-link {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: .9rem;
-    font-weight: 600;
-    color: var(--md-sys-color-primary);
-    text-decoration: none;
-  }
-  .section-link:hover { text-decoration: underline; }
 
-  /* ── Articles Grid — min(375px, calc(100vw - 2em)) comme la maquette */
-  .articles-grid {
-    --card-min: min(375px, calc(100vw - 2em));
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  .xYSxXU md-icon {
+    color: var(--md-sys-color-primary);
+  }
+
+  /* ── Articles grid ───────────────────────────────────────── */
+  .wUTVKK {
+    --vczvgq: min(375px, calc(100vw - 2em));
+    grid-template-columns: repeat(auto-fill, minmax(var(--vczvgq), 1fr));
     justify-items: center;
     gap: 1em;
     margin-top: 1em;
-  }
-
-  /* ── Collections ──────────────────────────────────────────────── */
-  .collections-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 12px;
-  }
-  .collection-card {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 20px;
-    background: var(--md-sys-color-surface-container);
-    border-radius: 14px;
-    border: 1px solid var(--md-sys-color-outline-variant);
-    text-decoration: none;
-    color: var(--md-sys-color-on-surface);
-    transition: background .15s, transform .1s;
-    overflow: hidden;
-  }
-  .collection-card:hover {
-    background: var(--md-sys-color-surface-container-high);
-    transform: translateY(-1px);
-    text-decoration: none;
-  }
-  .collection-dot {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .collection-name {
-    font-weight: 600;
-    font-size: .95rem;
-    flex: 1;
-  }
-  .collection-count {
-    font-size: .78rem;
-    color: var(--md-sys-color-on-surface-variant);
-  }
-  .collection-arrow {
-    font-size: 18px;
-    color: var(--md-sys-color-on-surface-variant);
-    flex-shrink: 0;
   }
 
-  /* ── Empty state ──────────────────────────────────────────────── */
+  /* ── Empty state ─────────────────────────────────────────── */
   .empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 16px;
-    min-height: 300px;
+    min-height: 200px;
     color: var(--md-sys-color-on-surface-variant);
     text-align: center;
-  }
-
-  @media (max-width: 640px) {
-    .hero { padding: 60px 16px 40px; }
-    .hero-actions { flex-direction: column; align-items: flex-start; }
-    .page-container { padding: 24px 16px; }
-    .collections-grid { grid-template-columns: 1fr; }
   }
 </style>

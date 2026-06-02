@@ -1,12 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
-import AuthorChip from '../../components/AuthorChip.astro';
-import LabelChip from '../../components/LabelChip.astro';
-import {
-  getAllArticles, getArticle, getArticleContent,
-  getAuthor, getLabel, getArticlesByLabel
-} from '../../utils/content.ts';
+import { getAllArticles, getArticle, getArticleContent, getAuthor, getLabel } from '../../utils/content.ts';
 import { fetchDiscordUser, accentColorToHex } from '../../utils/discord.ts';
 import { marked } from 'marked';
 
@@ -19,74 +14,34 @@ const { id } = Astro.params;
 const meta = await getArticle(id!);
 if (!meta) return Astro.redirect('/404');
 
-// Load content for both languages
 const frMd = await getArticleContent(id!, 'fr');
 const enMd = await getArticleContent(id!, 'en');
 const frHtml = await marked(frMd);
 const enHtml = await marked(enMd);
 
-// Load authors
 const authorsList = await Promise.all(
   meta.authors.map(async (authorId) => {
     const author = await getAuthor(authorId);
     if (!author) return null;
-    // Fetch Discord data if any field is "DISCORD"
-    const needsDiscord =
-      author.avatarUrl === 'DISCORD' ||
-      author.avatarDecorationUrl === 'DISCORD' ||
-      author.bannerColor === 'DISCORD';
+    const needsDiscord = author.avatarUrl === 'DISCORD' || author.avatarDecorationUrl === 'DISCORD' || author.bannerColor === 'DISCORD';
     let discord = null;
-    if (needsDiscord && author.discordId) {
-      discord = await fetchDiscordUser(author.discordId);
-    }
-    // Resolve fields
+    if (needsDiscord && author.discordId) discord = await fetchDiscordUser(author.discordId);
     return {
       ...author,
-      resolvedAvatarUrl: author.avatarUrl === 'DISCORD'
-        ? (discord?.avatar_url ?? null)
-        : author.avatarUrl,
-      resolvedAvatarDecoration: author.avatarDecorationUrl === 'DISCORD'
-        ? (discord?.avatar_decoration_data?.asset_url ?? null)
-        : author.avatarDecorationUrl,
-      resolvedBannerColor: author.bannerColor === 'DISCORD'
-        ? accentColorToHex(discord?.accent_color ?? null)
-        : author.bannerColor,
-      discordData: discord,
+      resolvedAvatarUrl: author.avatarUrl === 'DISCORD' ? (discord?.avatar_url ?? null) : author.avatarUrl,
+      resolvedAvatarDecoration: author.avatarDecorationUrl === 'DISCORD' ? (discord?.avatar_decoration_data?.asset_url ?? null) : author.avatarDecorationUrl,
     };
   })
 );
 const authors = authorsList.filter(Boolean) as NonNullable<typeof authorsList[number]>[];
 
-// Load labels
-const labels = await Promise.all(
-  meta.labels.map(id => getLabel(id))
-);
-const validLabels = labels.filter(Boolean) as NonNullable<typeof labels[number]>[];
+const labels = (await Promise.all(meta.labels.map(id => getLabel(id)))).filter(Boolean);
 
-// Related articles (same labels, not same article)
-const related: typeof meta[] = [];
-for (const labelId of meta.labels) {
-  const byLabel = await getArticlesByLabel(labelId);
-  for (const a of byLabel) {
-    if (a.id !== id && !related.find(r => r.id === a.id)) {
-      related.push(a);
-    }
-  }
-}
-const relatedArticles = related.slice(0, 3);
+const themeColor = labels[0]?.color ?? '#5B7BFA';
 
-// Theme color from first label or default
-const themeColor = validLabels[0]?.color ?? '#5B7BFA';
-
-// Date formatting
-const dateISO = meta.createdAt;
-const dateOptions: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-const dateFr = new Date(meta.createdAt).toLocaleDateString('fr-FR', dateOptions);
-const dateEn = new Date(meta.createdAt).toLocaleDateString('en-US', dateOptions);
-
-// Estimate reading time (avg 200 wpm)
-const wordCount = frMd.split(/\s+/).length;
-const readingTime = Math.max(1, Math.round(wordCount / 200));
+const d = new Date(meta.createdAt);
+const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const dateShort = `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 
 const titleFr = meta.title['fr'];
 const titleEn = meta.title['en'] ?? titleFr;
@@ -94,9 +49,7 @@ const summaryFr = meta.summary['fr'];
 const summaryEn = meta.summary['en'] ?? summaryFr;
 
 const bannerUrl = meta.banner
-  ? (meta.banner.startsWith('http')
-    ? meta.banner
-    : `/content/articles/${id}/assets/${meta.banner}`)
+  ? (meta.banner.startsWith('http') ? meta.banner : `/content/articles/${id}/assets/${meta.banner}`)
   : null;
 ---
 
@@ -108,378 +61,295 @@ const bannerUrl = meta.banner
   ogImage={bannerUrl ?? undefined}
   noIndex={meta.referencing === 3}
 >
-  <Nav slot="nav" lang="fr" />
+  <Nav slot="nav" slug={id} />
 
-  <!-- Article Header (immersive) — hauteur 512px, border-radius bottom 48px -->
-  <div class="article-header" style={`--article-color: ${themeColor}`}>
-    <div class="header-wrap">
-      <div class="header-inner-bg">
-        {bannerUrl && <img class="header-banner-bg" src={bannerUrl} alt="" />}
+  <div class="xTOiZi xAs6Ae">
+    <!-- Article header — height 512px like maquette -->
+    <div class="yzxB9O" style={`--z8hk0y: ${themeColor}`}>
+      <div class="voRrnK">
+        {bannerUrl && <img draggable="false" src={bannerUrl} fetchpriority="high" alt="Article Header" />}
       </div>
     </div>
 
-    <div class="header-content page-container">
-      <!-- Back button -->
-      <a href="/" class="back-btn">
-        <md-icon>arrow_back</md-icon>
-        <span data-lang="fr">Retour</span>
-        <span data-lang="en" style="display:none">Back</span>
-      </a>
-
-      <!-- Labels -->
-      {validLabels.length > 0 && (
-        <div class="header-labels">
-          {validLabels.map(label => <LabelChip label={label} />)}
-        </div>
-      )}
-
-      <!-- Title -->
-      <div data-lang="fr">
-        <h1 class="article-title">{titleFr}</h1>
-        <p class="article-summary">{summaryFr}</p>
-      </div>
-      <div data-lang="en" style="display:none">
-        <h1 class="article-title">{titleEn}</h1>
-        <p class="article-summary">{summaryEn}</p>
-      </div>
-
-      <!-- Meta bar -->
-      <div class="header-meta">
-        <!-- Authors -->
-        <div class="header-authors">
-          {authors.map(author => (
-            <a href={`/authors/${author.id}`} class="header-author">
-              {author.resolvedAvatarUrl
-                ? <img class="header-author-avatar" src={author.resolvedAvatarUrl} alt={author.username} />
-                : <span class="header-author-avatar header-author-fallback">
-                    {author.username.charAt(0).toUpperCase()}
-                  </span>
-              }
-              {author.resolvedAvatarDecoration && (
-                <img
-                  class="header-author-decoration"
-                  src={author.resolvedAvatarDecoration}
-                  alt=""
-                  aria-hidden="true"
-                />
-              )}
-              <span class="header-author-name">{author.username}</span>
-            </a>
-          ))}
-        </div>
-
-        <div class="header-meta-right">
-          <span class="meta-date">
-            <md-icon style="font-size:15px">calendar_today</md-icon>
-            <span data-lang="fr">{dateFr}</span>
-            <span data-lang="en" style="display:none">{dateEn}</span>
-          </span>
-          <span class="meta-reading-time">
-            <md-icon style="font-size:15px">schedule</md-icon>
-            {readingTime}
-            <span data-lang="fr"> min de lecture</span>
-            <span data-lang="en" style="display:none"> min read</span>
-          </span>
-        </div>
-      </div>
+    <!-- Title -->
+    <div class="v504Ku xXvHqe">
+      <h1 data-lang="fr">{titleFr}</h1>
+      <h1 data-lang="en" style="display:none">{titleEn}</h1>
     </div>
-  </div>
 
-  <!-- Article layout -->
-  <div class="article-layout page-container">
-    <!-- Main content -->
-    <article class="article-content">
-      <!-- French -->
-      <div class="prose" data-lang="fr" set:html={frHtml}></div>
-      <!-- English -->
-      <div class="prose" data-lang="en" style="display:none" set:html={enHtml}></div>
-    </article>
+    <!-- Date + summary -->
+    <div class="v504Ku zR1x8w">
+      <div>
+        <span class="article-date">{dateShort}</span>
+      </div>
+      <span class="article-summary" data-lang="fr">{summaryFr}</span>
+      <span class="article-summary" data-lang="en" style="display:none">{summaryEn}</span>
+    </div>
 
-    <!-- Sidebar -->
-    <aside class="article-sidebar">
-      <!-- Authors card -->
-      {authors.length > 0 && (
-        <div class="sidebar-card">
-          <h3 class="sidebar-title">
-            <span data-lang="fr">Auteurs</span>
-            <span data-lang="en" style="display:none">Authors</span>
-          </h3>
-          {authors.map(author => (
-            <a href={`/authors/${author.id}`} class="sidebar-author">
-              <div class="sidebar-author-avatar-wrap">
+    <!-- Authors + share -->
+    {authors.length > 0 && (
+      <div class="v504Ku wEaTMe">
+        <div class="wojHNc">
+          <div class="wrmXco">
+            {authors.map(author => (
+              <a href={`/authors/${author.id}`} class="wACuEA" title={author.username}>
+                <md-ripple></md-ripple>
                 {author.resolvedAvatarUrl
-                  ? <img class="sidebar-author-avatar" src={author.resolvedAvatarUrl} alt={author.username} />
-                  : <span class="sidebar-author-avatar sidebar-author-fallback">
-                      {author.username.charAt(0).toUpperCase()}
-                    </span>
+                  ? <img draggable="false" aria-label={`${author.username}'s Avatar`} src={author.resolvedAvatarUrl} alt={`${author.username}'s Avatar`} />
+                  : <span class="author-fallback">{author.username.charAt(0).toUpperCase()}</span>
                 }
                 {author.resolvedAvatarDecoration && (
-                  <img class="sidebar-author-deco" src={author.resolvedAvatarDecoration} alt="" />
+                  <img class="author-deco" src={author.resolvedAvatarDecoration} alt="" aria-hidden="true" />
                 )}
-              </div>
-              <div class="sidebar-author-info">
-                <span class="sidebar-author-name">{author.username}</span>
-                {(() => {
-                  const role = author.role?.['fr'];
-                  return role ? <span class="sidebar-author-role">{role}</span> : null;
-                })()}
-              </div>
-            </a>
-          ))}
-        </div>
-      )}
-
-      <!-- Labels card -->
-      {validLabels.length > 0 && (
-        <div class="sidebar-card">
-          <h3 class="sidebar-title">
-            <span data-lang="fr">Catégories</span>
-            <span data-lang="en" style="display:none">Categories</span>
-          </h3>
-          <div class="sidebar-labels">
-            {validLabels.map(label => <LabelChip label={label} />)}
-          </div>
-        </div>
-      )}
-
-      <!-- Related articles -->
-      {relatedArticles.length > 0 && (
-        <div class="sidebar-card">
-          <h3 class="sidebar-title">
-            <span data-lang="fr">Articles liés</span>
-            <span data-lang="en" style="display:none">Related articles</span>
-          </h3>
-          <md-list>
-            {relatedArticles.map(a => (
-              <md-list-item type="link" href={`/articles/${a.id}`}>
-                <div slot="headline">
-                  <span data-lang="fr">{a.title['fr']}</span>
-                  <span data-lang="en" style="display:none">{a.title['en'] ?? a.title['fr']}</span>
-                </div>
-                <md-icon slot="end">arrow_forward</md-icon>
-              </md-list-item>
+              </a>
             ))}
-          </md-list>
+          </div>
+          {authors[0] && (
+            <div class="xSRyrW">
+              <div class="wndRmO">
+                <a href={`/authors/${authors[0].id}`}>{authors[0].username}</a>
+              </div>
+              {authors[0].role?.['fr'] && <span>{authors[0].role['fr']}</span>}
+            </div>
+          )}
         </div>
-      )}
-    </aside>
+      </div>
+    )}
+
+    <!-- Article content -->
+    <div class="v504Ku xkQrFg">
+      <div class="wmvtgi" data-lang="fr" set:html={frHtml}></div>
+      <div class="wmvtgi" data-lang="en" style="display:none" set:html={enHtml}></div>
+    </div>
   </div>
 </Base>
 
 <style>
-  /* ── Article Header — exact maquette: height 512px, border-radius bottom 48px */
-  .article-header {
-    --header-height: 512px;
-    --header-max-w: min(1500px, 100%);
+  /* ── Content wrapper ──────────────────────────────────────── */
+  .xTOiZi {
+    --xs2rQG: min(1200px, calc(100vw - 2em));
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    display: flex;
+  }
+
+  .xAs6Ae {
+    --yPh9aE: min(100%, 726px);
+  }
+
+  .v504Ku {
+    max-width: var(--xs2rQG);
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Article header ───────────────────────────────────────── */
+  .yzxB9O {
+    --header-w: 1500px;
+    --header-h: 512px;
     margin-top: 1em;
     width: 100%;
-    height: var(--header-height);
+    height: var(--header-h);
     justify-content: center;
     display: flex;
     position: relative;
-    overflow: hidden;
   }
-  @media screen and (max-width: 1650px) {
-    .article-header { --header-max-w: min(1300px, calc(100vw - 8em)); --header-height: 445px; }
+
+  @media (max-width: 1650px) {
+    .yzxB9O { --header-w: min(1300px, calc(100vw - 8em)); --header-h: 445px; }
   }
-  @media screen and (max-width: 1325px) {
-    .article-header { --header-max-w: calc(100% - 1em); margin-top: .5em; }
+  @media (max-width: 900px) {
+    .yzxB9O { --header-h: 300px; }
   }
-  .header-wrap {
-    max-width: var(--header-max-w);
-    min-width: var(--header-max-w);
-    height: calc(var(--header-height) + 1em);
-    margin-top: -1em;
-    border-radius: 0 0 48px 48px;
-    user-select: none;
-    pointer-events: none;
-    position: relative;
-    overflow: hidden;
-  }
-  .header-inner-bg {
-    max-width: var(--header-max-w);
-    background-color: var(--article-color, var(--md-sys-color-surface-container-high));
+
+  .voRrnK {
+    max-width: min(var(--header-w), 100%);
+    background-color: var(--z8hk0y, var(--md-sys-color-surface-container-high));
     width: 100%;
-    height: var(--header-height);
+    height: var(--header-h);
     border-radius: 48px;
     position: absolute;
     overflow: hidden;
   }
-  .header-banner-bg {
+
+  .voRrnK img {
     width: 100%;
-    height: var(--header-height);
+    height: 100%;
     object-fit: cover;
     object-position: 50% 50%;
-    position: relative;
-    pointer-events: none;
+    display: block;
   }
-  /* Gradient overlay comme dans la maquette */
-  .header-inner-bg::after {
+
+  /* Gradient at bottom of banner */
+  .voRrnK::after {
     content: '';
-    background: linear-gradient(transparent 50%, color-mix(in srgb, var(--md-sys-color-background) 60%, transparent) 100%);
-    pointer-events: none;
     position: absolute;
     inset: 0;
-  }
-  .header-gradient { display: none; }
-
-  /* header-content flotte au-dessus du header-wrap */
-  .header-content {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    padding-top: 32px;
-    padding-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 100%;
-    pointer-events: all;
+    background: linear-gradient(transparent 50%, color-mix(in srgb, var(--md-sys-color-background) 60%, transparent) 100%);
+    pointer-events: none;
   }
 
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px 6px 8px;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--md-sys-color-surface) 80%, transparent);
-    backdrop-filter: blur(8px);
-    color: var(--md-sys-color-on-surface);
-    text-decoration: none;
-    font-size: .85rem;
-    font-weight: 600;
-    width: fit-content;
-    border: 1px solid var(--md-sys-color-outline-variant);
-    transition: background .15s;
-  }
-  .back-btn:hover {
-    background: var(--md-sys-color-surface-container-high);
-    text-decoration: none;
+  /* ── Title ───────────────────────────────────────────────── */
+  .xXvHqe {
+    margin-top: 2em;
   }
 
-  .header-labels {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .article-title {
-    text-wrap: balance;
-    font-size: 3.5rem;
+  .xXvHqe h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 600;
     line-height: 1.15;
+    text-wrap: balance;
     color: var(--md-sys-color-on-background);
-    margin-block: .5em 0;
-    margin-inline: auto;
-    max-width: min(100%, 726px);
-  }
-  .article-summary {
-    font-size: 1.05rem;
-    color: var(--md-sys-color-on-surface-variant);
-    line-height: 1.6;
-    max-width: 700px;
+    letter-spacing: -.02em;
+    max-width: var(--yPh9aE, min(100%, 726px));
   }
 
-  .header-meta {
+  /* ── Date + summary ──────────────────────────────────────── */
+  .zR1x8w {
+    flex-direction: row;
+    gap: 1em;
+    margin-top: 1em;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
     flex-wrap: wrap;
-    padding-top: 8px;
   }
-  .header-authors {
+
+  @media (max-width: 640px) {
+    .zR1x8w { flex-direction: column; }
+  }
+
+  .article-date {
+    font-weight: 600;
+    font-size: .9rem;
+    color: var(--md-sys-color-on-surface-variant);
+    white-space: nowrap;
+  }
+
+  .article-summary {
+    font-size: .95rem;
+    color: var(--md-sys-color-on-surface-variant);
+    line-height: 1.6;
+    max-width: 600px;
+  }
+
+  /* ── Authors row ─────────────────────────────────────────── */
+  .wEaTMe {
+    flex-direction: row;
+    gap: 1em;
+    margin-top: 1em;
+    margin-bottom: 2em;
     display: flex;
-    align-items: center;
+  }
+
+  .wojHNc {
+    flex-direction: row;
     gap: 12px;
-    flex-wrap: wrap;
-  }
-  .header-author {
-    position: relative;
     display: flex;
     align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: var(--md-sys-color-on-surface);
-    padding: 4px 12px 4px 4px;
+  }
+
+  /* Stacked avatars row-reverse like maquette */
+  .wrmXco {
+    user-select: none;
+    flex-direction: row-reverse;
+    padding-right: 22px;
+    display: flex;
+    align-items: center;
+  }
+
+  .wACuEA {
+    color: inherit;
+    border: 3px solid var(--md-sys-color-surface);
     border-radius: 9999px;
-    background: color-mix(in srgb, var(--md-sys-color-surface) 70%, transparent);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--md-sys-color-outline-variant);
-    transition: background .15s;
-  }
-  .header-author:hover { background: var(--md-sys-color-surface-container-high); }
-  .header-author-avatar-wrap { position: relative; width: 32px; height: 32px; flex-shrink: 0; }
-  .header-author-avatar {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  .header-author-fallback {
-    background: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
+    width: 42px;
+    height: 42px;
+    max-height: 42px;
+    margin-right: -22px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: .9rem;
+    background: var(--md-sys-color-surface-container);
+    flex-shrink: 0;
+  }
+
+  .wACuEA img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 50%;
   }
-  .header-author-decoration {
+
+  .author-fallback {
+    font-weight: 700;
+    font-size: .9rem;
+    color: var(--md-sys-color-on-primary-container);
+    background: var(--md-sys-color-primary-container);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .author-deco {
     position: absolute;
     inset: -4px;
     width: calc(100% + 8px);
     height: calc(100% + 8px);
     pointer-events: none;
   }
-  .header-author-name { font-size: .88rem; font-weight: 600; }
-  .header-meta-right {
+
+  .xSRyrW {
+    flex-direction: column;
+    justify-content: center;
     display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
   }
-  .meta-date, .meta-reading-time {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: .82rem;
+
+  .wndRmO {
+    font-weight: 600;
+    font-size: .95rem;
+  }
+
+  .wndRmO a {
+    color: var(--md-sys-color-on-surface);
+    text-decoration: none;
+  }
+  .wndRmO a:hover { text-decoration: underline; }
+
+  .xSRyrW > span {
+    font-size: .8rem;
     color: var(--md-sys-color-on-surface-variant);
   }
 
-  /* ── Article Layout ───────────────────────────────────────────── */
-  .article-layout {
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 40px;
-    align-items: start;
-    padding-top: 40px;
+  /* ── Article content ─────────────────────────────────────── */
+  .xkQrFg {
+    margin-bottom: 10em;
   }
 
-  /* ── Prose styles — max-width 726px comme la maquette */
-  .prose {
+  .wmvtgi {
     color: var(--md-sys-color-on-surface);
     line-height: 1.625;
     font-size: 1rem;
-    max-width: min(100%, 726px);
-    margin-inline: auto;
-    box-sizing: border-box;
+    max-width: var(--yPh9aE, min(100%, 726px));
   }
-  .prose :global(h1) { font-size: 2rem; font-weight: 800; margin: 2rem 0 1rem; letter-spacing: -.02em; }
-  .prose :global(h2) {
+
+  /* Prose typography */
+  .wmvtgi :global(h1) { font-size: 2rem; font-weight: 800; margin: 2rem 0 1rem; letter-spacing: -.02em; }
+  .wmvtgi :global(h2) {
     font-size: 1.5rem; font-weight: 700; margin: 2.5rem 0 1rem;
     padding-bottom: .5rem; border-bottom: 1px solid var(--md-sys-color-outline-variant);
   }
-  .prose :global(h3) { font-size: 1.2rem; font-weight: 700; margin: 2rem 0 .75rem; }
-  .prose :global(h4) { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
-  .prose :global(p) { margin: 1rem 0; }
-  .prose :global(a) { color: var(--md-sys-color-primary); text-decoration: underline; text-underline-offset: 3px; }
-  .prose :global(ul), .prose :global(ol) { padding-left: 1.5rem; margin: 1rem 0; }
-  .prose :global(li) { margin: .4rem 0; }
-  .prose :global(blockquote) {
+  .wmvtgi :global(h3) { font-size: 1.2rem; font-weight: 700; margin: 2rem 0 .75rem; }
+  .wmvtgi :global(h4) { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+  .wmvtgi :global(p) { margin: 1rem 0; }
+  .wmvtgi :global(a) { color: var(--md-sys-color-primary); text-decoration: underline; text-underline-offset: 3px; }
+  .wmvtgi :global(ul), .wmvtgi :global(ol) { padding-left: 1.5rem; margin: 1rem 0; }
+  .wmvtgi :global(li) { margin: .4rem 0; }
+  .wmvtgi :global(blockquote) {
     border-left: 3px solid var(--md-sys-color-primary);
     padding: .75rem 1rem;
     margin: 1.5rem 0;
@@ -487,15 +357,15 @@ const bannerUrl = meta.banner
     color: var(--md-sys-color-on-primary-container);
     border-radius: 0 8px 8px 0;
   }
-  .prose :global(code) {
-    font-family: 'Google Sans Code', 'Roboto Mono', monospace;
+  .wmvtgi :global(code) {
+    font-family: 'Google Sans Code', monospace;
     font-size: .875em;
     background: var(--md-sys-color-surface-container-highest);
     padding: .15em .4em;
     border-radius: 4px;
     color: var(--md-sys-color-primary);
   }
-  .prose :global(pre) {
+  .wmvtgi :global(pre) {
     background: var(--md-sys-color-surface-container-highest);
     border: 1px solid var(--md-sys-color-outline-variant);
     border-radius: 12px;
@@ -503,109 +373,16 @@ const bannerUrl = meta.banner
     overflow-x: auto;
     margin: 1.5rem 0;
   }
-  .prose :global(pre code) {
-    background: none; padding: 0; color: var(--md-sys-color-on-surface); font-size: .875rem;
-  }
-  .prose :global(table) {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    font-size: .9rem;
-  }
-  .prose :global(th) {
+  .wmvtgi :global(pre code) { background: none; padding: 0; color: var(--md-sys-color-on-surface); }
+  .wmvtgi :global(img) { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
+  .wmvtgi :global(hr) { border: none; border-top: 1px solid var(--md-sys-color-outline-variant); margin: 2rem 0; }
+  .wmvtgi :global(table) { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .9rem; }
+  .wmvtgi :global(th) {
     background: var(--md-sys-color-surface-container);
     padding: .75rem 1rem;
     text-align: left;
     font-weight: 700;
     border-bottom: 2px solid var(--md-sys-color-outline-variant);
   }
-  .prose :global(td) {
-    padding: .75rem 1rem;
-    border-bottom: 1px solid var(--md-sys-color-outline-variant);
-  }
-  .prose :global(tr:hover td) { background: var(--md-sys-color-surface-container); }
-  .prose :global(img) { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
-  .prose :global(hr) { border: none; border-top: 1px solid var(--md-sys-color-outline-variant); margin: 2rem 0; }
-
-  /* ── Sidebar ──────────────────────────────────────────────────── */
-  .article-sidebar {
-    position: sticky;
-    top: calc(var(--nav-height) + 24px);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .sidebar-card {
-    background: var(--md-sys-color-surface-container);
-    border-radius: 16px;
-    padding: 20px;
-    border: 1px solid var(--md-sys-color-outline-variant);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .sidebar-title {
-    font-size: .85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    color: var(--md-sys-color-on-surface-variant);
-  }
-
-  .sidebar-author {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--md-sys-color-on-surface);
-    padding: 6px;
-    border-radius: 10px;
-    transition: background .1s;
-  }
-  .sidebar-author:hover { background: var(--md-sys-color-surface-container-high); }
-  .sidebar-author-avatar-wrap { position: relative; width: 40px; height: 40px; flex-shrink: 0; }
-  .sidebar-author-avatar {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  .sidebar-author-fallback {
-    background: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; border-radius: 50%;
-  }
-  .sidebar-author-deco {
-    position: absolute;
-    inset: -4px;
-    width: calc(100% + 8px);
-    height: calc(100% + 8px);
-    pointer-events: none;
-  }
-  .sidebar-author-info { display: flex; flex-direction: column; }
-  .sidebar-author-name { font-weight: 600; font-size: .9rem; }
-  .sidebar-author-role { font-size: .78rem; color: var(--md-sys-color-on-surface-variant); }
-
-  .sidebar-labels { display: flex; flex-wrap: wrap; gap: 6px; }
-
-  /* ── Page container ───────────────────────────────────────────── */
-  .page-container {
-    max-width: var(--page-max-width);
-    margin: 0 auto;
-    padding: 0 var(--page-padding);
-  }
-
-  /* ── Responsive ──────────────────────────────────────────────────── */
-  @media (max-width: 900px) {
-    .article-layout {
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-    .article-sidebar { position: static; }
-  }
-  @media (max-width: 640px) {
-    .article-title { font-size: 1.6rem; }
-    .header-meta { flex-direction: column; align-items: flex-start; }
-  }
+  .wmvtgi :global(td) { padding: .75rem 1rem; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
 </style>

@@ -1,240 +1,164 @@
 ---
-import type { ArticleMeta, AuthorMeta, LabelMeta } from '../utils/content.ts';
+import type { ArticleMeta, LabelMeta } from '../utils/content.ts';
 import type { Lang } from '../i18n/translations.ts';
-import { t } from '../i18n/translations.ts';
 
 interface Props {
   article: ArticleMeta;
-  authors?: AuthorMeta[];
   labels?: LabelMeta[];
   lang: Lang;
-  featured?: boolean;
 }
 
-const { article, authors = [], labels = [], lang, featured = false } = Astro.props;
+const { article, labels = [], lang } = Astro.props;
 
 const title = article.title[lang] ?? article.title['fr'];
 const summary = article.summary[lang] ?? article.summary['fr'];
-const date = new Date(article.createdAt).toLocaleDateString(
-  lang === 'fr' ? 'fr-FR' : 'en-US',
-  { year: 'numeric', month: 'long', day: 'numeric' }
-);
+
+const d = new Date(article.createdAt);
+const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const dateShort = `${months[d.getMonth()]} ${d.getDate()}`;
+
+const primaryLabel = labels[0];
+const bannerSrc = article.banner
+  ? `/content/articles/${article.id}/assets/${article.banner}`
+  : null;
 ---
 
-<a href={`/articles/${article.id}`} class:list={['article-card', { featured }]}>
-  {article.banner && (
-    <div class="card-banner">
-      <img src={`/content/articles/${article.id}/assets/${article.banner}`} alt="" loading="lazy" />
+<div class="vNoZxk">
+  <a href={`/articles/${article.id}`} class="uPd4UK" tabindex="-1" aria-hidden="true">
+    {bannerSrc
+      ? <img draggable="false" src={bannerSrc} alt="" loading="lazy" />
+      : null
+    }
+  </a>
+  <div class="zv98UQ">
+    <div class="uHxFYS">
+      <span class="card-date">{dateShort}</span>
     </div>
-  )}
-  {!article.banner && (
-    <div class="card-banner card-banner--placeholder">
-      <md-icon style="font-size:48px;color:var(--md-sys-color-primary)">article</md-icon>
-    </div>
-  )}
-
-  <div class="card-body">
-    <!-- Labels -->
-    {labels.length > 0 && (
-      <div class="card-labels">
-        {labels.map(label => (
-          <span class="card-label" style={`--label-color: ${label.color}`}>
-            {label.name}
-          </span>
-        ))}
-      </div>
-    )}
-
-    <h3 class="card-title">{title}</h3>
-    <p class="card-summary">{summary}</p>
-
-    <div class="card-meta">
-      <!-- Authors -->
-      {authors.length > 0 && (
-        <div class="card-authors">
-          {authors.map(author => (
-            <span class="card-author">
-              {author.avatarUrl && author.avatarUrl !== 'DISCORD'
-                ? <img class="author-avatar-sm" src={author.avatarUrl} alt={author.username} />
-                : <span class="author-avatar-sm author-avatar-fallback">
-                    {author.username.charAt(0).toUpperCase()}
-                  </span>
-              }
-              <span class="author-name" data-discord-author={author.discordId || ''}>
-                {author.username}
-              </span>
-            </span>
-          ))}
-        </div>
-      )}
-      <span class="card-date">
-        <md-icon style="font-size:14px">calendar_today</md-icon>
-        {date}
-      </span>
+    <a href={`/articles/${article.id}`}><h2>{title}</h2></a>
+    <span class="card-summary">{summary}</span>
+    <div class="uHxFYS wCqovU">
+      {primaryLabel ? (
+        <a href={`/collections/${primaryLabel.id}`} class="v2EOKK"
+          style={`background-color: color-mix(in srgb, ${primaryLabel.color} 15%, var(--md-sys-color-surface-container-highest)); color: ${primaryLabel.color}`}>
+          <md-ripple></md-ripple>
+          {primaryLabel.name}
+        </a>
+      ) : <span></span>}
+      <md-text-button trailing-icon href={`/articles/${article.id}`}>
+        <md-icon slot="icon">arrow_forward</md-icon>
+        View Article
+      </md-text-button>
     </div>
   </div>
-
-  <md-ripple></md-ripple>
-</a>
+</div>
 
 <style>
-  .article-card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    background: var(--md-sys-color-surface-container);
+  .vNoZxk {
+    background-color: var(--md-sys-color-surface-container);
     border-radius: 16px;
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
+    flex-direction: column;
     width: 100%;
     height: 100%;
-    cursor: pointer;
-    transition: none;
+    display: flex;
+    overflow: hidden;
   }
-  .article-card:hover { text-decoration: none; }
-  .article-card.featured { grid-column: span 2; flex-direction: row; }
 
-  /* Banner — min-height 180px comme dans la maquette */
-  .card-banner {
+  .uPd4UK {
+    user-select: none;
+    background-color: var(--md-sys-color-surface-container-high);
     width: 100%;
     min-height: 180px;
-    overflow: hidden;
-    background: var(--md-sys-color-surface-container-high);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
     position: relative;
+    overflow: hidden;
+    display: block;
   }
-  .article-card.featured .card-banner {
-    width: 40%;
-    min-height: 240px;
-  }
-  .card-banner img {
-    object-fit: cover;
-    object-position: 50% 50%;
+  .uPd4UK img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    display: block;
     transition: scale .3s cubic-bezier(.2,.29,.27,1.55);
     scale: 1.01;
-  }
-  /* Gradient overlay comme dans la maquette */
-  .card-banner::after {
-    content: '';
-    background: linear-gradient(transparent 40%, color-mix(in srgb, var(--md-sys-color-surface-container) 50%, transparent) 100%);
     position: absolute;
     inset: 0;
+  }
+  .uPd4UK::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 40%, color-mix(in srgb, var(--md-sys-color-surface-container) 50%, transparent) 100%);
     pointer-events: none;
   }
-  .article-card:hover .card-banner img { scale: 1.05; }
+  .vNoZxk:hover .uPd4UK img { scale: 1.05; }
 
-  /* Body — padding 24px comme dans la maquette */
-  .card-body {
+  .zv98UQ {
+    flex-direction: column;
+    height: 100%;
     padding: 24px;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
-  }
-
-  /* Labels — border-radius 8px, pas pill */
-  .card-labels {
-    display: flex;
-    flex-wrap: wrap;
     gap: 6px;
-    margin-bottom: 2px;
-  }
-  .card-label {
-    font-size: .875rem;
-    font-weight: 500;
-    padding: 5px 11px;
-    border-radius: 8px;
-    background: color-mix(in srgb, var(--label-color, var(--md-sys-color-primary)) 15%, var(--md-sys-color-surface-container-highest));
-    color: var(--label-color, var(--md-sys-color-primary));
-    line-height: 1.25rem;
   }
 
-  /* Text */
-  .card-title {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--md-sys-color-on-surface);
-    line-height: 1.35;
-    margin-bottom: .25em;
-  }
-  .article-card.featured .card-title { font-size: 1.25rem; }
-  .card-summary {
-    font-size: .9rem;
-    color: var(--md-sys-color-on-surface-variant);
-    line-height: 1.625;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    word-break: break-word;
-    word-wrap: break-word;
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    max-width: 75%;
-    overflow: hidden;
-    flex: 1;
-  }
-
-  /* Meta — margin-top auto = pousser vers le bas */
-  .card-meta {
-    display: flex;
-    align-items: center;
+  .uHxFYS {
+    flex-direction: row;
     justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: .5em;
+    display: flex;
+  }
+
+  .wCqovU {
     margin-top: auto;
+    margin-bottom: 0;
     padding-top: 1em;
-    border-top: 1px solid var(--md-sys-color-outline-variant);
   }
-  /* Avatars empilés comme dans la maquette (flex-direction: row-reverse + margin négatif) */
-  .card-authors {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    padding-right: 14px;
-  }
-  .card-author {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+
+  .card-date {
+    font-weight: 600;
     font-size: .8rem;
     color: var(--md-sys-color-on-surface-variant);
-  }
-  .author-avatar-sm {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-    border: 2px solid var(--md-sys-color-surface-container);
-    margin-right: -14px;
-  }
-  .author-avatar-fallback {
-    background: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .72rem;
-    font-weight: 700;
-  }
-  .author-name { display: none; } /* Noms masqués, on montre seulement avatars */
-  .card-date {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: .78rem;
-    color: var(--md-sys-color-on-surface-variant);
-    font-family: var(--md-sys-typescale-label-medium-font);
-    flex-shrink: 0;
-    opacity: .75;
+    letter-spacing: .03em;
   }
 
-  @media (max-width: 768px) {
-    .article-card.featured { flex-direction: column; grid-column: span 1; }
-    .article-card.featured .card-banner { width: 100%; aspect-ratio: 16/9; }
+  .zv98UQ a {
+    text-decoration: none;
+    color: var(--md-sys-color-on-surface);
   }
+  .zv98UQ a:hover h2 { text-decoration: underline; }
+
+  .zv98UQ h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--md-sys-color-on-surface);
+    margin-bottom: .1em;
+  }
+
+  .card-summary {
+    font-size: .875rem;
+    color: var(--md-sys-color-on-surface-variant);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 75%;
+  }
+
+  .v2EOKK {
+    width: fit-content;
+    font-size: .875rem;
+    font-weight: 500;
+    border-radius: 8px;
+    user-select: none;
+    padding: 5px 11px;
+    line-height: 1.25rem;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .v2EOKK:hover { text-decoration: none; }
 </style>
