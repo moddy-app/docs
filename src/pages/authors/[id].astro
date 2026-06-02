@@ -36,28 +36,34 @@ const roleFr = author.role?.['fr'] ?? '';
 <Base title={author.username} description={bioFr} themeColor={themeColor} lang="fr">
   <Nav slot="nav" slug={id} />
 
-  <div class="xTOiZi">
-    <div class="v504Ku">
-      <!-- Author header card — .ykKuca like maquette -->
-      <div class="ykKuca">
-        <div class="yCfcFC" style={`background-color: color-mix(in srgb, ${themeColor} 20%, var(--md-sys-color-surface-container))`}>
-          <h1>{author.username}</h1>
+  <div class="page-wrapper">
+
+    <!-- Author header card -->
+    <div class="content-col">
+      <div class="author-header">
+        <!-- Banner -->
+        <div class="author-banner" style={`background: linear-gradient(135deg, color-mix(in srgb, ${themeColor} 40%, var(--md-sys-color-surface-container)) 0%, color-mix(in srgb, ${themeColor} 20%, var(--md-sys-color-surface-container)) 100%)`}>
+          <h1 class="author-username">{author.username}</h1>
         </div>
-        <div class="zMARbA">
-          <div class="yWPGoq">
+
+        <!-- Avatar — positioned overlapping the banner bottom -->
+        <div class="avatar-outer">
+          <!-- Circular clip for avatar image -->
+          <div class="avatar-circle">
             {avatarUrl
               ? <img draggable="false" src={avatarUrl} alt={author.username} />
               : <span class="avatar-fallback">{author.username.charAt(0).toUpperCase()}</span>
             }
-            {avatarDecoration && (
-              <img class="avatar-deco" src={avatarDecoration} alt="" aria-hidden="true" />
-            )}
           </div>
+          <!-- Decoration overlaps outside the circle — NOT clipped -->
+          {avatarDecoration && (
+            <img class="avatar-deco" src={avatarDecoration} alt="" aria-hidden="true" />
+          )}
         </div>
       </div>
 
-      <!-- Action links — .w1fZiO -->
-      <div class="w1fZiO">
+      <!-- Action links (right of avatar area) -->
+      <div class="author-actions">
         {author.links?.map(link => (
           <md-filled-tonal-icon-button href={link.url} target="_blank" aria-label={link.name}>
             <md-icon>{link.icon ?? 'link'}</md-icon>
@@ -74,15 +80,15 @@ const roleFr = author.role?.['fr'] ?? '';
       )}
     </div>
 
-    <!-- Articles grid — .w2Ym6Y -->
-    <div class="v504Ku">
-      <div class="xYSxXU">
+    <!-- Articles grid -->
+    <div class="content-col articles-section">
+      <div class="section-header">
         <md-icon aria-hidden="true">article</md-icon>
-        <h1>Articles ({publicArticles.length})</h1>
+        <h2>Articles ({publicArticles.length})</h2>
       </div>
 
       {publicArticles.length > 0 ? (
-        <div class="w2Ym6Y">
+        <div class="articles-grid">
           {publicArticles.map(article => (
             <ArticleCard
               article={article}
@@ -93,7 +99,7 @@ const roleFr = author.role?.['fr'] ?? '';
         </div>
       ) : (
         <div class="empty-state">
-          <md-icon style="font-size:48px;color:var(--md-sys-color-outline)">article</md-icon>
+          <md-icon style="font-size:56px;color:var(--md-sys-color-outline)">article</md-icon>
           <p>Aucun article publié.</p>
         </div>
       )}
@@ -102,79 +108,72 @@ const roleFr = author.role?.['fr'] ?? '';
 </Base>
 
 <style>
-  .xTOiZi {
-    --xs2rQG: min(1200px, calc(100vw - 2em));
+  .page-wrapper {
+    --content-w: var(--page-max-width);
+    display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    display: flex;
-    gap: 1em;
-    padding-top: 1em;
+    gap: 4em;
+    padding: 2em 0 0;
   }
 
-  .v504Ku {
-    max-width: var(--xs2rQG);
+  .content-col {
+    max-width: var(--content-w);
     width: 100%;
-    overflow: hidden;
+    padding: 0 1.5em;
   }
 
-  /* ── Author header card ──────────────────────────────────── */
-  .ykKuca {
-    width: 100%;
-    height: 300px;
-    margin-top: 1em;
-    margin-bottom: calc(1em + 75px);
+  /* ── Author header ───────────────────────────────────────── */
+  .author-header {
     position: relative;
+    margin-bottom: calc(1.5em + 80px);
   }
 
-  .yCfcFC {
-    border-radius: 48px;
-    box-sizing: border-box;
+  .author-banner {
+    border-radius: 32px;
     width: 100%;
-    height: 100%;
-    color: var(--md-sys-color-on-surface);
+    height: 240px;
+    display: flex;
     align-items: flex-end;
-    padding: 1em 1em 1em calc(4.5em + 300px);
-    display: flex;
+    padding: 1.5em 1.5em 1.5em calc(3em + 160px);
   }
 
-  .yCfcFC h1 {
-    font-size: 3rem;
+  .author-username {
+    font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 800;
-    letter-spacing: -.02em;
-    color: inherit;
+    letter-spacing: -0.03em;
+    color: var(--md-sys-color-on-surface);
     word-break: break-word;
+    line-height: 1.1;
   }
 
-  /* Avatar container — positioned outside the card at bottom-left */
-  .zMARbA {
-    aspect-ratio: 1;
-    background-color: var(--md-sys-color-outline-variant);
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    display: flex;
+  /* Avatar outer — NO overflow:hidden so decoration bleeds out */
+  .avatar-outer {
     position: absolute;
-    bottom: -75px;
-    left: 3em;
-    border-radius: 50%;
-    overflow: hidden;
+    bottom: -80px;
+    left: 2.5em;
+    width: 160px;
+    height: 160px;
   }
 
-  .yWPGoq {
+  /* The visual circle for background + avatar clip */
+  .avatar-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 6px solid var(--md-sys-color-background);
+    overflow: hidden;
+    background: var(--md-sys-color-surface-container-high);
     position: relative;
-    inset: 10px;
-    width: calc(100% - 20px);
-    height: calc(100% - 20px);
-    border-radius: 50%;
-    overflow: hidden;
+    z-index: 1;
   }
 
-  .yWPGoq img {
+  .avatar-circle img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
+    display: block;
   }
 
   .avatar-fallback {
@@ -183,31 +182,32 @@ const roleFr = author.role?.['fr'] ?? '';
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 800;
     background: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
-    border-radius: 50%;
   }
 
+  /* Decoration — positioned relative to .avatar-outer (no overflow:hidden) */
   .avatar-deco {
     position: absolute;
-    inset: -8px;
-    width: calc(100% + 16px);
-    height: calc(100% + 16px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 125%;
+    height: 125%;
     pointer-events: none;
+    z-index: 2;
   }
 
   /* ── Action links ────────────────────────────────────────── */
-  .w1fZiO {
-    box-sizing: border-box;
-    flex-direction: row;
-    gap: 1em;
-    width: 100%;
-    margin-top: -75px;
-    margin-bottom: 75px;
-    padding-left: calc(4.5em + 300px);
+  .author-actions {
     display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-left: calc(2.5em + 160px + 1em);
+    margin-top: calc(-80px + 1em);
+    margin-bottom: calc(80px - 1em);
   }
 
   /* ── Bio section ─────────────────────────────────────────── */
@@ -215,7 +215,7 @@ const roleFr = author.role?.['fr'] ?? '';
     display: flex;
     flex-direction: column;
     gap: 6px;
-    margin-top: 1em;
+    margin-top: 1.25em;
   }
 
   .author-role {
@@ -225,37 +225,40 @@ const roleFr = author.role?.['fr'] ?? '';
   }
 
   .author-bio {
-    font-size: .95rem;
+    font-size: .975rem;
     color: var(--md-sys-color-on-surface-variant);
-    line-height: 1.6;
-    max-width: 640px;
+    line-height: 1.7;
+    max-width: 600px;
   }
 
-  /* ── Section header ──────────────────────────────────────── */
-  .xYSxXU {
-    align-items: center;
-    gap: 10px;
-    width: 100%;
+  /* ── Articles section ────────────────────────────────────── */
+  .articles-section {
+    padding-top: 0;
+  }
+
+  .section-header {
     display: flex;
-    margin-bottom: 1em;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5em;
   }
 
-  .xYSxXU h1 {
-    font-size: 1.25rem;
+  .section-header md-icon {
+    color: var(--md-sys-color-primary);
+    font-size: 22px;
+  }
+
+  .section-header h2 {
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--md-sys-color-on-surface);
+    letter-spacing: -0.01em;
   }
 
-  .xYSxXU md-icon { color: var(--md-sys-color-primary); }
-
-  /* ── Articles grid ───────────────────────────────────────── */
-  .w2Ym6Y {
-    --vczvgq: min(375px, calc(100vw - 2em));
-    grid-template-columns: repeat(auto-fill, minmax(var(--vczvgq), 1fr));
-    justify-items: center;
-    gap: 1em;
-    margin-top: 1em;
+  .articles-grid {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
+    gap: 1.25em;
   }
 
   /* ── Empty state ─────────────────────────────────────────── */
@@ -264,18 +267,30 @@ const roleFr = author.role?.['fr'] ?? '';
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    min-height: 200px;
+    gap: 16px;
+    min-height: 240px;
     color: var(--md-sys-color-on-surface-variant);
     text-align: center;
+    font-size: 1rem;
   }
 
   /* ── Responsive ──────────────────────────────────────────── */
-  @media (max-width: 768px) {
-    .yCfcFC { padding: 0; align-items: center; justify-content: center; }
-    .yCfcFC h1 { font-size: 2rem; text-align: center; }
-    .zMARbA { right: unset; left: 50%; transform: translate(-50%); }
-    .w1fZiO { justify-content: center; width: 100%; margin: 0; padding-left: 0; margin-top: -75px; margin-bottom: 75px; }
-    .ykKuca { height: 200px; margin-bottom: calc(1em + 150px); }
+  @media (max-width: 700px) {
+    .author-banner {
+      padding: 1.5em;
+      align-items: flex-end;
+      justify-content: flex-end;
+      height: 180px;
+    }
+    .author-username { font-size: 1.75rem; }
+    .avatar-outer {
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -70px;
+      width: 140px;
+      height: 140px;
+    }
+    .author-header { margin-bottom: calc(1.5em + 70px); }
+    .author-actions { padding-left: 0; justify-content: center; margin-top: calc(-70px + 1em); margin-bottom: calc(70px - 1em); }
   }
 </style>

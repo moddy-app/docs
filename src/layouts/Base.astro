@@ -117,6 +117,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       --md-sys-shape-corner-extra-small: 4px;
       --md-sys-shape-corner-none: 0;
 
+      /* Content width token shared across pages and footer */
+      --page-max-width: min(1200px, calc(100vw - 3em));
+
       /* Light theme — Moddy blue */
       --md-sys-color-primary: #4A5FD5;
       --md-sys-color-on-primary: #ffffff;
@@ -206,21 +209,25 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <!-- Footer -->
     <footer class="site-footer">
-      <div class="footer-links">
-        <md-filled-icon-button href="https://discord.gg/moddy" target="_blank" aria-label="Discord">
-          <md-icon>forum</md-icon>
-        </md-filled-icon-button>
-        <md-filled-icon-button href="https://moddy.app" target="_blank" aria-label="moddy.app">
-          <md-icon>public</md-icon>
-        </md-filled-icon-button>
-      </div>
-      <div class="footer-brand">
-        <a href="/" class="footer-logo-link">
-          <svg width="22" height="22" viewBox="0 0 14 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M7 1C3.69 1 1 3.69 1 7s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10.5c-2.49 0-4.5-2.01-4.5-4.5S4.51 2.5 7 2.5 11.5 4.51 11.5 7 9.49 11.5 7 11.5z"/>
-          </svg>
-          <span>Moddy Docs</span>
-        </a>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="/" class="footer-logo-link">
+            <svg width="20" height="20" viewBox="0 0 190 190" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M142.39 0H94.9335L47.4565 47.4564H0V94.9129H94.9335L142.39 47.4564V0Z" fill="currentColor"/>
+              <path d="M94.9335 94.9129L47.4568 142.39V189.846H94.9339L142.39 142.39H189.847V94.9128L94.9335 94.9129Z" fill="currentColor"/>
+            </svg>
+            <span>Moddy Docs</span>
+          </a>
+          <p class="footer-tagline">Built to let you focus on your community.</p>
+        </div>
+        <div class="footer-links">
+          <md-filled-icon-button href="https://discord.gg/moddy" target="_blank" aria-label="Discord">
+            <md-icon>forum</md-icon>
+          </md-filled-icon-button>
+          <md-filled-icon-button href="https://moddy.app" target="_blank" aria-label="moddy.app">
+            <md-icon>public</md-icon>
+          </md-filled-icon-button>
+        </div>
       </div>
     </footer>
   </div>
@@ -235,7 +242,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     .vISiAi {
       flex-direction: column;
       align-items: center;
-      gap: 1em;
+      gap: 0;
       width: 100%;
       max-width: 100%;
       display: flex;
@@ -247,46 +254,54 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     /* ── Footer ───────────────────────────────────────────────── */
     .site-footer {
       background-color: var(--md-sys-color-surface-container);
-      --safe-area-max-inset-bottom: env(safe-max-area-inset-bottom, 0px);
-      height: 360px;
-      padding: 3em 3em calc(1em + env(safe-area-inset-bottom, 1em) - var(--safe-area-max-inset-bottom));
-      box-sizing: border-box;
       border-radius: 24px 24px 0 0;
-      flex-direction: column;
-      gap: 1em;
       width: 100%;
-      max-width: 1300px;
-      margin: auto;
-      display: flex;
+      margin-top: 5em;
+      padding: 2em 0;
     }
 
-    .footer-links {
-      gap: 10px;
+    .footer-inner {
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: 0 1.5em;
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2em;
+      flex-wrap: wrap;
     }
 
     .footer-brand {
-      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .footer-logo-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      color: var(--md-sys-color-on-surface-variant);
+      gap: 8px;
+      color: var(--md-sys-color-primary);
       text-decoration: none;
-      font-size: .9rem;
-      font-weight: 500;
+      font-size: .95rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
-    .footer-logo-link:hover { text-decoration: none; color: var(--md-sys-color-on-surface); }
+    .footer-logo-link:hover { text-decoration: none; opacity: 0.85; }
 
-    @media (max-width: 1200px) {
-      .site-footer {
-        padding: 2em 2em calc(1em + env(safe-area-inset-bottom, 1em) - var(--safe-area-max-inset-bottom));
-      }
+    .footer-tagline {
+      font-size: .8rem;
+      color: var(--md-sys-color-on-surface-variant);
+      margin-left: 28px;
     }
+
+    .footer-links {
+      display: flex;
+      gap: 8px;
+    }
+
     @media (max-width: 600px) {
-      .site-footer { height: auto; min-height: 200px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
     }
   </style>
 

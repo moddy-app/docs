@@ -4,7 +4,7 @@ Welcome to the first public release of **Moddy**! This release marks the beginni
 
 ---
 
-## 🚀 New Features
+## New Features
 
 ### Moderation
 
@@ -35,20 +35,20 @@ Welcome to the first public release of **Moddy**! This release marks the beginni
 
 ---
 
-## 🐛 Bug Fixes
+## Bug Fixes
 
 - Improved general stability during traffic spikes
 - Fixed a crash on startup in certain Docker configurations
 
 ---
 
-## ⚠️ Notes
+## Notes
 
 > This version is a **public beta**. Changes may occur without notice. Join our Discord server to report bugs or suggest features.
 
 ---
 
-## 📦 Installation
+## Installation
 
 ```bash
 # Invite Moddy to your server
@@ -59,4 +59,4 @@ Then run `/setup` to configure Moddy in a few minutes.
 
 ---
 
-*Thank you for using Moddy — Built to let you focus on your community.* 🎉
+*Thank you for using Moddy — Built to let you focus on your community.*
