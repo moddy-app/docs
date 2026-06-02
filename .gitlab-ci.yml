@@ -1,0 +1,23 @@
+image: node:24-alpine
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_FORCE_HTTPS: "true"
+
+before_script:
+  - npm ci
+pages:
+  script:
+    # Add brotli for compression
+    - apk add --no-cache brotli
+    # Build app
+    - npm run build
+    # Optimize output files via gzip & brotli
+    - find dist -type f -regex '.*\.\(htm\|html\|xml\|txt\|text\|js\|css\|svg\|woff2\)$' -exec gzip -f -k {} \;
+    - find dist -type f -regex '.*\.\(htm\|html\|xml\|txt\|text\|js\|css\|svg\|woff2\)$' -exec brotli -f -k {} \;
+  pages:
+    publish: dist
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  artifacts:
+    expire_in: 1 week
