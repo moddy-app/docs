@@ -11,12 +11,14 @@ import {
 
 function applyColorThemeListeners() {
   document.body.addEventListener('change-color', (event) => {
-    changeColor((event as CustomEvent).detail?.color ?? (event as any).color);
+    changeColor(
+      (event as unknown as CustomEvent).detail?.color ?? (event as any).color,
+    );
   });
 
   document.body.addEventListener('change-mode', (event) => {
     changeColorMode(
-      (event as CustomEvent).detail?.mode ?? (event as any).mode,
+      (event as unknown as CustomEvent).detail?.mode ?? (event as any).mode,
     );
   });
 

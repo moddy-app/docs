@@ -10,21 +10,21 @@ const STORAGE_KEY = 'moddy-docs-lang';
  */
 @customElement('language-switcher')
 export class LanguageSwitcher extends LitElement {
-  @state() private lang: Lang = 'fr';
+  @state() private activeLang: Lang = 'fr';
 
   override connectedCallback() {
     super.connectedCallback();
     try {
       const saved = localStorage.getItem(STORAGE_KEY) as Lang | null;
       const browser = (navigator.language || 'fr').toLowerCase();
-      this.lang = saved || (browser.startsWith('en') ? 'en' : 'fr');
+      this.activeLang = saved || (browser.startsWith('en') ? 'en' : 'fr');
     } catch {
-      this.lang = 'fr';
+      this.activeLang = 'fr';
     }
   }
 
   private setLang(lang: Lang) {
-    this.lang = lang;
+    this.activeLang = lang;
     try {
       localStorage.setItem(STORAGE_KEY, lang);
     } catch {}
@@ -36,17 +36,17 @@ export class LanguageSwitcher extends LitElement {
     return html`
       <div class="lang-switcher" role="group" aria-label="Language / Langue">
         <button
-          class="lang-btn ${this.lang === 'fr' ? 'active' : ''}"
+          class="lang-btn ${this.activeLang === 'fr' ? 'active' : ''}"
           @click=${() => this.setLang('fr')}
-          aria-pressed=${this.lang === 'fr'}
+          aria-pressed=${this.activeLang === 'fr'}
           title="Français"
         >
           FR
         </button>
         <button
-          class="lang-btn ${this.lang === 'en' ? 'active' : ''}"
+          class="lang-btn ${this.activeLang === 'en' ? 'active' : ''}"
           @click=${() => this.setLang('en')}
-          aria-pressed=${this.lang === 'en'}
+          aria-pressed=${this.activeLang === 'en'}
           title="English"
         >
           EN

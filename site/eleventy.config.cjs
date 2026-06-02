@@ -16,7 +16,6 @@ const filterSort = require('./eleventy-helpers/filters/filter-sort.cjs');
 const mdMarkdown = require('./eleventy-helpers/filters/md-markdown.cjs');
 const copyCodeButtonPlugin = require('./eleventy-helpers/plugins/copy-code-button.cjs');
 const markdownIt = require('markdown-it');
-const {compress} = require('eleventy-plugin-compress');
 
 const DEV = process.env.NODE_ENV === 'DEV';
 const jsDir = DEV ? 'lib' : 'build';
@@ -79,8 +78,9 @@ module.exports = function (eleventyConfig) {
     wrapper: 'div',
   });
 
-  // Compression
-  eleventyConfig.addPlugin(compress, {enabled: !DEV});
+  // eleventy-plugin-compress is intentionally disabled:
+  // it has a race condition with passthrough copy of JS/CSS files,
+  // producing noisy ENOENT errors. Vercel handles CDN-level gzip/brotli.
 
   // =========================================
   // Custom filters for articles/authors/labels
@@ -166,8 +166,8 @@ module.exports = function (eleventyConfig) {
       const m = m2 || m3;
       if (m) {
         const rawText = m[1]
-          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // unwrap markdown links
-          .replace(/[`*_~]/g, '') // strip inline formatting
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+          .replace(/[`*_~]/g, '')
           .trim();
         headings.push({
           level: m2 ? 2 : 3,

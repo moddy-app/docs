@@ -24,7 +24,8 @@ export class DocsSearch extends LitElement {
   @state() private query = '';
   @state() private results: SearchEntry[] = [];
   @state() private index: SearchEntry[] | null = null;
-  @state() private lang: Lang = 'fr';
+  @state() private activeLang: Lang = 'fr';
+  @state() private activeIndex = -1;
 
   private fetchIndex() {
     if (this.index !== null) return;
@@ -44,6 +45,7 @@ export class DocsSearch extends LitElement {
 
   private search(q: string) {
     this.query = q;
+    this.activeIndex = -1;
     if (!q.trim() || !this.index) {
       this.results = [];
       return;
@@ -64,7 +66,7 @@ export class DocsSearch extends LitElement {
 
   private onFocus() {
     this.open = true;
-    this.lang = this.getLang();
+    this.activeLang = this.getLang();
     this.fetchIndex();
   }
 
@@ -72,6 +74,7 @@ export class DocsSearch extends LitElement {
     if (!this.shadowRoot?.contains(e.relatedTarget as Node)) {
       setTimeout(() => {
         this.open = false;
+        this.activeIndex = -1;
       }, 150);
     }
   }
@@ -80,14 +83,33 @@ export class DocsSearch extends LitElement {
     this.search((e.target as HTMLInputElement).value);
   }
 
+  private onKeyDown(e: KeyboardEvent) {
+    if (!this.open || !this.query) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      this.activeIndex = Math.min(this.activeIndex + 1, this.results.length - 1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      this.activeIndex = Math.max(this.activeIndex - 1, -1);
+    } else if (e.key === 'Enter' && this.activeIndex >= 0) {
+      e.preventDefault();
+      const result = this.results[this.activeIndex];
+      if (result) window.location.href = result.url;
+    } else if (e.key === 'Escape') {
+      this.open = false;
+      this.activeIndex = -1;
+    }
+  }
+
   private clear() {
     this.query = '';
     this.results = [];
+    this.activeIndex = -1;
     this.shadowRoot?.querySelector('input')?.focus();
   }
 
   override render() {
-    const lang = this.lang || this.getLang();
+    const lang = this.activeLang || this.getLang();
     const placeholder = lang === 'fr' ? 'Rechercher...' : 'Search...';
     const noResults = lang === 'fr' ? 'Aucun résultat.' : 'No results.';
 
@@ -102,6 +124,7 @@ export class DocsSearch extends LitElement {
             .value=${this.query}
             @input=${this.onInput}
             @focus=${this.onFocus}
+            @keydown=${this.onKeyDown}
             aria-label="${placeholder}"
             aria-expanded=${this.open && this.query.length > 0}
             aria-autocomplete="list"
@@ -121,11 +144,12 @@ export class DocsSearch extends LitElement {
                 ${this.results.length === 0
                   ? html`<div class="search-empty">${noResults}</div>`
                   : this.results.map(
-                      (r) => html`
+                      (r, i) => html`
                         <a
                           href="${r.url}"
-                          class="search-result-item"
+                          class="search-result-item ${this.activeIndex === i ? 'search-result-active' : ''}"
                           role="option"
+                          aria-selected="${this.activeIndex === i}"
                         >
                           <span class="result-title">
                             ${lang === 'fr' ? r.title_fr : r.title_en}
@@ -243,9 +267,15 @@ export class DocsSearch extends LitElement {
       border-bottom: none;
     }
 
-    .search-result-item:hover {
+    .search-result-item:hover,
+    .search-result-active {
       background: var(--md-sys-color-surface-container);
       text-decoration: none;
+    }
+
+    .search-result-active {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: -2px;
     }
 
     .result-title {
