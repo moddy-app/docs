@@ -1,0 +1,16 @@
+{
+  "id": "v1-changelog",
+  "title": {
+    "fr": "v1.0 — Changelog Moddy",
+    "en": "v1.0 — Moddy Changelog"
+  },
+  "summary": {
+    "fr": "Découvrez toutes les nouveautés de la version 1.0 de Moddy : commandes de modération, système de bienvenue, logs et bien plus encore.",
+    "en": "Discover everything new in Moddy v1.0: moderation commands, welcome system, logs, and much more."
+  },
+  "authors": ["juthing"],
+  "createdAt": "2026-06-02",
+  "labels": ["changelog"],
+  "banner": null,
+  "referencing": 1
+}

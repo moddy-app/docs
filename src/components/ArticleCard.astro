@@ -1,0 +1,240 @@
+---
+import type { ArticleMeta, AuthorMeta, LabelMeta } from '../utils/content.ts';
+import type { Lang } from '../i18n/translations.ts';
+import { t } from '../i18n/translations.ts';
+
+interface Props {
+  article: ArticleMeta;
+  authors?: AuthorMeta[];
+  labels?: LabelMeta[];
+  lang: Lang;
+  featured?: boolean;
+}
+
+const { article, authors = [], labels = [], lang, featured = false } = Astro.props;
+
+const title = article.title[lang] ?? article.title['fr'];
+const summary = article.summary[lang] ?? article.summary['fr'];
+const date = new Date(article.createdAt).toLocaleDateString(
+  lang === 'fr' ? 'fr-FR' : 'en-US',
+  { year: 'numeric', month: 'long', day: 'numeric' }
+);
+---
+
+<a href={`/articles/${article.id}`} class:list={['article-card', { featured }]}>
+  {article.banner && (
+    <div class="card-banner">
+      <img src={`/content/articles/${article.id}/assets/${article.banner}`} alt="" loading="lazy" />
+    </div>
+  )}
+  {!article.banner && (
+    <div class="card-banner card-banner--placeholder">
+      <md-icon style="font-size:48px;color:var(--md-sys-color-primary)">article</md-icon>
+    </div>
+  )}
+
+  <div class="card-body">
+    <!-- Labels -->
+    {labels.length > 0 && (
+      <div class="card-labels">
+        {labels.map(label => (
+          <span class="card-label" style={`--label-color: ${label.color}`}>
+            {label.name}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <h3 class="card-title">{title}</h3>
+    <p class="card-summary">{summary}</p>
+
+    <div class="card-meta">
+      <!-- Authors -->
+      {authors.length > 0 && (
+        <div class="card-authors">
+          {authors.map(author => (
+            <span class="card-author">
+              {author.avatarUrl && author.avatarUrl !== 'DISCORD'
+                ? <img class="author-avatar-sm" src={author.avatarUrl} alt={author.username} />
+                : <span class="author-avatar-sm author-avatar-fallback">
+                    {author.username.charAt(0).toUpperCase()}
+                  </span>
+              }
+              <span class="author-name" data-discord-author={author.discordId || ''}>
+                {author.username}
+              </span>
+            </span>
+          ))}
+        </div>
+      )}
+      <span class="card-date">
+        <md-icon style="font-size:14px">calendar_today</md-icon>
+        {date}
+      </span>
+    </div>
+  </div>
+
+  <md-ripple></md-ripple>
+</a>
+
+<style>
+  .article-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--md-sys-color-surface-container);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transition: none;
+  }
+  .article-card:hover { text-decoration: none; }
+  .article-card.featured { grid-column: span 2; flex-direction: row; }
+
+  /* Banner — min-height 180px comme dans la maquette */
+  .card-banner {
+    width: 100%;
+    min-height: 180px;
+    overflow: hidden;
+    background: var(--md-sys-color-surface-container-high);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .article-card.featured .card-banner {
+    width: 40%;
+    min-height: 240px;
+  }
+  .card-banner img {
+    object-fit: cover;
+    object-position: 50% 50%;
+    width: 100%;
+    height: 100%;
+    transition: scale .3s cubic-bezier(.2,.29,.27,1.55);
+    scale: 1.01;
+  }
+  /* Gradient overlay comme dans la maquette */
+  .card-banner::after {
+    content: '';
+    background: linear-gradient(transparent 40%, color-mix(in srgb, var(--md-sys-color-surface-container) 50%, transparent) 100%);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .article-card:hover .card-banner img { scale: 1.05; }
+
+  /* Body — padding 24px comme dans la maquette */
+  .card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  /* Labels — border-radius 8px, pas pill */
+  .card-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+  .card-label {
+    font-size: .875rem;
+    font-weight: 500;
+    padding: 5px 11px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--label-color, var(--md-sys-color-primary)) 15%, var(--md-sys-color-surface-container-highest));
+    color: var(--label-color, var(--md-sys-color-primary));
+    line-height: 1.25rem;
+  }
+
+  /* Text */
+  .card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--md-sys-color-on-surface);
+    line-height: 1.35;
+    margin-bottom: .25em;
+  }
+  .article-card.featured .card-title { font-size: 1.25rem; }
+  .card-summary {
+    font-size: .9rem;
+    color: var(--md-sys-color-on-surface-variant);
+    line-height: 1.625;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    word-break: break-word;
+    word-wrap: break-word;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    max-width: 75%;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  /* Meta — margin-top auto = pousser vers le bas */
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 1em;
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+  }
+  /* Avatars empilés comme dans la maquette (flex-direction: row-reverse + margin négatif) */
+  .card-authors {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    padding-right: 14px;
+  }
+  .card-author {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .8rem;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  .author-avatar-sm {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--md-sys-color-surface-container);
+    margin-right: -14px;
+  }
+  .author-avatar-fallback {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .72rem;
+    font-weight: 700;
+  }
+  .author-name { display: none; } /* Noms masqués, on montre seulement avatars */
+  .card-date {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: .78rem;
+    color: var(--md-sys-color-on-surface-variant);
+    font-family: var(--md-sys-typescale-label-medium-font);
+    flex-shrink: 0;
+    opacity: .75;
+  }
+
+  @media (max-width: 768px) {
+    .article-card.featured { flex-direction: column; grid-column: span 1; }
+    .article-card.featured .card-banner { width: 100%; aspect-ratio: 16/9; }
+  }
+</style>

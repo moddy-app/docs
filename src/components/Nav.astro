@@ -1,0 +1,414 @@
+---
+import type { Lang } from '../i18n/translations.ts';
+import { t } from '../i18n/translations.ts';
+
+interface Props {
+  lang: Lang;
+  currentPath?: string;
+}
+
+const { lang, currentPath = '' } = Astro.props;
+---
+
+<header class="nav-bar" role="banner">
+  <div class="nav-inner">
+
+    <!-- Logo -->
+    <a href="/" class="nav-logo" aria-label="Moddy Docs — Accueil">
+      <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="10" fill="var(--md-sys-color-primary)"/>
+        <path d="M8 22V12l8 6 8-6v10" stroke="var(--md-sys-color-on-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="nav-logo-text">Moddy Docs</span>
+    </a>
+
+    <!-- Desktop nav links -->
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="/" class:list={['nav-link', { active: currentPath === '/' }]}>
+        {t(lang, 'nav.home')}
+      </a>
+    </nav>
+
+    <div class="nav-actions">
+      <!-- Search trigger -->
+      <md-icon-button id="search-trigger" aria-label={t(lang, 'nav.search')}>
+        <md-icon>search</md-icon>
+      </md-icon-button>
+
+      <!-- Language menu -->
+      <div style="position:relative">
+        <md-icon-button id="lang-trigger" aria-label={t(lang, 'nav.lang')}>
+          <md-icon>language</md-icon>
+        </md-icon-button>
+        <md-menu id="lang-menu" anchor="lang-trigger" positioning="fixed">
+          <md-menu-item data-lang-value="fr" id="lang-fr">
+            <md-icon slot="start">check</md-icon>
+            <div slot="headline">Français</div>
+          </md-menu-item>
+          <md-menu-item data-lang-value="en" id="lang-en">
+            <md-icon slot="start">check</md-icon>
+            <div slot="headline">English</div>
+          </md-menu-item>
+        </md-menu>
+      </div>
+
+      <!-- Theme toggle -->
+      <md-icon-button id="theme-toggle" aria-label={t(lang, 'nav.theme.light')}>
+        <md-icon id="theme-icon">dark_mode</md-icon>
+      </md-icon-button>
+
+      <!-- Mobile menu trigger -->
+      <md-icon-button id="mobile-menu-trigger" class="mobile-only" aria-label="Menu">
+        <md-icon>menu</md-icon>
+      </md-icon-button>
+    </div>
+  </div>
+
+  <!-- Mobile menu drawer -->
+  <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+    <nav>
+      <a href="/" class="mobile-nav-link">
+        <md-icon>home</md-icon>
+        {t(lang, 'nav.home')}
+      </a>
+    </nav>
+    <md-divider></md-divider>
+    <div class="mobile-menu-lang">
+      <button class="lang-btn" data-lang-value="fr">🇫🇷 Français</button>
+      <button class="lang-btn" data-lang-value="en">🇬🇧 English</button>
+    </div>
+  </div>
+
+  <!-- Search Dialog -->
+  <md-dialog id="search-dialog" aria-label={t(lang, 'nav.search')}>
+    <div slot="headline" class="search-headline">
+      <md-icon>search</md-icon>
+      <span>{t(lang, 'nav.search')}</span>
+    </div>
+    <div slot="content" class="search-content">
+      <md-outlined-text-field
+        id="search-input"
+        type="search"
+        placeholder={t(lang, 'nav.search.placeholder')}
+        style="width:100%"
+      >
+        <md-icon slot="leading-icon">search</md-icon>
+      </md-outlined-text-field>
+      <div id="search-results" class="search-results" role="listbox" aria-label="Résultats de recherche"></div>
+    </div>
+    <div slot="actions">
+      <md-text-button id="search-close">{t(lang, 'search.close')}</md-text-button>
+    </div>
+  </md-dialog>
+</header>
+
+<style>
+  /* ── Nav Bar ────────────────────────────────────────────────────── */
+  .nav-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-height);
+    background: var(--md-sys-color-surface);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    z-index: 100;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: color-mix(in srgb, var(--md-sys-color-surface) 92%, transparent);
+  }
+
+  .nav-inner {
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 var(--page-padding);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Logo */
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--md-sys-color-on-surface);
+    flex-shrink: 0;
+  }
+  .nav-logo:hover { text-decoration: none; opacity: .8; }
+  .nav-logo-icon { width: 32px; height: 32px; border-radius: 8px; }
+  .nav-logo-text {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    color: var(--md-sys-color-on-surface);
+  }
+
+  /* Desktop links */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 8px;
+    flex: 1;
+  }
+  .nav-link {
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: .9rem;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface-variant);
+    text-decoration: none;
+    transition: background .15s, color .15s;
+  }
+  .nav-link:hover {
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    text-decoration: none;
+  }
+  .nav-link.active {
+    color: var(--md-sys-color-primary);
+    background: var(--md-sys-color-primary-container);
+  }
+
+  /* Actions */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+  }
+
+  .mobile-only { display: none; }
+
+  /* ── Mobile Menu ─────────────────────────────────────────────────── */
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--md-sys-color-surface-container);
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    position: absolute;
+    top: var(--nav-height);
+    left: 0; right: 0;
+    z-index: 99;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform .25s ease, opacity .2s;
+  }
+  .mobile-menu.open {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 8px;
+    border-radius: 12px;
+    color: var(--md-sys-color-on-surface);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .mobile-nav-link:hover { background: var(--md-sys-color-surface-container-high); }
+  .mobile-menu-lang {
+    display: flex;
+    gap: 8px;
+    padding: 8px 0;
+  }
+  .lang-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 12px;
+    background: none;
+    color: var(--md-sys-color-on-surface);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: .9rem;
+    transition: background .15s;
+  }
+  .lang-btn:hover { background: var(--md-sys-color-surface-container-high); }
+  .lang-btn.active {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border-color: var(--md-sys-color-primary);
+  }
+
+  /* ── Search Dialog ───────────────────────────────────────────────── */
+  .search-headline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .search-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: min(500px, 85vw);
+    padding-top: 4px;
+  }
+  .search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 380px;
+    overflow-y: auto;
+  }
+  .search-result-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--md-sys-color-on-surface);
+    transition: background .1s;
+  }
+  .search-result-item:hover { background: var(--md-sys-color-surface-container-high); }
+  .search-result-title { font-weight: 600; font-size: .95rem; }
+  .search-result-summary { font-size: .82rem; color: var(--md-sys-color-on-surface-variant); }
+
+  /* ── Responsive ──────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .mobile-only { display: flex; }
+    .mobile-menu { display: flex; }
+  }
+
+  /* Language menu icons */
+  #lang-fr md-icon, #lang-en md-icon {
+    opacity: 0;
+    transition: opacity .1s;
+  }
+  #lang-fr.active md-icon, #lang-en.active md-icon {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  // ── Theme toggle ────────────────────────────────────────────────
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+
+  function applyTheme(theme: string) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('moddy-theme', theme);
+    if (themeIcon) themeIcon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+    const metaTheme = document.getElementById('meta-theme-color') as HTMLMetaElement;
+    if (metaTheme) {
+      const primary = getComputedStyle(document.documentElement)
+        .getPropertyValue('--md-sys-color-primary').trim();
+      if (primary) metaTheme.content = primary;
+    }
+  }
+
+  // Init
+  const initTheme = localStorage.getItem('moddy-theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(initTheme);
+
+  themeToggle?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // ── Language switching ──────────────────────────────────────────
+  function applyLang(lang: string) {
+    document.documentElement.lang = lang;
+    localStorage.setItem('moddy-lang', lang);
+    // Show/hide elements with [data-lang]
+    document.querySelectorAll<HTMLElement>('[data-lang]').forEach(el => {
+      el.style.display = el.dataset.lang === lang ? '' : 'none';
+    });
+    // Update checkmarks
+    document.getElementById('lang-fr')?.classList.toggle('active', lang === 'fr');
+    document.getElementById('lang-en')?.classList.toggle('active', lang === 'en');
+    // Update mobile lang buttons
+    document.querySelectorAll<HTMLElement>('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.langValue === lang);
+    });
+  }
+
+  const initLang = localStorage.getItem('moddy-lang') ||
+    (navigator.language.startsWith('fr') ? 'fr' : 'en');
+  applyLang(initLang);
+
+  // Language menu
+  const langTrigger = document.getElementById('lang-trigger');
+  const langMenu = document.getElementById('lang-menu') as any;
+  langTrigger?.addEventListener('click', () => { langMenu.open = !langMenu.open; });
+  document.querySelectorAll<HTMLElement>('[data-lang-value]').forEach(item => {
+    item.addEventListener('click', () => {
+      const val = item.dataset.langValue;
+      if (val) applyLang(val);
+      if (langMenu) langMenu.open = false;
+    });
+  });
+
+  // ── Search ──────────────────────────────────────────────────────
+  const searchTrigger = document.getElementById('search-trigger');
+  const searchDialog = document.getElementById('search-dialog') as any;
+  const searchClose = document.getElementById('search-close');
+  const searchInput = document.getElementById('search-input') as any;
+  const searchResults = document.getElementById('search-results');
+
+  searchTrigger?.addEventListener('click', () => {
+    searchDialog?.show();
+    setTimeout(() => searchInput?.focus(), 100);
+  });
+  searchClose?.addEventListener('click', () => searchDialog?.close());
+  searchDialog?.addEventListener('cancel', () => searchDialog?.close());
+
+  // Keyboard shortcut: / or Ctrl+K
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if ((e.key === '/' || (e.ctrlKey && e.key === 'k')) && !searchDialog?.open) {
+      e.preventDefault();
+      searchDialog?.show();
+      setTimeout(() => searchInput?.focus(), 100);
+    }
+    if (e.key === 'Escape' && searchDialog?.open) searchDialog?.close();
+  });
+
+  // Search index (built from window.__SEARCH_INDEX__ injected by pages)
+  let searchIndex: Array<{ id: string; title: string; summary: string; url: string; labels: string[] }> = [];
+
+  // Fetch search index lazily
+  async function loadIndex() {
+    if (searchIndex.length > 0) return;
+    try {
+      const res = await fetch('/search-index.json');
+      if (res.ok) searchIndex = await res.json();
+    } catch {}
+  }
+
+  searchInput?.addEventListener('input', async (e: Event) => {
+    const query = (e.target as HTMLInputElement).value.trim().toLowerCase();
+    if (!searchResults) return;
+    if (!query) { searchResults.innerHTML = ''; return; }
+    await loadIndex();
+    const results = searchIndex.filter(item =>
+      item.title.toLowerCase().includes(query) ||
+      item.summary.toLowerCase().includes(query)
+    ).slice(0, 8);
+    searchResults.innerHTML = results.length === 0
+      ? `<p style="padding:16px;color:var(--md-sys-color-on-surface-variant);font-size:.9rem;">Aucun résultat pour « ${query} »</p>`
+      : results.map(r => `
+        <a class="search-result-item" href="${r.url}">
+          <span class="search-result-title">${r.title}</span>
+          <span class="search-result-summary">${r.summary}</span>
+        </a>
+      `).join('');
+  });
+
+  // ── Mobile menu ─────────────────────────────────────────────────
+  const mobileMenuTrigger = document.getElementById('mobile-menu-trigger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  mobileMenuTrigger?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('open');
+    const isOpen = mobileMenu?.classList.contains('open');
+    mobileMenu?.setAttribute('aria-hidden', String(!isOpen));
+  });
+</script>
