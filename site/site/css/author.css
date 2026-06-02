@@ -1,0 +1,131 @@
+/* Author page */
+.author-page {
+  max-width: 100%;
+}
+
+.author-hero {
+  min-height: 220px;
+  background: var(--md-sys-color-primary-container);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.author-hero-inner {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px var(--catalog-spacing-xl);
+}
+
+.author-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.author-avatar-large {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--md-sys-color-surface);
+  background: var(--md-sys-color-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.author-avatar-placeholder .material-symbols-outlined {
+  font-size: 48px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.author-avatar-decoration {
+  position: absolute;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  pointer-events: none;
+}
+
+.author-info {
+  flex: 1;
+}
+
+.author-username {
+  font-size: 32px;
+  margin: 0 0 4px;
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.author-post {
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.8;
+  font-weight: 600;
+}
+
+.author-bio {
+  font-size: 15px;
+  margin: 0 0 16px;
+  color: var(--md-sys-color-on-surface);
+  max-width: 560px;
+  line-height: 1.5;
+}
+
+.author-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.author-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  transition: background 0.15s;
+}
+
+.author-link:hover {
+  background: var(--md-sys-color-surface-container);
+  text-decoration: none;
+}
+
+.author-link-icon {
+  display: flex;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+}
+
+.author-link-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.author-articles {
+  padding: var(--catalog-spacing-xl) 0 0;
+}
+
+@media (max-width: 600px) {
+  .author-hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .author-username {
+    font-size: 24px;
+  }
+}

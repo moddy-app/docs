@@ -1,11 +1,9 @@
-/**
- * @license
- * Copyright 2023 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
+/* Home page extra styles (beyond global.css) */
 
- h1,
-.subtitle {
-  text-align: left;
-  margin-block-start: 0;
+.page-articles {
+  padding-bottom: var(--catalog-spacing-xl);
+}
+
+.page-collections {
+  padding-bottom: var(--catalog-spacing-xl);
 }
