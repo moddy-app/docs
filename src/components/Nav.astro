@@ -9,13 +9,9 @@ const { slug = 'home' } = Astro.props;
 <nav class="nav-bar" id="site-nav">
   <div class="nav-logo">
     <a href="/" class="nav-logo-link">
-      <svg width="26" height="26" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect x="10" y="20" width="80" height="55" rx="12" ry="12"/>
-        <circle cx="35" cy="47" r="7" fill="var(--md-sys-color-surface)"/>
-        <circle cx="65" cy="47" r="7" fill="var(--md-sys-color-surface)"/>
-        <path d="M10 65 Q50 90 90 65" stroke="var(--md-sys-color-surface)" stroke-width="4" fill="none"/>
-        <rect x="30" y="75" width="8" height="12" rx="3" fill="currentColor"/>
-        <rect x="62" y="75" width="8" height="12" rx="3" fill="currentColor"/>
+      <svg width="24" height="24" viewBox="0 0 190 190" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M142.39 0H94.9335L47.4565 47.4564H0V94.9129H94.9335L142.39 47.4564V0Z" fill="currentColor"/>
+        <path d="M94.9335 94.9129L47.4568 142.39V189.846H94.9339L142.39 142.39H189.847V94.9128L94.9335 94.9129Z" fill="currentColor"/>
       </svg>
       <span>Moddy Docs</span>
     </a>
@@ -51,14 +47,15 @@ const { slug = 'home' } = Astro.props;
 <style>
   .nav-bar {
     box-sizing: border-box;
-    background-color: var(--md-sys-color-background);
-    z-index: 5;
+    background-color: var(--md-sys-color-surface);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    z-index: 100;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
     height: 64px;
-    padding: 0 1em;
+    padding: 0 2em;
     display: flex;
     position: fixed;
     top: 0;
@@ -69,22 +66,24 @@ const { slug = 'home' } = Astro.props;
   .nav-logo-link {
     box-sizing: border-box;
     width: fit-content;
-    color: var(--md-sys-color-on-surface);
+    color: var(--md-sys-color-primary);
     user-select: none;
     flex-direction: row;
-    gap: 8px;
+    gap: 10px;
     text-decoration: none;
     display: flex;
     align-items: center;
-    font-weight: 500;
-    font-size: 1rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
   }
-  .nav-logo-link:hover { text-decoration: none; }
+  .nav-logo-link:hover { text-decoration: none; opacity: 0.85; }
 
   .nav-sep {
     user-select: none;
-    color: var(--md-sys-color-on-surface-variant);
-    font-size: 1rem;
+    color: var(--md-sys-color-outline-variant);
+    font-size: 1.1rem;
+    font-weight: 300;
   }
 
   .nav-slug {
@@ -93,7 +92,7 @@ const { slug = 'home' } = Astro.props;
     font-weight: 500;
     overflow: hidden;
     color: var(--md-sys-color-on-surface-variant);
-    font-size: .9rem;
+    font-size: 1rem;
     max-width: 300px;
   }
 

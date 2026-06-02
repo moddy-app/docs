@@ -62,4 +62,4 @@ Si Moddy ne répond pas :
 2. Vérifiez qu'il n'est pas `timeout` ou `banni`
 3. Rejoignez notre serveur Discord et ouvrez un ticket de support
 
-*Bienvenue dans la communauté Moddy !* 🎉
+*Bienvenue dans la communauté Moddy !*

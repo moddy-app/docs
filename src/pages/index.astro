@@ -11,26 +11,31 @@ const allLabels = await getAllLabels();
 const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
 ---
 
-<Base title="Accueil" lang="fr" themeColor="#5B7BFA">
+<Base title="Accueil" lang="fr" themeColor="#0046F8">
   <Nav slot="nav" slug="home" />
 
-  <div class="xTOiZi xtspfm">
+  <div class="page-wrapper">
+
     <!-- Editorial intro -->
-    <div class="v504Ku">
-      <div class="wmvtgi">
-        <h1>Moddy Docs</h1>
-        <p>
-          Documentation officielle de Moddy, le bot Discord conçu pour votre communauté.
-          Retrouvez ici toutes les informations pour bien démarrer et tirer le meilleur parti de Moddy.
-        </p>
+    <div class="intro-section">
+      <div class="intro-logo" aria-hidden="true">
+        <svg width="48" height="48" viewBox="0 0 190 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M142.39 0H94.9335L47.4565 47.4564H0V94.9129H94.9335L142.39 47.4564V0Z" fill="#0046F8"/>
+          <path d="M94.9335 94.9129L47.4568 142.39V189.846H94.9339L142.39 142.39H189.847V94.9128L94.9335 94.9129Z" fill="#0046F8"/>
+        </svg>
       </div>
+      <h1 class="intro-title">Moddy Docs</h1>
+      <p class="intro-desc">
+        Documentation officielle de Moddy, le bot Discord conçu pour votre communauté.
+        Retrouvez ici toutes les informations pour bien démarrer et tirer le meilleur parti de Moddy.
+      </p>
     </div>
 
     <!-- Recent articles -->
-    <div class="v504Ku">
-      <div class="xYSxXU">
+    <div class="content-section">
+      <div class="section-header">
         <md-icon aria-hidden="true">history</md-icon>
-        <h1>Articles récents</h1>
+        <h2>Articles récents</h2>
         <md-text-button trailing-icon href="/articles" style="margin-left:auto">
           <md-icon slot="icon">arrow_forward</md-icon>
           Voir tout
@@ -38,7 +43,7 @@ const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
       </div>
 
       {publicArticles.length > 0 ? (
-        <div class="wUTVKK">
+        <div class="articles-grid">
           {publicArticles.slice(0, 9).map(article => (
             <ArticleCard
               article={article}
@@ -49,77 +54,87 @@ const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
         </div>
       ) : (
         <div class="empty-state">
-          <md-icon style="font-size:48px;color:var(--md-sys-color-outline)">article</md-icon>
+          <md-icon style="font-size:56px;color:var(--md-sys-color-outline)">article</md-icon>
           <p>Aucun article pour le moment.</p>
         </div>
       )}
     </div>
+
   </div>
 </Base>
 
 <style>
-  /* ── Content wrapper ─────────────────────────────────────── */
-  .xTOiZi {
-    --xs2rQG: min(1200px, calc(100vw - 2em));
+  .page-wrapper {
+    display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    display: flex;
-  }
-
-  .xtspfm {
-    gap: 1em;
-    padding-top: 1em;
-  }
-
-  .v504Ku {
-    max-width: var(--xs2rQG);
-    width: 100%;
-    overflow: hidden;
+    gap: 3em;
+    padding: 3em 0 0;
   }
 
   /* ── Editorial intro ─────────────────────────────────────── */
-  .wmvtgi h1 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--md-sys-color-on-surface);
-    margin-bottom: .5em;
+  .intro-section {
+    width: 100%;
+    max-width: var(--page-max-width);
+    padding: 0 2em;
   }
 
-  .wmvtgi p {
-    font-size: 1rem;
+  .intro-logo {
+    margin-bottom: 1.25em;
+  }
+
+  .intro-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: var(--md-sys-color-on-surface);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 0.6em;
+  }
+
+  .intro-desc {
+    font-size: 1.1rem;
     color: var(--md-sys-color-on-surface-variant);
-    line-height: 1.6;
-    max-width: 640px;
+    line-height: 1.7;
+    max-width: 600px;
+  }
+
+  /* ── Content section ─────────────────────────────────────── */
+  .content-section {
+    width: 100%;
+    max-width: var(--page-max-width);
+    padding: 0 2em;
   }
 
   /* ── Section header ──────────────────────────────────────── */
-  .xYSxXU {
+  .section-header {
+    display: flex;
     align-items: center;
     gap: 10px;
-    width: 100%;
-    display: flex;
-    margin-bottom: 1em;
+    margin-bottom: 1.5em;
   }
 
-  .xYSxXU h1 {
-    font-size: 1.25rem;
+  /* icon same color as title */
+  .section-header md-icon {
+    color: var(--md-sys-color-on-surface);
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+
+  .section-header h2 {
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--md-sys-color-on-surface);
-  }
-
-  .xYSxXU md-icon {
-    color: var(--md-sys-color-primary);
+    letter-spacing: -0.01em;
+    line-height: 1;
   }
 
   /* ── Articles grid ───────────────────────────────────────── */
-  .wUTVKK {
-    --vczvgq: min(375px, calc(100vw - 2em));
-    grid-template-columns: repeat(auto-fill, minmax(var(--vczvgq), 1fr));
-    justify-items: center;
-    gap: 1em;
-    margin-top: 1em;
+  .articles-grid {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(410px, 100%), 1fr));
+    gap: 20px;
   }
 
   /* ── Empty state ─────────────────────────────────────────── */
@@ -129,8 +144,9 @@ const labelsMap = Object.fromEntries(allLabels.map(l => [l.id, l]));
     align-items: center;
     justify-content: center;
     gap: 16px;
-    min-height: 200px;
+    min-height: 240px;
     color: var(--md-sys-color-on-surface-variant);
     text-align: center;
+    font-size: 1.05rem;
   }
 </style>

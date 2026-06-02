@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import { getAllArticles, getArticle, getArticleContent, getAuthor, getLabel } from '../../utils/content.ts';
-import { fetchDiscordUser, accentColorToHex } from '../../utils/discord.ts';
+import { fetchDiscordUser } from '../../utils/discord.ts';
 import { marked } from 'marked';
 
 export async function getStaticPaths() {
@@ -63,117 +63,98 @@ const bannerUrl = meta.banner
 >
   <Nav slot="nav" slug={id} />
 
-  <div class="xTOiZi xAs6Ae">
-    <!-- Article header — height 512px like maquette -->
-    <div class="yzxB9O" style={`--z8hk0y: ${themeColor}`}>
-      <div class="voRrnK">
-        {bannerUrl && <img draggable="false" src={bannerUrl} fetchpriority="high" alt="Article Header" />}
+  <div class="page-wrapper">
+
+    <!-- Article banner -->
+    <div class="banner-section">
+      <div class="banner-card" style={`background-color: ${themeColor}`}>
+        {bannerUrl && <img draggable="false" src={bannerUrl} fetchpriority="high" alt="" />}
+        <div class="banner-gradient"></div>
       </div>
     </div>
 
     <!-- Title -->
-    <div class="v504Ku xXvHqe">
+    <div class="content-col title-block">
       <h1 data-lang="fr">{titleFr}</h1>
       <h1 data-lang="en" style="display:none">{titleEn}</h1>
     </div>
 
     <!-- Date + summary -->
-    <div class="v504Ku zR1x8w">
-      <div>
-        <span class="article-date">{dateShort}</span>
-      </div>
+    <div class="content-col meta-row">
+      <span class="article-date">{dateShort}</span>
       <span class="article-summary" data-lang="fr">{summaryFr}</span>
       <span class="article-summary" data-lang="en" style="display:none">{summaryEn}</span>
     </div>
 
-    <!-- Authors + share -->
+    <!-- Authors -->
     {authors.length > 0 && (
-      <div class="v504Ku wEaTMe">
-        <div class="wojHNc">
-          <div class="wrmXco">
-            {authors.map(author => (
-              <a href={`/authors/${author.id}`} class="wACuEA" title={author.username}>
-                <md-ripple></md-ripple>
+      <div class="content-col authors-row">
+        <div class="authors-stack">
+          {authors.map(author => (
+            <a href={`/authors/${author.id}`} class="author-avatar-wrap" title={author.username}>
+              <md-ripple></md-ripple>
+              <div class="author-avatar-clip">
                 {author.resolvedAvatarUrl
-                  ? <img draggable="false" aria-label={`${author.username}'s Avatar`} src={author.resolvedAvatarUrl} alt={`${author.username}'s Avatar`} />
+                  ? <img draggable="false" src={author.resolvedAvatarUrl} alt={`${author.username}'s avatar`} />
                   : <span class="author-fallback">{author.username.charAt(0).toUpperCase()}</span>
                 }
-                {author.resolvedAvatarDecoration && (
-                  <img class="author-deco" src={author.resolvedAvatarDecoration} alt="" aria-hidden="true" />
-                )}
-              </a>
-            ))}
-          </div>
-          {authors[0] && (
-            <div class="xSRyrW">
-              <div class="wndRmO">
-                <a href={`/authors/${authors[0].id}`}>{authors[0].username}</a>
               </div>
-              {authors[0].role?.['fr'] && <span>{authors[0].role['fr']}</span>}
-            </div>
-          )}
+              {author.resolvedAvatarDecoration && (
+                <img class="author-deco" src={author.resolvedAvatarDecoration} alt="" aria-hidden="true" />
+              )}
+            </a>
+          ))}
         </div>
+        {authors[0] && (
+          <div class="author-info">
+            <a href={`/authors/${authors[0].id}`} class="author-name">{authors[0].username}</a>
+            {authors[0].role?.['fr'] && <span class="author-role">{authors[0].role['fr']}</span>}
+          </div>
+        )}
       </div>
     )}
 
     <!-- Article content -->
-    <div class="v504Ku xkQrFg">
-      <div class="wmvtgi" data-lang="fr" set:html={frHtml}></div>
-      <div class="wmvtgi" data-lang="en" style="display:none" set:html={enHtml}></div>
+    <div class="content-col prose-block">
+      <div class="prose" data-lang="fr" set:html={frHtml}></div>
+      <div class="prose" data-lang="en" style="display:none" set:html={enHtml}></div>
     </div>
   </div>
 </Base>
 
 <style>
-  /* ── Content wrapper ──────────────────────────────────────── */
-  .xTOiZi {
-    --xs2rQG: min(1200px, calc(100vw - 2em));
+  .page-wrapper {
+    --content-w: var(--page-max-width);
+    display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    display: flex;
+    padding: 2em 0 0;
+    gap: 0;
   }
 
-  .xAs6Ae {
-    --yPh9aE: 100%;
-  }
-
-  .v504Ku {
-    max-width: var(--xs2rQG);
+  .content-col {
+    max-width: var(--content-w);
     width: 100%;
-    overflow: hidden;
+    padding: 0 1.5em;
   }
 
-  /* ── Article header ───────────────────────────────────────── */
-  .yzxB9O {
-    --header-w: 1500px;
-    --header-h: 512px;
-    margin-top: 1em;
+  /* ── Banner ──────────────────────────────────────────────── */
+  .banner-section {
     width: 100%;
-    height: var(--header-h);
-    justify-content: center;
-    display: flex;
+    max-width: min(1400px, calc(100vw - 2em));
+    padding: 0 1.5em;
+  }
+
+  .banner-card {
+    width: 100%;
+    height: clamp(280px, 35vw, 480px);
+    border-radius: 32px;
     position: relative;
-  }
-
-  @media (max-width: 1650px) {
-    .yzxB9O { --header-w: min(1300px, calc(100vw - 8em)); --header-h: 445px; }
-  }
-  @media (max-width: 900px) {
-    .yzxB9O { --header-h: 300px; }
-  }
-
-  .voRrnK {
-    max-width: min(var(--header-w), 100%);
-    background-color: var(--z8hk0y, var(--md-sys-color-surface-container-high));
-    width: 100%;
-    height: var(--header-h);
-    border-radius: 48px;
-    position: absolute;
     overflow: hidden;
   }
 
-  .voRrnK img {
+  .banner-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -181,208 +162,201 @@ const bannerUrl = meta.banner
     display: block;
   }
 
-  /* Gradient at bottom of banner */
-  .voRrnK::after {
-    content: '';
+  .banner-gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(transparent 50%, color-mix(in srgb, var(--md-sys-color-background) 60%, transparent) 100%);
-    pointer-events: none;
+    background: linear-gradient(transparent 45%, color-mix(in srgb, var(--md-sys-color-background) 55%, transparent) 100%);
   }
 
   /* ── Title ───────────────────────────────────────────────── */
-  .xXvHqe {
-    margin-top: 2em;
+  .title-block {
+    margin-top: 2.5em;
   }
 
-  .xXvHqe h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 600;
-    line-height: 1.15;
+  .title-block h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.12;
     text-wrap: balance;
     color: var(--md-sys-color-on-background);
-    letter-spacing: -.02em;
-    margin-block: .5em 0;
-    margin-inline: auto;
+    letter-spacing: -.03em;
   }
 
   /* ── Date + summary ──────────────────────────────────────── */
-  .zR1x8w {
-    flex-direction: row;
-    gap: 1em;
-    margin-top: 1em;
+  .meta-row {
     display: flex;
+    flex-direction: row;
+    gap: 1.5em;
+    margin-top: 1.25em;
+    align-items: baseline;
     flex-wrap: wrap;
   }
 
   @media (max-width: 640px) {
-    .zR1x8w { flex-direction: column; }
+    .meta-row { flex-direction: column; gap: .5em; }
   }
 
   .article-date {
     font-weight: 600;
-    font-size: .9rem;
+    font-size: .875rem;
     color: var(--md-sys-color-on-surface-variant);
     white-space: nowrap;
+    letter-spacing: .03em;
   }
 
   .article-summary {
-    font-size: .95rem;
+    font-size: 1rem;
     color: var(--md-sys-color-on-surface-variant);
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
-  /* ── Authors row ─────────────────────────────────────────── */
-  .wEaTMe {
-    flex-direction: row;
-    gap: 1em;
-    margin-top: 1em;
-    margin-bottom: 2em;
-    display: flex;
-  }
-
-  .wojHNc {
-    flex-direction: row;
-    gap: 12px;
+  /* ── Authors ─────────────────────────────────────────────── */
+  .authors-row {
     display: flex;
     align-items: center;
+    gap: 14px;
+    margin-top: 1.5em;
+    margin-bottom: 2.5em;
   }
 
-  /* Stacked avatars row-reverse like maquette */
-  .wrmXco {
-    user-select: none;
+  .authors-stack {
+    display: flex;
     flex-direction: row-reverse;
     padding-right: 22px;
-    display: flex;
-    align-items: center;
   }
 
-  .wACuEA {
-    color: inherit;
-    border: 3px solid var(--md-sys-color-surface);
-    border-radius: 9999px;
-    width: 42px;
-    height: 42px;
-    max-height: 42px;
-    margin-right: -22px;
-    text-decoration: none;
+  /* Avatar wrapper — no overflow so decoration can bleed out */
+  .author-avatar-wrap {
     position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--md-sys-color-surface-container);
+    width: 44px;
+    height: 44px;
+    margin-right: -22px;
     flex-shrink: 0;
+    display: block;
+    text-decoration: none;
   }
 
-  .wACuEA img {
+  /* The circular clip for the avatar image */
+  .author-avatar-clip {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 3px solid var(--md-sys-color-background);
+    overflow: hidden;
+    background: var(--md-sys-color-surface-container);
+    position: relative;
+    z-index: 1;
+  }
+
+  .author-avatar-clip img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
+    display: block;
   }
 
   .author-fallback {
-    font-weight: 700;
-    font-size: .9rem;
-    color: var(--md-sys-color-on-primary-container);
-    background: var(--md-sys-color-primary-container);
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    font-weight: 700;
+    font-size: .85rem;
+    color: var(--md-sys-color-on-primary-container);
+    background: var(--md-sys-color-primary-container);
   }
 
+  /* Decoration — outside the clip, overlays on top */
   .author-deco {
     position: absolute;
-    inset: -4px;
-    width: calc(100% + 8px);
-    height: calc(100% + 8px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 140%;
     pointer-events: none;
+    z-index: 2;
   }
 
-  .xSRyrW {
+  .author-info {
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    display: flex;
   }
 
-  .wndRmO {
+  .author-name {
     font-weight: 600;
-    font-size: .95rem;
-  }
-
-  .wndRmO a {
+    font-size: 1rem;
     color: var(--md-sys-color-on-surface);
     text-decoration: none;
   }
-  .wndRmO a:hover { text-decoration: underline; }
+  .author-name:hover { text-decoration: underline; }
 
-  .xSRyrW > span {
-    font-size: .8rem;
+  .author-role {
+    font-size: .825rem;
     color: var(--md-sys-color-on-surface-variant);
   }
 
-  /* ── Article content ─────────────────────────────────────── */
-  .xkQrFg {
-    margin-bottom: 10em;
+  /* ── Prose content ───────────────────────────────────────── */
+  .prose-block {
+    margin-bottom: 8em;
+    margin-top: 0;
   }
 
-  .wmvtgi {
+  .prose {
     color: var(--md-sys-color-on-surface);
-    line-height: 1.625;
-    font-size: 1rem;
+    line-height: 1.75;
+    font-size: 1.05rem;
     word-wrap: break-word;
   }
 
-  /* Prose typography */
-  .wmvtgi :global(h1) { font-size: 2rem; font-weight: 800; margin: 2rem 0 1rem; letter-spacing: -.02em; }
-  .wmvtgi :global(h2) {
-    font-size: 1.5rem; font-weight: 700; margin: 2.5rem 0 1rem;
-    padding-bottom: .5rem; border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  .prose :global(h1) { font-size: 2rem; font-weight: 800; margin: 2.5rem 0 1rem; letter-spacing: -.025em; }
+  .prose :global(h2) {
+    font-size: 1.5rem; font-weight: 700; margin: 3rem 0 1rem;
+    padding-bottom: .6rem; border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    letter-spacing: -.015em;
   }
-  .wmvtgi :global(h3) { font-size: 1.2rem; font-weight: 700; margin: 2rem 0 .75rem; }
-  .wmvtgi :global(h4) { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
-  .wmvtgi :global(p) { margin: 1rem 0; }
-  .wmvtgi :global(a) { color: var(--md-sys-color-primary); text-decoration: underline; text-underline-offset: 3px; }
-  .wmvtgi :global(ul), .wmvtgi :global(ol) { padding-left: 1.5rem; margin: 1rem 0; }
-  .wmvtgi :global(li) { margin: .4rem 0; }
-  .wmvtgi :global(blockquote) {
+  .prose :global(h3) { font-size: 1.2rem; font-weight: 700; margin: 2.25rem 0 .75rem; }
+  .prose :global(h4) { font-size: 1.05rem; font-weight: 600; margin: 1.75rem 0 .5rem; }
+  .prose :global(p) { margin: 1.1rem 0; }
+  .prose :global(a) { color: var(--md-sys-color-primary); text-decoration: underline; text-underline-offset: 3px; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 1.75rem; margin: 1rem 0; }
+  .prose :global(li) { margin: .5rem 0; }
+  .prose :global(blockquote) {
     border-left: 3px solid var(--md-sys-color-primary);
-    padding: .75rem 1rem;
-    margin: 1.5rem 0;
+    padding: .9rem 1.25rem;
+    margin: 1.75rem 0;
     background: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
-    border-radius: 0 8px 8px 0;
+    border-radius: 0 12px 12px 0;
   }
-  .wmvtgi :global(code) {
+  .prose :global(code) {
     font-family: 'Google Sans Code', monospace;
     font-size: .875em;
     background: var(--md-sys-color-surface-container-highest);
-    padding: .15em .4em;
-    border-radius: 4px;
+    padding: .2em .45em;
+    border-radius: 6px;
     color: var(--md-sys-color-primary);
   }
-  .wmvtgi :global(pre) {
+  .prose :global(pre) {
     background: var(--md-sys-color-surface-container-highest);
     border: 1px solid var(--md-sys-color-outline-variant);
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    padding: 1.5rem 1.75rem;
     overflow-x: auto;
-    margin: 1.5rem 0;
+    margin: 1.75rem 0;
   }
-  .wmvtgi :global(pre code) { background: none; padding: 0; color: var(--md-sys-color-on-surface); }
-  .wmvtgi :global(img) { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
-  .wmvtgi :global(hr) { border: none; border-top: 1px solid var(--md-sys-color-outline-variant); margin: 2rem 0; }
-  .wmvtgi :global(table) { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .9rem; }
-  .wmvtgi :global(th) {
+  .prose :global(pre code) { background: none; padding: 0; color: var(--md-sys-color-on-surface); border-radius: 0; }
+  .prose :global(img) { max-width: 100%; border-radius: 16px; margin: 1.75rem 0; }
+  .prose :global(hr) { border: none; border-top: 1px solid var(--md-sys-color-outline-variant); margin: 2.5rem 0; }
+  .prose :global(table) { width: 100%; border-collapse: collapse; margin: 1.75rem 0; font-size: .95rem; }
+  .prose :global(th) {
     background: var(--md-sys-color-surface-container);
-    padding: .75rem 1rem;
+    padding: .85rem 1.1rem;
     text-align: left;
     font-weight: 700;
     border-bottom: 2px solid var(--md-sys-color-outline-variant);
   }
-  .wmvtgi :global(td) { padding: .75rem 1rem; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+  .prose :global(td) { padding: .85rem 1.1rem; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
 </style>

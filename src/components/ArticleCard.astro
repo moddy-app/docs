@@ -23,142 +23,161 @@ const bannerSrc = article.banner
   : null;
 ---
 
-<div class="vNoZxk">
-  <a href={`/articles/${article.id}`} class="uPd4UK" tabindex="-1" aria-hidden="true">
-    {bannerSrc
-      ? <img draggable="false" src={bannerSrc} alt="" loading="lazy" />
-      : null
-    }
-  </a>
-  <div class="zv98UQ">
-    <div class="uHxFYS">
+<div class="card">
+  <!-- Banner only shown when an image actually exists -->
+  {bannerSrc && (
+    <a href={`/articles/${article.id}`} class="card-banner" tabindex="-1" aria-hidden="true">
+      <img draggable="false" src={bannerSrc} alt="" loading="lazy" />
+    </a>
+  )}
+
+  <div class="card-body">
+    <div class="card-meta">
       <span class="card-date">{dateShort}</span>
-    </div>
-    <a href={`/articles/${article.id}`}><h2>{title}</h2></a>
-    <span class="card-summary">{summary}</span>
-    <div class="uHxFYS wCqovU">
-      {primaryLabel ? (
-        <a href={`/collections/${primaryLabel.id}`} class="v2EOKK"
-          style={`background-color: color-mix(in srgb, ${primaryLabel.color} 15%, var(--md-sys-color-surface-container-highest)); color: ${primaryLabel.color}`}>
+      {primaryLabel && (
+        <a
+          href={`/collections/${primaryLabel.id}`}
+          class="label-badge"
+          style={`color: ${primaryLabel.color};`}
+        >
           <md-ripple></md-ripple>
           {primaryLabel.name}
         </a>
-      ) : <span></span>}
+      )}
+    </div>
+
+    <a href={`/articles/${article.id}`} class="card-title-link">
+      <h2>{title}</h2>
+    </a>
+
+    <p class="card-summary">{summary}</p>
+
+    <div class="card-footer">
       <md-text-button trailing-icon href={`/articles/${article.id}`}>
         <md-icon slot="icon">arrow_forward</md-icon>
-        View Article
+        Lire l'article
       </md-text-button>
     </div>
   </div>
 </div>
 
 <style>
-  .vNoZxk {
-    background-color: var(--md-sys-color-surface-container);
-    border-radius: 16px;
-    flex-direction: column;
+  .card {
+    background: var(--md-sys-color-surface);
+    border-radius: 20px;
     width: 100%;
-    height: 100%;
     display: flex;
+    flex-direction: column;
     overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.04);
+    transition: box-shadow .2s ease, transform .2s ease;
   }
 
-  .uPd4UK {
-    user-select: none;
-    background-color: var(--md-sys-color-surface-container-high);
-    width: 100%;
-    min-height: 180px;
-    position: relative;
-    overflow: hidden;
-    display: block;
+  .card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,.10), 0 8px 32px rgba(0,0,0,.06);
+    transform: translateY(-2px);
   }
-  .uPd4UK img {
+
+  /* ── Banner — 190 px tall, hidden when no image ──────────── */
+  .card-banner {
+    display: block;
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    background: var(--md-sys-color-surface-container);
+  }
+
+  .card-banner img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 50%;
+    object-position: center;
     display: block;
-    transition: scale .3s cubic-bezier(.2,.29,.27,1.55);
+    transition: scale .35s cubic-bezier(.2,.29,.27,1.55);
     scale: 1.01;
-    position: absolute;
-    inset: 0;
   }
-  .uPd4UK::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(transparent 40%, color-mix(in srgb, var(--md-sys-color-surface-container) 50%, transparent) 100%);
-    pointer-events: none;
-  }
-  .vNoZxk:hover .uPd4UK img { scale: 1.05; }
 
-  .zv98UQ {
+  .card:hover .card-banner img { scale: 1.06; }
+
+  /* ── Body — 260 px min, 10 px horizontal padding ─────────── */
+  .card-body {
+    display: flex;
     flex-direction: column;
-    height: 100%;
-    padding: 24px;
-    display: flex;
-    gap: 6px;
+    min-height: 260px;
+    padding: 20px 20px 16px;
+    gap: 8px;
   }
 
-  .uHxFYS {
-    flex-direction: row;
-    justify-content: space-between;
+  /* ── Meta row ────────────────────────────────────────────── */
+  .card-meta {
+    display: flex;
     align-items: center;
-    gap: 5px;
-    margin-bottom: .5em;
-    display: flex;
-  }
-
-  .wCqovU {
-    margin-top: auto;
-    margin-bottom: 0;
-    padding-top: 1em;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 2px;
   }
 
   .card-date {
+    font-size: .85rem;
     font-weight: 600;
+    color: var(--md-sys-color-on-surface-variant);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  /* ── Label badge ─────────────────────────────────────────── */
+  .label-badge {
     font-size: .8rem;
-    color: var(--md-sys-color-on-surface-variant);
-    letter-spacing: .03em;
-  }
-
-  .zv98UQ a {
-    text-decoration: none;
-    color: var(--md-sys-color-on-surface);
-  }
-  .zv98UQ a:hover h2 { text-decoration: underline; }
-
-  .zv98UQ h2 {
-    font-size: 1rem;
     font-weight: 600;
-    line-height: 1.4;
-    color: var(--md-sys-color-on-surface);
-    margin-bottom: .1em;
+    border-radius: 9999px;
+    border: 1.5px solid currentColor;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+    padding: 3px 11px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: .02em;
+    white-space: nowrap;
+    transition: background .15s;
+  }
+  .label-badge:hover {
+    text-decoration: none;
+    background: color-mix(in srgb, currentColor 18%, transparent);
   }
 
+  /* ── Title ───────────────────────────────────────────────── */
+  .card-title-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .card-title-link:hover h2 { text-decoration: underline; }
+
+  .card-title-link h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--md-sys-color-on-surface);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Summary ─────────────────────────────────────────────── */
   .card-summary {
-    font-size: .875rem;
+    font-size: 1rem;
     color: var(--md-sys-color-on-surface-variant);
-    line-height: 1.6;
+    line-height: 1.65;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    max-width: 75%;
   }
 
-  .v2EOKK {
-    width: fit-content;
-    font-size: .875rem;
-    font-weight: 500;
-    border-radius: 8px;
-    user-select: none;
-    padding: 5px 11px;
-    line-height: 1.25rem;
-    text-decoration: none;
-    display: block;
-    position: relative;
-    overflow: hidden;
+  /* ── Footer ──────────────────────────────────────────────── */
+  .card-footer {
+    margin-top: auto;
+    padding-top: .5em;
   }
-  .v2EOKK:hover { text-decoration: none; }
 </style>
