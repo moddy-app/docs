@@ -53,8 +53,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Code:wght@400;500&display=swap" />
-  <!-- Material Symbols -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <!-- Material Symbols Outlined (requis par md-icon par défaut) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
   <!-- Favicon -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -121,6 +121,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       --md-sys-typescale-label-large-font: 'Google Sans', sans-serif;
       --md-sys-typescale-label-medium-font: 'Google Sans', sans-serif;
       --md-sys-typescale-label-small-font: 'Google Sans', sans-serif;
+      --md-icon-font: 'Material Symbols Outlined';
       --md-sys-shape-corner-full: 9999px;
       --md-sys-shape-corner-extra-large: 28px;
       --md-sys-shape-corner-large: 16px;
