@@ -1,6 +1,6 @@
 {
   "name": "moddy-docs",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Documentation site for Moddy Discord Bot.",
   "main": "_prod/index.html",
   "engines": {
@@ -34,7 +34,8 @@
         "site",
         "lib",
         "eleventy-helpers",
-        "eleventy.config.cjs"
+        "eleventy.config.cjs",
+        "../content/**"
       ],
       "output": [
         "_dev"
@@ -79,7 +80,8 @@
         "site",
         "build",
         "eleventy-helpers",
-        "eleventy.config.cjs"
+        "eleventy.config.cjs",
+        "../content/**"
       ],
       "output": [
         "_prod/"
@@ -103,12 +105,9 @@
     "build:copy-docs": {
       "command": "node scripts/copy-docs.mjs",
       "files": [
-        "../docs/**/*.md",
         "scripts/copy-docs.mjs"
       ],
-      "output": [
-        "site/**/*.md"
-      ]
+      "output": []
     },
     "serve:dev": {
       "command": "wds --watch --root-dir _dev --open",

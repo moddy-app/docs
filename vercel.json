@@ -1,6 +1,49 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "cd site && npm run build:prod",
   "outputDirectory": "site/_prod",
-  "installCommand": "cd site && npm install --legacy-peer-deps",
-  "framework": null
+  "installCommand": "cd site && npm install",
+  "redirects": [
+    {
+      "source": "/quick-start",
+      "destination": "/articles/quick-start",
+      "permanent": true
+    },
+    {
+      "source": "/documentation",
+      "destination": "/collections/documentation",
+      "permanent": true
+    },
+    {
+      "source": "/changelog",
+      "destination": "/collections/changelog",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "destination": "/legal/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/tos",
+      "destination": "/legal/tos",
+      "permanent": true
+    },
+    {
+      "source": "/license",
+      "destination": "/legal/license",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/search-index.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300"
+        }
+      ]
+    }
+  ]
 }
