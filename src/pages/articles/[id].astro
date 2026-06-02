@@ -86,21 +86,6 @@ const bannerUrl = meta.banner
       <span class="article-summary" data-lang="en" style="display:none">{summaryEn}</span>
     </div>
 
-    <!-- Labels -->
-    {labels.length > 0 && (
-      <div class="content-col labels-row">
-        {labels.map(label => label && (
-          <a
-            href={`/collections/${label.id}`}
-            class="label-badge"
-            style={`color: ${label.color};`}
-          >
-            {label.name}
-          </a>
-        ))}
-      </div>
-    )}
-
     <!-- Authors -->
     {authors.length > 0 && (
       <div class="content-col authors-row">
@@ -223,32 +208,6 @@ const bannerUrl = meta.banner
     font-size: 1rem;
     color: var(--md-sys-color-on-surface-variant);
     line-height: 1.65;
-  }
-
-  /* ── Labels ──────────────────────────────────────────────── */
-  .labels-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 1.25em;
-  }
-
-  .label-badge {
-    font-size: .8rem;
-    font-weight: 600;
-    border-radius: 9999px;
-    border: 1.5px solid currentColor;
-    background-color: color-mix(in srgb, currentColor 10%, transparent);
-    padding: 4px 13px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    letter-spacing: .02em;
-    transition: background-color .15s ease;
-  }
-  .label-badge:hover {
-    text-decoration: none;
-    background-color: color-mix(in srgb, currentColor 18%, transparent);
   }
 
   /* ── Authors ─────────────────────────────────────────────── */
