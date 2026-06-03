@@ -99,6 +99,29 @@ module.exports = function (eleventyConfig) {
     return md.render(content);
   });
 
+  // Generate a unique CSS gradient from a string ID (article or author)
+  eleventyConfig.addFilter('articleGradient', (id) => {
+    let h = 0;
+    const str = String(id);
+    for (let i = 0; i < str.length; i++) {
+      h = (((h << 5) - h) + str.charCodeAt(i)) | 0;
+    }
+    h = Math.abs(h);
+    const hue1 = h % 360;
+    const hue2 = (hue1 + 40 + ((h >> 8) % 80)) % 360;
+    const angle = 110 + (h % 80);
+    return `linear-gradient(${angle}deg, hsl(${hue1},65%,52%), hsl(${hue2},75%,40%))`;
+  });
+
+  // Format a date string for a given locale ('fr' or 'en')
+  eleventyConfig.addFilter('formatDate', (date, locale) => {
+    if (!date) return '';
+    const d = new Date(String(date) + 'T00:00:00');
+    return d.toLocaleDateString(locale === 'en' ? 'en-US' : 'fr-FR', {
+      year: 'numeric', month: 'long', day: 'numeric',
+    });
+  });
+
   // Add a TOC plugin (implementation is wip for now)
   eleventyConfig.addPlugin(pluginTOC, {
     tags: ['h2', 'h3', 'h4'],

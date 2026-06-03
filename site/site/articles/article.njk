@@ -26,5 +26,56 @@ hasToc: true
 {% endblock %}
 
 {% block content %}
-{{ renderedContent | mdMarkdown | safe }}
+<article class="article-page">
+
+  {# ── Banner ── #}
+  <div class="article-banner"{% if not article.banner %} style="background: {{ article.id | articleGradient }}"{% endif %}>
+    {% if article.banner %}
+      <img class="article-banner-img" src="{{ article.banner }}" alt="" />
+    {% endif %}
+  </div>
+
+  <div class="article-content-inner">
+
+    {# ── Title ── #}
+    <h1 class="article-title">{{ article.title }}</h1>
+
+    {# ── Date | Résumé rapide ── #}
+    <div class="article-dateline">
+      <span data-lang-content="fr">{{ article.date | formatDate('fr') }}{% if article.chapeau.fr %} <span class="article-dateline-sep">|</span> {{ article.chapeau.fr }}{% endif %}</span>
+      <span data-lang-content="en">{{ article.date | formatDate('en') }}{% if article.chapeau.en %} <span class="article-dateline-sep">|</span> {{ article.chapeau.en }}{% endif %}</span>
+    </div>
+
+    {# ── Authors ── #}
+    {% if article.authors and article.authors.length %}
+    <div class="article-authors">
+      {% for authorId in article.authors %}
+        {% for a in authors %}
+          {% if a.id == authorId %}
+          <a class="article-author-block" href="/authors/{{ a.id }}/">
+            <div class="article-author-avatar">
+              {% if a.avatar %}
+                <img src="{{ a.avatar }}" alt="{{ a.username }}" />
+              {% else %}
+                <div class="article-author-avatar--placeholder" style="background: {{ a.id | articleGradient }}">{{ a.username[0] | upper }}</div>
+              {% endif %}
+            </div>
+            <div class="article-author-info">
+              <span class="article-author-name">{{ a.username }}</span>
+              {% if a.post %}<span class="article-author-post">{{ a.post }}</span>{% endif %}
+            </div>
+          </a>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {# ── Body ── #}
+    <div class="article-body">
+      {{ renderedContent | mdMarkdown | safe }}
+    </div>
+
+  </div>
+</article>
 {% endblock %}
