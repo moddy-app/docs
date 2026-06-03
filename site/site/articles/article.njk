@@ -46,7 +46,7 @@ hasToc: true
 
   {# ── Date | Chapeau ── #}
   <div class="article-dateline">
-    <span class="article-date-text">{{ article.date }}</span>
+    <time class="article-date-text" datetime="{{ article.date }}">{{ article.date }}</time>
     {% if article.chapeau and (article.chapeau.fr or article.chapeau.en) %}
       <span class="article-dateline-sep">|</span>
       <span data-lang-content="fr">{{ article.chapeau.fr }}</span>
@@ -86,4 +86,15 @@ hasToc: true
     {{ renderedContent | mdMarkdown | safe }}
   </div>
 </div>
+<script>
+(function() {
+  var el = document.querySelector('.article-date-text[datetime]');
+  if (!el) return;
+  var lang = document.documentElement.getAttribute('data-lang') || 'fr';
+  var d = new Date(el.getAttribute('datetime') + 'T00:00:00');
+  el.textContent = d.toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  });
+})();
+</script>
 {% endblock %}
