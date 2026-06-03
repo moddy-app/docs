@@ -1,9 +1,9 @@
 {
   "title": "Introduction",
   "id": "introduction",
-  "authors": [],
+  "authors": ["111222333444555666"],
   "date": "2024-01-01",
-  "chapeau": { "fr": "", "en": "" },
+  "chapeau": { "fr": "Découvrez Moddy, le bot Discord tout-en-un.", "en": "Discover Moddy, the all-in-one Discord bot." },
   "banner": null,
   "seo_level": 1,
   "labels": ["about"],
