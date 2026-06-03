@@ -82,12 +82,18 @@ span[data-lang-content] {
    itself outward into that padding with negative margins. */
 .article-banner {
   --_container-radius: var(--catalog-shape-xl, 28px);
-  --_container-padding: var(--catalog-spacing-xl, 28px);
+  --_pad: var(--catalog-spacing-xl, 28px);
+  /* the pane reserves 8px of the right padding for the scrollbar, so the right
+     padding is 8px smaller than the left — compensate so the banner keeps an
+     equal gap on both sides */
+  --_pad-right: calc(var(--catalog-spacing-xl, 28px) - 8px);
   --_banner-margin: 12px;
   aspect-ratio: 1300 / 445;
   border-radius: calc(var(--_container-radius) - var(--_banner-margin));
   overflow: hidden;
-  margin: calc(-1 * (var(--_container-padding) - var(--_banner-margin)));
+  margin-top: calc(-1 * (var(--_pad) - var(--_banner-margin)));
+  margin-left: calc(-1 * (var(--_pad) - var(--_banner-margin)));
+  margin-right: calc(-1 * (var(--_pad-right) - var(--_banner-margin)));
   margin-bottom: 20px;
 }
 
@@ -99,16 +105,21 @@ span[data-lang-content] {
   object-position: var(--banner-focus-x, 50%) var(--banner-focus-y, 50%);
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .article-banner {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* Mobile: portrait crop, full-bleed to the pane edges (no side or top gap).
+   The pane's rounded top corners clip the banner so the top stays rounded. */
 @media (max-width: 768px) {
   .article-banner {
     aspect-ratio: 3 / 4;
     border-radius: 0;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .article-banner {
-    aspect-ratio: 16 / 9;
+    margin-top: calc(-1 * var(--_pad));
+    margin-left: calc(-1 * var(--_pad));
+    margin-right: calc(-1 * var(--_pad-right));
   }
 }
 
@@ -116,7 +127,7 @@ span[data-lang-content] {
 
 .article-title {
   max-width: 1200px;
-  margin: 0 auto 10px;
+  margin: 0 auto 18px;
   padding: 0 24px;
   font-size: 2.5rem;
   font-weight: 700;
@@ -128,7 +139,7 @@ span[data-lang-content] {
 
 .article-dateline {
   max-width: 1200px;
-  margin: 0 auto 12px;
+  margin: 0 auto 20px;
   padding: 0 24px;
   font-size: 0.95rem;
   line-height: 1.4;
