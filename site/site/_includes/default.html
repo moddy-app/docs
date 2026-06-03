@@ -53,8 +53,16 @@
   <body dsd-pending>
     <!-- Inlines the declarative shadow dom polyfill for FF since it's performance sensitive -->
     {% inlinejs "ssr-utils/dsd-polyfill.js" %}
-    <main id="main-content" tabindex="0">
-      {% block content %}{{ content | mdMarkdown | safe }}{% endblock %}
-    </main>
+    <lit-island on:visible import="/js/hydration-entrypoints/navigation.js">
+      <nav-drawer page-title="{{name}}">
+        <top-app-bar slot="top-app-bar" baseURI="/">
+          {% block topappbar %}{{ topappbar | safe }}{% endblock %}
+        </top-app-bar>
+
+        <main id="main-content" slot="app-content" tabindex="0">
+          {% block content %}{{ content | mdMarkdown | safe }}{% endblock %}
+        </main>
+      </nav-drawer>
+    </lit-island>
   </body>
 </html>

@@ -106,6 +106,10 @@ a:focus-visible {
   text-decoration: underline;
 }
 
+nav-drawer {
+  --catalog-drawer-width: 0px;
+}
+
 nav-drawer md-list.nav md-list-item[href][selected] {
   background-color: var(--md-sys-color-surface-container-highest);
 }
