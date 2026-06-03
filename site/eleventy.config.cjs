@@ -93,6 +93,12 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.setLibrary('md', md);
 
+  // Filter to render raw markdown using the same md instance (with all plugins)
+  eleventyConfig.addFilter('renderMarkdown', (content) => {
+    if (!content) return '';
+    return md.render(content);
+  });
+
   // Add a TOC plugin (implementation is wip for now)
   eleventyConfig.addPlugin(pluginTOC, {
     tags: ['h2', 'h3', 'h4'],

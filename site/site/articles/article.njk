@@ -4,96 +4,27 @@ pagination:
   size: 1
   alias: article
 permalink: "/articles/{{ article.id }}/"
+hasToc: true
 ---
 {% extends 'default.html' %}
 
 {% set pageTitle = article.title %}
+{% set name = article.title %}
 
 {% block head %}
   <link rel="stylesheet" href="/css/md-layout.css" />
   <link rel="stylesheet" href="/css/syntax-highlight.css" />
-  <link rel="stylesheet" href="/css/article.css" />
-  {% if article.seo_level == 2 or article.seo_level == 3 %}
-    <meta name="robots" content="noindex" />
-  {% endif %}
-  {% if article.seo_level == 3 %}
-    <meta name="robots" content="noindex, nofollow" />
+  {% if article.seo_level >= 2 %}
+    <meta name="robots" content="noindex{% if article.seo_level == 3 %}, nofollow{% endif %}" />
   {% endif %}
 {% endblock %}
 
+{%- set renderedContent = article.rawContent.en | renderMarkdown -%}
+
+{% block toc %}
+{{ renderedContent | toc | filterToc | safe }}
+{% endblock %}
+
 {% block content %}
-<article class="article-page">
-
-  {% if article.banner %}
-    <div class="article-banner">
-      <img src="{{ article.banner }}" alt="" role="presentation" />
-    </div>
-  {% endif %}
-
-  <header class="article-header">
-    <h1 class="article-title">{{ article.title }}</h1>
-
-    <div class="article-meta">
-      {% if article.labels and article.labels.length > 0 %}
-        <div class="article-labels">
-          {% for labelId in article.labels %}
-            {% for label in labels %}
-              {% if label.id == labelId %}
-                <a href="/collections/{{ label.id }}/"
-                   class="article-label"
-                   style="--label-color: {{ label.color }};">
-                  {{ label.name.fr }}
-                </a>
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      <div class="article-byline">
-        {% for authorId in article.authors %}
-          {% for author in authors %}
-            {% if author.id == authorId %}
-              <a href="/authors/{{ author.id }}/" class="article-author">
-                {% if author.avatar %}
-                  <img src="{{ author.avatar }}" alt="{{ author.username }}" class="author-avatar-small" />
-                {% else %}
-                  <span class="author-avatar-placeholder">{{ author.username | truncate(1, true, '') }}</span>
-                {% endif %}
-                <span>{{ author.username }}</span>
-              </a>
-            {% endif %}
-          {% endfor %}
-        {% endfor %}
-        <time datetime="{{ article.date }}" class="article-date">{{ article.date }}</time>
-      </div>
-    </div>
-
-    {% set hasFr = article.content.fr %}
-    {% set hasEn = article.content.en %}
-    {% if article.chapeau %}
-      <p class="article-chapeau">
-        <span data-lang-content="fr">{% if article.chapeau.fr %}{{ article.chapeau.fr }}{% endif %}</span>
-        <span data-lang-content="en">{% if article.chapeau.en %}{{ article.chapeau.en }}{% endif %}</span>
-      </p>
-    {% endif %}
-  </header>
-
-  <div class="article-body">
-    {% if article.content.fr %}
-      <div class="lang-content" data-lang-content="fr">
-        {{ article.content.fr | safe }}
-      </div>
-    {% endif %}
-    {% if article.content.en %}
-      <div class="lang-content" data-lang-content="en">
-        {{ article.content.en | safe }}
-      </div>
-    {% endif %}
-    {% if not article.content.fr and not article.content.en %}
-      <p class="no-content">Contenu non disponible.</p>
-    {% endif %}
-  </div>
-
-</article>
+{{ renderedContent | mdMarkdown | safe }}
 {% endblock %}

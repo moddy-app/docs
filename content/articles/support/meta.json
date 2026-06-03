@@ -1,0 +1,11 @@
+{
+  "title": "Support",
+  "id": "support",
+  "authors": [],
+  "date": "2024-01-01",
+  "chapeau": { "fr": "", "en": "" },
+  "banner": null,
+  "seo_level": 1,
+  "labels": ["about"],
+  "nav_order": 4
+}
