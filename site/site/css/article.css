@@ -62,20 +62,29 @@ span[data-lang-content] {
 
 .article-page {
   width: 100%;
-  max-width: 1300px;
-  margin: 0 auto;
+  /* override md-layout.css `main > * { max-width: min(100%, 980px) }` so the
+     banner can span the full pane content width */
+  max-width: none;
+  margin: 0;
   padding: 0;
 }
 
-/* ── Banner ── */
-
+/* ── Banner ──
+   The banner is centered inside the article container (the rounded pane) with
+   an equal margin on the top, left and right. That margin is the distance
+   between the pane edge and the banner. Per the requested formula:
+       r_banner = r_container - margin
+   The pane has 28px of padding around its content and a 28px corner radius, so
+   to leave an equal `--_banner-margin` gap on all three sides the banner pulls
+   itself outward into that padding with negative margins. */
 .article-banner {
-  --_banner-inset: 12px;
+  --_container-radius: var(--catalog-shape-xl, 28px);
+  --_container-padding: var(--catalog-spacing-xl, 28px);
+  --_banner-margin: 12px;
   aspect-ratio: 1300 / 445;
-  border-radius: calc(var(--catalog-shape-xl, 28px) - var(--_banner-inset));
+  border-radius: calc(var(--_container-radius) - var(--_banner-margin));
   overflow: hidden;
-  margin-inline: calc(-1 * (var(--catalog-spacing-xl, 28px) - var(--_banner-inset)));
-  margin-top: calc(-1 * (var(--catalog-spacing-xl, 28px) - var(--_banner-inset)));
+  margin: calc(-1 * (var(--_container-padding) - var(--_banner-margin)));
   margin-bottom: 20px;
 }
 
@@ -191,7 +200,12 @@ span[data-lang-content] {
 
 /* ── Article body ── */
 
+/* `display: block` is required: md-layout.css has
+   `div:has(> table) { display: flex }` to center table-wrapper divs, and since
+   .article-body is a div that directly contains a table, it wrongly matched
+   and laid all content out horizontally. */
 .article-body {
+  display: block;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
@@ -206,33 +220,16 @@ span[data-lang-content] {
   display: none;
 }
 
+/* Keep wide elements (tables, code, images) from overflowing the body. */
 .article-body > * {
-  margin-inline: auto;
+  max-width: 100%;
   box-sizing: border-box;
   overflow-x: auto;
-  display: block;
 }
 
-.article-body > *:not(details) {
-  max-width: min(100%, 980px);
-  margin-inline: auto;
-}
-
-.article-body > table {
-  max-width: max-content;
-}
-
-.article-body > p img,
-.article-body > img {
+.article-body img {
   max-width: 100%;
-}
-
-.article-body > blockquote:not(details) {
-  padding: var(--catalog-spacing-l);
-  border-radius: var(--catalog-shape-l);
-  background-color: var(--md-sys-color-secondary-container);
-  display: flex;
-  gap: var(--catalog-spacing-s);
+  height: auto;
 }
 
 /* ── Responsive tweaks ── */
