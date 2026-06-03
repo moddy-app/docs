@@ -108,6 +108,7 @@ a:focus-visible {
 
 nav-drawer {
   --catalog-drawer-width: 0px;
+  --_pane-margin-inline-start: var(--catalog-spacing-l);
 }
 
 nav-drawer md-list.nav md-list-item[href][selected] {

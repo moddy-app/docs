@@ -4,6 +4,7 @@ pagination:
   size: 1
   alias: article
 permalink: "/articles/{{ article.id }}/"
+hasToc: true
 ---
 {% extends 'default.html' %}
 
@@ -20,6 +21,10 @@ permalink: "/articles/{{ article.id }}/"
 {% endblock %}
 
 {%- set renderedContent = article.rawContent.en | renderMarkdown -%}
+
+{% block toc %}
+{{ renderedContent | toc | filterToc | safe }}
+{% endblock %}
 
 {% block content %}
 <div class="article-page">
