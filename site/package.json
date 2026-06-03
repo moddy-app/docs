@@ -34,7 +34,8 @@
         "site",
         "lib",
         "eleventy-helpers",
-        "eleventy.config.cjs"
+        "eleventy.config.cjs",
+        "../content/**/*"
       ],
       "output": [
         "_dev"
@@ -79,7 +80,8 @@
         "site",
         "build",
         "eleventy-helpers",
-        "eleventy.config.cjs"
+        "eleventy.config.cjs",
+        "../content/**/*"
       ],
       "output": [
         "_prod/"

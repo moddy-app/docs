@@ -47,6 +47,22 @@ module.exports = function (eleventyConfig) {
 
   // Add this for 11ty's --watch flag
   eleventyConfig.addWatchTarget(`./${jsDir}/**/*.js`);
+  // Watch content directory for articles, authors, labels
+  eleventyConfig.addWatchTarget('../content/**/*');
+
+  // Pass through article assets (only the assets/ subdirectories)
+  const contentDir = require('path').resolve(__dirname, '../content/articles');
+  const fsSync = require('fs');
+  if (fsSync.existsSync(contentDir)) {
+    fsSync.readdirSync(contentDir).forEach((articleId) => {
+      const assetsPath = require('path').join(contentDir, articleId, 'assets');
+      if (fsSync.existsSync(assetsPath)) {
+        eleventyConfig.addPassthroughCopy({
+          [assetsPath]: `articles/${articleId}/assets`,
+        });
+      }
+    });
+  }
 
   // install shortcodes
   inlineCss(eleventyConfig, DEV);

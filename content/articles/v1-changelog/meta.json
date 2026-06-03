@@ -1,0 +1,13 @@
+{
+  "title": "v1.0 Moddy Changelog",
+  "id": "v1-changelog",
+  "authors": ["123456789012345678"],
+  "date": "2024-01-15",
+  "chapeau": {
+    "fr": "Voici le changelog de la v1.0 de Moddy.",
+    "en": "Here is the changelog for Moddy v1.0."
+  },
+  "banner": null,
+  "seo_level": 1,
+  "labels": ["change-logs"]
+}
