@@ -1,10 +1,12 @@
 {
   "title": "Bundle Sizes",
   "id": "bundle-sizes",
-  "authors": [],
+  "authors": ["987654321098765432"],
   "date": "2024-01-01",
-  "chapeau": { "fr": "", "en": "" },
+  "chapeau": { "fr": "Analyse des tailles de bundle du projet.", "en": "Project bundle size analysis." },
   "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #4a148c 0%, #ab47bc 50%, #e1bee7 100%)",
+  "banner_focus": { "x": 50, "y": 50 },
   "seo_level": 1,
   "labels": ["about"],
   "nav_order": 5

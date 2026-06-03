@@ -61,40 +61,163 @@ span[data-lang-content] {
 /* ─── Article page ────────────────────────────────────────────────────────── */
 
 .article-page {
-  max-width: 800px;
-  padding: 24px;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0;
 }
+
+/* ── Banner ── */
 
 .article-banner {
   width: 100%;
-  margin-bottom: 24px;
+  aspect-ratio: 1300 / 445;
   border-radius: 12px;
   overflow: hidden;
+  margin-bottom: 30px;
 }
 
 .article-banner img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
+  object-fit: cover;
+  object-position: var(--banner-focus-x, 50%) var(--banner-focus-y, 50%);
 }
 
-.article-header {
-  margin-bottom: 32px;
+@media (max-width: 768px) {
+  .article-banner {
+    aspect-ratio: 3 / 4;
+    border-radius: 0;
+  }
 }
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .article-banner {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* ── Title ── */
 
 .article-title {
-  font-size: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 30px;
+  padding: 0 24px;
+  font-size: 2.25rem;
   font-weight: 700;
-  margin: 0 0 16px;
+  line-height: 1.2;
   color: var(--md-sys-color-on-surface, #1c1b1f);
 }
 
-.article-meta {
+/* ── Dateline (date | chapeau) ── */
+
+.article-dateline {
+  max-width: 1200px;
+  margin: 0 auto 30px;
+  padding: 0 24px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.article-dateline-sep {
+  margin: 0 8px;
+  opacity: 0.5;
+}
+
+/* ── Author block ── */
+
+.article-author-block {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  padding: 0 24px;
+}
+
+.article-author-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.article-author-link:hover .article-author-name {
+  color: var(--md-sys-color-primary, #6750a4);
+}
+
+.article-author-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.article-author-avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.article-author-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
 }
+
+.article-author-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  transition: color 0.15s;
+}
+
+.article-author-role {
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+/* ── Article body ── */
+
+.article-body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  line-height: 1.7;
+}
+
+/* ── Responsive tweaks ── */
+
+@media (max-width: 768px) {
+  .article-title {
+    font-size: 1.5rem;
+    padding: 0 16px;
+    margin-bottom: 20px;
+  }
+
+  .article-dateline {
+    padding: 0 16px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+  }
+
+  .article-author-block {
+    padding: 0 16px;
+    margin-bottom: 16px;
+  }
+
+  .article-body {
+    padding: 0 16px;
+  }
+}
+
+/* ─── Article labels (used in various contexts) ──────────────────────────── */
 
 .article-labels {
   display: flex;
@@ -117,64 +240,6 @@ span[data-lang-content] {
 
 .article-label:hover {
   background: color-mix(in srgb, var(--label-color, #4caf50) 25%, transparent);
-}
-
-.article-byline {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  font-size: 0.875rem;
-  color: var(--md-sys-color-on-surface-variant, #49454f);
-}
-
-.article-author {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  color: inherit;
-  font-weight: 500;
-}
-
-.article-author:hover {
-  color: var(--md-sys-color-primary, #6750a4);
-}
-
-.author-avatar-small {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.author-avatar-placeholder {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--md-sys-color-primary-container, #eaddff);
-  color: var(--md-sys-color-on-primary-container, #21005d);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.article-date {
-  color: var(--md-sys-color-on-surface-variant, #49454f);
-}
-
-.article-chapeau {
-  font-size: 1.1rem;
-  color: var(--md-sys-color-on-surface-variant, #49454f);
-  margin: 12px 0 0;
-  font-style: italic;
-}
-
-.article-body {
-  line-height: 1.7;
 }
 
 /* ─── Collection page ────────────────────────────────────────────────────── */

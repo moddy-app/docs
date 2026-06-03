@@ -8,6 +8,8 @@
     "en": "Here is the changelog for Moddy v1.0."
   },
   "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #2e7d32 0%, #4caf50 50%, #a5d6a7 100%)",
+  "banner_focus": { "x": 50, "y": 50 },
   "seo_level": 3,
   "labels": ["change-logs"]
 }
