@@ -1,0 +1,14 @@
+{
+  "title": "Terms of Service",
+  "id": "terms-of-service",
+  "authors": [],
+  "date": "2025-12-31",
+  "chapeau": {
+    "fr": "Les conditions d'utilisation des services Moddy.",
+    "en": "The terms governing the use of Moddy services."
+  },
+  "banner": null,
+  "seo_level": 1,
+  "labels": ["legal"],
+  "nav_order": 1
+}

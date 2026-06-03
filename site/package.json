@@ -41,8 +41,7 @@
         "_dev"
       ],
       "dependencies": [
-        "build:dev:ts",
-        "build:copy-docs"
+        "build:dev:ts"
       ]
     },
     "build:dev:ts": {
@@ -87,8 +86,7 @@
         "_prod/"
       ],
       "dependencies": [
-        "build:prod:ts",
-        "build:copy-docs"
+        "build:prod:ts"
       ]
     },
     "build:prod:ts": {

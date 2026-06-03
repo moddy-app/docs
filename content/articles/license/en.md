@@ -1,9 +1,3 @@
----
-name: License
-title: Moddy Community License (MCL)
-order: 99
----
-
 # Moddy Community License (MCL)
 
 **Version 1.0 — 2026**

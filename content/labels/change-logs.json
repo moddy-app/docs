@@ -4,5 +4,6 @@
     "fr": "Changelogs",
     "en": "Changelogs"
   },
-  "color": "#4caf50"
+  "color": "#4caf50",
+  "nav_order": 3
 }

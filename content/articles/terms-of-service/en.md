@@ -1,9 +1,3 @@
----
-name: Terms of Service
-title: Terms of Service - Moddy
-order: 1
----
-
 # Terms of Service
 
 **Last updated: December 31, 2025**

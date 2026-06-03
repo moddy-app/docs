@@ -1,0 +1,9 @@
+{
+  "id": "legal",
+  "name": {
+    "fr": "Légal",
+    "en": "Legal"
+  },
+  "color": "#9e9e9e",
+  "nav_order": 2
+}

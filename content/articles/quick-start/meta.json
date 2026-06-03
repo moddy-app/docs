@@ -1,0 +1,14 @@
+{
+  "title": "Quick Start",
+  "id": "quick-start",
+  "authors": [],
+  "date": "2024-01-01",
+  "chapeau": {
+    "fr": "Tout ce qu'il faut savoir pour démarrer avec Moddy.",
+    "en": "Everything you need to know to get started with Moddy."
+  },
+  "banner": null,
+  "seo_level": 1,
+  "labels": ["about"],
+  "nav_order": 1
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Privacy Policy",
+  "id": "privacy-policy",
+  "authors": [],
+  "date": "2025-12-29",
+  "chapeau": {
+    "fr": "Notre politique de confidentialité et de protection des données.",
+    "en": "Our privacy policy and data protection practices."
+  },
+  "banner": null,
+  "seo_level": 1,
+  "labels": ["legal"],
+  "nav_order": 2
+}

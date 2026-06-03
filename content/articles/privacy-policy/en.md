@@ -1,9 +1,3 @@
----
-name: Privacy Policy
-title: Privacy Policy - Moddy
-order: 2
----
-
 # Privacy Policy
 
 **Last updated: December 29, 2025**
