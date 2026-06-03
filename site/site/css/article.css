@@ -70,10 +70,11 @@ span[data-lang-content] {
 /* ── Banner ── */
 
 .article-banner {
-  width: 100%;
+  --_banner-inset: 12px;
   aspect-ratio: 1300 / 445;
-  border-radius: 12px;
+  border-radius: calc(var(--catalog-shape-xl, 28px) - var(--_banner-inset));
   overflow: hidden;
+  margin: calc(-1 * (var(--catalog-spacing-xl, 28px) - var(--_banner-inset)));
   margin-bottom: 20px;
 }
 
