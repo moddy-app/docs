@@ -53,55 +53,8 @@
   <body dsd-pending>
     <!-- Inlines the declarative shadow dom polyfill for FF since it's performance sensitive -->
     {% inlinejs "ssr-utils/dsd-polyfill.js" %}
-    <!-- Changed from on:idle to on:visible for instant navigation load and prevent FOUC -->
-    <lit-island on:visible import="/js/hydration-entrypoints/navigation.js">
-      <nav-drawer page-title="{{name}}" {% if hasToc %}has-toc{% endif %}>
-        <top-app-bar slot="top-app-bar" baseURI="/">
-          {% block topappbar %}{{ topappbar | safe }}{% endblock %}
-        </top-app-bar>
-
-        {% if hasToc %}
-          <section slot="toc">{% block toc %}{% endblock %}</section>
-        {% endif %}
-
-        <main id="main-content" slot="app-content" tabindex="0">
-          <!-- this is the content of the page -->
-          <!-- unrelated change to components -->
-          {% block content %}{{ content | mdMarkdown | safe }}{% endblock %}
-        </main>
-        <md-list
-            aria-label="List of pages"
-            role="menubar"
-            class="nav">
-          {%- set sortedLabels = labels | sort(false, false, 'nav_order') -%}
-          {%- for label in sortedLabels -%}
-            {%- set isFirst = loop.first -%}
-            {%- set labelHasItems = false -%}
-            {%- for article in articles -%}
-              {%- if label.id in article.labels and article.seo_level < 3 -%}
-                {%- set labelHasItems = true -%}
-              {%- endif -%}
-            {%- endfor -%}
-            {%- if labelHasItems -%}
-              {%- if not isFirst %}<md-divider role="separator"></md-divider>{% endif %}
-              <md-item><div slot="headline">{{ label.name.fr }}</div></md-item>
-              {%- set sortedArticles = articles | sort(false, false, 'nav_order') -%}
-              {%- for article in sortedArticles -%}
-                {%- if label.id in article.labels and article.seo_level < 3 -%}
-                  {%- set articleUrl = '/articles/' + article.id + '/' -%}
-                  <md-list-item
-                    href="{{ articleUrl }}"
-                    role="menuitem"
-                    {% if articleUrl == page.url %}selected{% endif %}
-                    type="link"
-                    tabindex="{% if articleUrl == page.url %}0{% else %}-1{% endif %}"
-                  >{{ article.title }}</md-list-item>
-                {%- endif -%}
-              {%- endfor -%}
-            {%- endif -%}
-          {%- endfor -%}
-        </md-list>
-      </nav-drawer>
-    </lit-island>
+    <main id="main-content" tabindex="0">
+      {% block content %}{{ content | mdMarkdown | safe }}{% endblock %}
+    </main>
   </body>
 </html>
