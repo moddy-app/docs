@@ -65,6 +65,9 @@ span[data-lang-content] {
   /* override md-layout.css `main > * { max-width: min(100%, 980px) }` so the
      banner can span the full pane content width */
   max-width: none;
+  /* md-layout.css also sets `main > * { overflow-x: auto }`, which clips the
+     banner's negative-margin overflow into a square corner. Keep it visible. */
+  overflow: visible;
   margin: 0;
   padding: 0;
 }
@@ -145,8 +148,16 @@ span[data-lang-content] {
 
 .article-author-block {
   max-width: 1200px;
-  margin: 0 auto 20px;
+  margin: 0 auto 24px;
   padding: 0 24px;
+}
+
+/* light separator under the author, aligned with the text content */
+.article-author-block::after {
+  content: "";
+  display: block;
+  margin-top: 16px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
 }
 
 .article-author-link {

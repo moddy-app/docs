@@ -176,7 +176,7 @@ export class TopAppBar extends SignalElement(LitElement) {
       width: 100%;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
 
     md-icon-button:not(:defined) {
@@ -205,13 +205,13 @@ export class TopAppBar extends SignalElement(LitElement) {
       display: flex;
       align-items: center;
       padding: 0;
-      margin-top: -3px;
-      height: 32px;
+      /* match the height of the "Moddy Docs" wordmark next to it */
+      height: 1em;
     }
 
     .logo-link svg {
-      width: 32px;
-      height: 32px;
+      width: 1em;
+      height: 1em;
       color: var(--md-sys-color-primary);
     }
 
@@ -242,16 +242,6 @@ export class TopAppBar extends SignalElement(LitElement) {
     #skip-to-main:focus-visible {
       opacity: 1;
       pointer-events: auto;
-    }
-
-    @media (max-width: 1500px) {
-      .start .logo-link {
-        display: none;
-      }
-
-      .start .menu-button {
-        display: flex;
-      }
     }
   `;
 }

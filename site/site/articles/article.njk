@@ -85,16 +85,19 @@ hasToc: true
   <div class="article-body">
     {{ renderedContent | mdMarkdown | safe }}
   </div>
+
+  {# Date formatting script lives inside .article-page so it keeps the UA
+     `script { display: none }` (md-layout's `main > *` would force it visible). #}
+  <script>
+  (function() {
+    var el = document.querySelector('.article-date-text[datetime]');
+    if (!el) return;
+    var lang = document.documentElement.getAttribute('data-lang') || 'fr';
+    var d = new Date(el.getAttribute('datetime') + 'T00:00:00');
+    el.textContent = d.toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+  })();
+  </script>
 </div>
-<script>
-(function() {
-  var el = document.querySelector('.article-date-text[datetime]');
-  if (!el) return;
-  var lang = document.documentElement.getAttribute('data-lang') || 'fr';
-  var d = new Date(el.getAttribute('datetime') + 'T00:00:00');
-  el.textContent = d.toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', {
-    day: 'numeric', month: 'long', year: 'numeric'
-  });
-})();
-</script>
 {% endblock %}
