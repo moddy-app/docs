@@ -6,8 +6,6 @@
 import {html} from 'lit';
 
 export const moddyLogo = html`<svg
-  width="190"
-  height="190"
   viewBox="0 0 190 190"
   fill="currentColor">
   <path d="M142.39 0H94.9335L47.4565 47.4564H0V94.9129H94.9335L142.39 47.4564V0Z" fill="currentColor"/>

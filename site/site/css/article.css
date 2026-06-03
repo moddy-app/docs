@@ -74,7 +74,8 @@ span[data-lang-content] {
   aspect-ratio: 1300 / 445;
   border-radius: calc(var(--catalog-shape-xl, 28px) - var(--_banner-inset));
   overflow: hidden;
-  margin: calc(-1 * (var(--catalog-spacing-xl, 28px) - var(--_banner-inset)));
+  margin-inline: calc(-1 * (var(--catalog-spacing-xl, 28px) - var(--_banner-inset)));
+  margin-top: calc(-1 * (var(--catalog-spacing-xl, 28px) - var(--_banner-inset)));
   margin-bottom: 20px;
 }
 
@@ -203,6 +204,35 @@ span[data-lang-content] {
 
 .article-body h1:first-of-type {
   display: none;
+}
+
+.article-body > * {
+  margin-inline: auto;
+  box-sizing: border-box;
+  overflow-x: auto;
+  display: block;
+}
+
+.article-body > *:not(details) {
+  max-width: min(100%, 980px);
+  margin-inline: auto;
+}
+
+.article-body > table {
+  max-width: max-content;
+}
+
+.article-body > p img,
+.article-body > img {
+  max-width: 100%;
+}
+
+.article-body > blockquote:not(details) {
+  padding: var(--catalog-spacing-l);
+  border-radius: var(--catalog-shape-l);
+  background-color: var(--md-sys-color-secondary-container);
+  display: flex;
+  gap: var(--catalog-spacing-s);
 }
 
 /* ── Responsive tweaks ── */
