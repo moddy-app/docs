@@ -176,6 +176,7 @@ export class TopAppBar extends SignalElement(LitElement) {
       width: 100%;
       display: flex;
       align-items: center;
+      gap: 12px;
     }
 
     md-icon-button:not(:defined) {
