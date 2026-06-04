@@ -87,9 +87,10 @@ span[data-lang-content] {
      padding is 8px smaller than the left — compensate so the banner keeps an
      equal gap on both sides */
   --_pad-right: calc(var(--catalog-spacing-xl, 28px) - 8px);
-  --_banner-margin: 12px;
+  --_banner-margin: 24px;
   aspect-ratio: 1300 / 445;
-  border-radius: calc(var(--_container-radius) - var(--_banner-margin));
+  /* very rounded corners, decoupled from the margin */
+  border-radius: 36px;
   overflow: hidden;
   margin-top: calc(-1 * (var(--_pad) - var(--_banner-margin)));
   margin-left: calc(-1 * (var(--_pad) - var(--_banner-margin)));
