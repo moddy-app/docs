@@ -226,10 +226,48 @@ export class NavDrawer extends SignalElement(LitElement) {
       flex-grow: 1;
     }
 
+    /* The TOC is tucked off the right edge so the content pane takes the full
+       width. A thin sliver stays visible as a handle; hovering (or focusing
+       into) it slides the whole panel in as an overlay. */
     .pane.toc {
-      width: auto;
       box-sizing: border-box;
       width: var(--_toc-pane-width);
+      position: fixed;
+      z-index: 11;
+      top: var(--catalog-top-app-bar-height);
+      right: 0;
+      height: calc(
+        100dvh - var(--catalog-top-app-bar-height) -
+          var(--_pane-margin-block-end)
+      );
+      transform: translateX(calc(100% - var(--_toc-handle-width, 12px)));
+      transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1),
+        box-shadow 0.25s cubic-bezier(0.2, 0, 0, 1);
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
+    }
+
+    /* grip indicator shown in the visible sliver */
+    .pane.toc::before {
+      content: '';
+      position: absolute;
+      inset-inline-start: 3px;
+      top: 50%;
+      width: 4px;
+      height: 56px;
+      margin-block-start: -28px;
+      border-radius: 2px;
+      background-color: var(--md-sys-color-outline-variant);
+    }
+
+    .pane.toc:hover,
+    .pane.toc:focus-within {
+      transform: translateX(calc(-1 * var(--_pane-margin-inline-end)));
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
+    }
+
+    .pane.toc:hover::before,
+    .pane.toc:focus-within::before {
+      opacity: 0;
     }
 
     .toc .scroll-wrapper {
