@@ -514,6 +514,7 @@ nav-drawer {
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
+  box-sizing: border-box;
   border: 4px solid var(--md-sys-color-surface, #fffbfe);
 }
 
@@ -526,6 +527,7 @@ nav-drawer {
   font-size: 2rem;
   font-weight: 700;
   text-transform: uppercase;
+  box-sizing: border-box;
   border: 4px solid var(--md-sys-color-surface, #fffbfe);
 }
 
