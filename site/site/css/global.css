@@ -80,6 +80,13 @@ body {
   font-size: var(--catalog-body-l-font-size);
 }
 
+/* The TOC overlay is tucked off the right edge until hovered; clip horizontal
+   overflow so its off-screen part never produces a horizontal scrollbar. The
+   page itself never scrolls horizontally (panes scroll internally). */
+html {
+  overflow-x: clip;
+}
+
 /* Prevent FOUC by hiding undefined custom elements */
 nav-drawer:not(:defined),
 top-app-bar:not(:defined),
@@ -94,6 +101,12 @@ top-app-bar:defined,
 catalog-component-header:defined,
 catalog-component-header-title:defined {
   visibility: visible;
+}
+
+/* Text selection uses the active theme's primary color */
+::selection {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
 }
 
 a {

@@ -226,13 +226,14 @@ export class NavDrawer extends SignalElement(LitElement) {
       flex-grow: 1;
     }
 
-    /* The TOC is tucked against the right edge so the content pane takes the
-       full width. The panel stays anchored flush to the viewport edge (so it
-       never overflows the side) and is hidden with clip-path, leaving only a
-       thin sliver visible+hoverable as a handle. Hovering (or focusing into)
-       it reveals the whole panel as an overlay. Because the handle strip is
-       part of the panel in both states, the cursor never falls outside it, so
-       it doesn't flicker open/closed at the trigger edge. */
+    /* The TOC is tucked off the right edge so the content pane takes the full
+       width. Only a thin sliver of its left edge peeks out as a handle; the
+       rest (including its scrollbar) sits off-screen. Hovering (or focusing
+       into) it slides the whole panel in as a single unit. The revealed panel
+       sits flush against the right edge, so the cursor at the trigger edge
+       stays over the panel the entire time — no open/close flicker. The
+       document clips horizontal overflow (see global.css) so the off-screen
+       part never produces a scrollbar. */
     .pane.toc {
       --_toc-handle-width: 14px;
       box-sizing: border-box;
@@ -245,20 +246,48 @@ export class NavDrawer extends SignalElement(LitElement) {
         100dvh - var(--catalog-top-app-bar-height) -
           var(--_pane-margin-block-end)
       );
-      clip-path: inset(
-        0 0 0 calc(100% - var(--_toc-handle-width)) round
-          var(--catalog-shape-xl)
-      );
-      transition: clip-path 0.28s cubic-bezier(0.2, 0, 0, 1),
+      transform: translateX(calc(100% - var(--_toc-handle-width)));
+      transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1),
         box-shadow 0.28s cubic-bezier(0.2, 0, 0, 1);
       box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
+      /* one-time hint on load: after a 2s pause, the panel glides out ~6mm,
+         lingers for a beat, then eases back in, so the user notices it. */
+      animation: toc-peek 1.9s ease-in-out 2s 1 both;
     }
 
-    /* grip indicator shown in the visible sliver */
+    @keyframes toc-peek {
+      0% {
+        transform: translateX(calc(100% - var(--_toc-handle-width)));
+        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
+      }
+      /* glide out (emphasized decelerate) */
+      32% {
+        transform: translateX(calc(100% - var(--_toc-handle-width) - 6mm));
+        box-shadow: -8px 0 28px rgba(0, 0, 0, 0.22);
+      }
+      /* linger */
+      60% {
+        transform: translateX(calc(100% - var(--_toc-handle-width) - 6mm));
+        box-shadow: -8px 0 28px rgba(0, 0, 0, 0.22);
+      }
+      /* settle back in */
+      100% {
+        transform: translateX(calc(100% - var(--_toc-handle-width)));
+        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pane.toc {
+        animation: none;
+      }
+    }
+
+    /* grip indicator shown in the visible left-edge sliver */
     .pane.toc::before {
       content: '';
       position: absolute;
-      inset-inline-end: 5px;
+      inset-inline-start: 4px;
       top: 50%;
       width: 4px;
       height: 56px;
@@ -270,7 +299,7 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     .pane.toc:hover,
     .pane.toc:focus-within {
-      clip-path: inset(0 0 0 0 round var(--catalog-shape-xl));
+      transform: translateX(0);
       box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
     }
 
