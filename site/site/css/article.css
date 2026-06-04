@@ -261,30 +261,23 @@ span[data-lang-content] {
 }
 
 /* ── Callouts / blockquotes ──
-   md-layout.css styles these with `main > blockquote` selectors, but here the
-   blockquotes are nested inside `.article-body`, so those rules never match.
-   Reproduce the same design (colored rounded box + icon) scoped to the body. */
+   md-layout.css styles these with `main > blockquote` selectors, which only
+   match the doc pages where the markdown elements are direct children of
+   <main>. Here the blockquotes are nested inside `.article-body`, so those
+   rules never match. Mirror the exact same rules, scoped to `.article-body`. */
 .article-body blockquote {
   margin: var(--catalog-spacing-l, 16px) 0;
-  padding: var(--catalog-spacing-l, 16px);
-  border-radius: var(--catalog-shape-l, 16px);
-  background-color: var(--md-sys-color-secondary-container, #e8def8);
-  color: var(--md-sys-color-on-secondary-container, #1d192b);
 }
 
-/* callouts with an icon (tip / note / important / warning) lay the icon out
-   beside the content */
-.article-body blockquote:has(.icon) {
+.article-body > blockquote {
+  padding: var(--catalog-spacing-l, 16px);
+  border-radius: var(--catalog-shape-l, 16px);
+  background-color: var(--md-sys-color-secondary-container);
   display: flex;
   gap: var(--catalog-spacing-s, 8px);
 }
 
-.article-body blockquote .icon {
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.article-body blockquote .content {
+.article-body > blockquote .content {
   flex-grow: 1;
 }
 
@@ -292,25 +285,36 @@ span[data-lang-content] {
   margin-block-start: 4px;
 }
 
-.article-body blockquote .content > *:last-child,
-.article-body blockquote > *:last-child {
+.article-body blockquote .content > *:last-child {
   margin-block-end: 0;
 }
 
+.article-body blockquote,
 .article-body blockquote a {
-  color: inherit;
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.article-body blockquote a {
   text-decoration: underline;
   font-weight: 700;
 }
 
 .article-body blockquote.important {
-  background-color: var(--md-sys-color-primary-container, #eaddff);
-  color: var(--md-sys-color-on-primary-container, #21005d);
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.article-body blockquote.important,
+.article-body blockquote.important a {
+  color: var(--md-sys-color-on-primary-container);
 }
 
 .article-body blockquote.warning {
-  background-color: var(--md-sys-color-error-container, #f9dedc);
-  color: var(--md-sys-color-on-error-container, #410e0b);
+  background-color: var(--md-sys-color-error-container);
+}
+
+.article-body blockquote.warning,
+.article-body blockquote.warning a {
+  color: var(--md-sys-color-on-error-container);
 }
 
 /* ── Responsive tweaks ── */

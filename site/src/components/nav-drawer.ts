@@ -226,10 +226,15 @@ export class NavDrawer extends SignalElement(LitElement) {
       flex-grow: 1;
     }
 
-    /* The TOC is tucked off the right edge so the content pane takes the full
-       width. A thin sliver stays visible as a handle; hovering (or focusing
-       into) it slides the whole panel in as an overlay. */
+    /* The TOC is tucked against the right edge so the content pane takes the
+       full width. The panel stays anchored flush to the viewport edge (so it
+       never overflows the side) and is hidden with clip-path, leaving only a
+       thin sliver visible+hoverable as a handle. Hovering (or focusing into)
+       it reveals the whole panel as an overlay. Because the handle strip is
+       part of the panel in both states, the cursor never falls outside it, so
+       it doesn't flicker open/closed at the trigger edge. */
     .pane.toc {
+      --_toc-handle-width: 14px;
       box-sizing: border-box;
       width: var(--_toc-pane-width);
       position: fixed;
@@ -240,9 +245,12 @@ export class NavDrawer extends SignalElement(LitElement) {
         100dvh - var(--catalog-top-app-bar-height) -
           var(--_pane-margin-block-end)
       );
-      transform: translateX(calc(100% - var(--_toc-handle-width, 12px)));
-      transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1),
-        box-shadow 0.25s cubic-bezier(0.2, 0, 0, 1);
+      clip-path: inset(
+        0 0 0 calc(100% - var(--_toc-handle-width)) round
+          var(--catalog-shape-xl)
+      );
+      transition: clip-path 0.28s cubic-bezier(0.2, 0, 0, 1),
+        box-shadow 0.28s cubic-bezier(0.2, 0, 0, 1);
       box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
     }
 
@@ -250,18 +258,19 @@ export class NavDrawer extends SignalElement(LitElement) {
     .pane.toc::before {
       content: '';
       position: absolute;
-      inset-inline-start: 3px;
+      inset-inline-end: 5px;
       top: 50%;
       width: 4px;
       height: 56px;
       margin-block-start: -28px;
       border-radius: 2px;
       background-color: var(--md-sys-color-outline-variant);
+      transition: opacity 0.2s;
     }
 
     .pane.toc:hover,
     .pane.toc:focus-within {
-      transform: translateX(calc(-1 * var(--_pane-margin-inline-end)));
+      clip-path: inset(0 0 0 0 round var(--catalog-shape-xl));
       box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
     }
 
