@@ -127,11 +127,12 @@ nav-drawer {
 
   .article-banner {
     --_banner-margin: 16px;
+    --_pad-right: var(--_pad);
     aspect-ratio: 455 / 520;
     border-radius: 36px;
     margin-top: calc(-1 * (var(--_pad) - var(--_banner-margin)));
     margin-left: calc(-1 * (var(--_pad) - var(--_banner-margin)));
-    margin-right: calc(-1 * (var(--_pad-right) - var(--_banner-margin)));
+    margin-right: calc(-1 * (var(--_pad) - var(--_banner-margin)));
   }
 }
 

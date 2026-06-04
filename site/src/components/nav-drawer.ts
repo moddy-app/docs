@@ -229,7 +229,7 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     .pane {
       box-sizing: border-box;
-      overflow: auto;
+      overflow: clip;
       width: 100%;
       /* Explicit height to make overflow work */
       height: calc(
