@@ -140,6 +140,41 @@ export class NavDrawer extends SignalElement(LitElement) {
     queryResult.addEventListener('change', (e) => {
       this.isCollapsible = e.matches;
     });
+
+    this.setupBannerRadiusScroll();
+  }
+
+  private setupBannerRadiusScroll() {
+    const expandedStr = getComputedStyle(this).getPropertyValue(
+      '--expanded-top-radius'
+    );
+    if (!expandedStr || !expandedStr.trim()) return;
+
+    const expanded = parseFloat(expandedStr);
+    const normal = 28; // --catalog-shape-xl fallback
+    const scrollRange = 100;
+
+    const contentPane = this.shadowRoot?.querySelector(
+      '.pane.content-pane'
+    ) as HTMLElement | null;
+    const scrollWrapper = contentPane?.querySelector(
+      '.scroll-wrapper'
+    ) as HTMLElement | null;
+    if (!contentPane || !scrollWrapper) return;
+
+    contentPane.style.setProperty('--_pane-top-radius', `${expanded}px`);
+
+    let ticking = false;
+    scrollWrapper.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const t = Math.min(scrollWrapper.scrollTop / scrollRange, 1);
+        const r = expanded + (normal - expanded) * t;
+        contentPane.style.setProperty('--_pane-top-radius', `${r}px`);
+        ticking = false;
+      });
+    });
   }
 
   updated(changed: PropertyValues<this>) {
@@ -228,6 +263,8 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     .pane.content-pane {
       flex-grow: 1;
+      border-top-left-radius: var(--_pane-top-radius, var(--catalog-shape-xl));
+      border-top-right-radius: var(--_pane-top-radius, var(--catalog-shape-xl));
     }
 
     /* The TOC is fully tucked off the right edge (no permanent sliver) so the

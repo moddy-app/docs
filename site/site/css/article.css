@@ -58,6 +58,12 @@ span[data-lang-content] {
   color: var(--md-sys-color-on-primary-container, #21005d);
 }
 
+/* Tell nav-drawer's content pane to use the expanded top radius on load.
+   r_ext = r_banner + banner_margin = 52 + 40 = 92px */
+nav-drawer {
+  --expanded-top-radius: 92px;
+}
+
 /* ─── Article page ────────────────────────────────────────────────────────── */
 
 .article-page {
