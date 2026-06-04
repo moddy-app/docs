@@ -118,15 +118,20 @@ nav-drawer {
   }
 }
 
-/* Mobile: portrait crop, full-bleed to the pane edges (no side or top gap).
-   The pane's rounded top corners clip the banner so the top stays rounded. */
+/* Mobile: portrait crop with smaller margin and softer corners.
+   Same concentric-radius system as desktop, just scaled down. */
 @media (max-width: 768px) {
+  nav-drawer {
+    --expanded-top-radius: 44px;
+  }
+
   .article-banner {
-    aspect-ratio: 3 / 4;
-    border-radius: 0;
-    margin-top: calc(-1 * var(--_pad));
-    margin-left: calc(-1 * var(--_pad));
-    margin-right: calc(-1 * var(--_pad-right));
+    --_banner-margin: 16px;
+    aspect-ratio: 455 / 520;
+    border-radius: 28px;
+    margin-top: calc(-1 * (var(--_pad) - var(--_banner-margin)));
+    margin-left: calc(-1 * (var(--_pad) - var(--_banner-margin)));
+    margin-right: calc(-1 * (var(--_pad-right) - var(--_banner-margin)));
   }
 }
 
