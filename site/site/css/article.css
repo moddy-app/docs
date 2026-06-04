@@ -122,13 +122,13 @@ nav-drawer {
    Same concentric-radius system as desktop, just scaled down. */
 @media (max-width: 768px) {
   nav-drawer {
-    --expanded-top-radius: 44px;
+    --expanded-top-radius: 52px;
   }
 
   .article-banner {
     --_banner-margin: 16px;
     aspect-ratio: 455 / 520;
-    border-radius: 28px;
+    border-radius: 36px;
     margin-top: calc(-1 * (var(--_pad) - var(--_banner-margin)));
     margin-left: calc(-1 * (var(--_pad) - var(--_banner-margin)));
     margin-right: calc(-1 * (var(--_pad-right) - var(--_banner-margin)));
