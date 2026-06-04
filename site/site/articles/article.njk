@@ -18,6 +18,9 @@ hasToc: true
   {% if article.seo_level >= 2 %}
     <meta name="robots" content="noindex{% if article.seo_level == 3 %}, nofollow{% endif %}" />
   {% endif %}
+  {% if article.theme_color %}
+    <meta name="page-theme-color" content="{{ article.theme_color }}" />
+  {% endif %}
 {% endblock %}
 
 {%- set renderedContent = article.rawContent.en | renderMarkdown -%}

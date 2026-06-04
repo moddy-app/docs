@@ -114,15 +114,15 @@ export class NavDrawer extends SignalElement(LitElement) {
       return nothing;
     }
 
-    return html` <div
-      class="pane toc"
-      ?inert=${showModal || inertContentSignal.value}>
-      <div class="scroll-wrapper">
-        <p>On this page:</p>
-        <h2>${this.pageTitle}</h2>
-        <slot name="toc"></slot>
-      </div>
-    </div>`;
+    return html`
+      <div class="toc-edge" aria-hidden="true"></div>
+      <div class="pane toc" ?inert=${showModal || inertContentSignal.value}>
+        <div class="scroll-wrapper">
+          <p>On this page:</p>
+          <h2>${this.pageTitle}</h2>
+          <slot name="toc"></slot>
+        </div>
+      </div>`;
   }
 
   /**
@@ -201,6 +201,8 @@ export class NavDrawer extends SignalElement(LitElement) {
       );
       background-color: var(--md-sys-color-surface);
       border-radius: var(--catalog-shape-xl);
+      /* cross-fade the surface colour on theme changes */
+      transition: background-color 0.4s ease;
     }
 
     .pane,
@@ -226,16 +228,15 @@ export class NavDrawer extends SignalElement(LitElement) {
       flex-grow: 1;
     }
 
-    /* The TOC is tucked off the right edge so the content pane takes the full
-       width. Only a thin sliver of its left edge peeks out as a handle; the
-       rest (including its scrollbar) sits off-screen. Hovering (or focusing
-       into) it slides the whole panel in as a single unit. The revealed panel
-       sits flush against the right edge, so the cursor at the trigger edge
-       stays over the panel the entire time — no open/close flicker. The
+    /* The TOC is fully tucked off the right edge (no permanent sliver) so the
+       content pane takes the full width. An invisible hover strip pinned to the
+       right edge (.toc-edge) reveals it: hovering the edge — or the panel, or
+       focusing into it — slides the whole panel in as a single unit. The
+       revealed panel sits flush against the right edge, covering the edge strip,
+       so the cursor stays over it the whole time — no open/close flicker. The
        document clips horizontal overflow (see global.css) so the off-screen
-       part never produces a scrollbar. */
+       panel never produces a scrollbar. */
     .pane.toc {
-      --_toc-handle-width: 14px;
       box-sizing: border-box;
       width: var(--_toc-pane-width);
       position: fixed;
@@ -246,34 +247,35 @@ export class NavDrawer extends SignalElement(LitElement) {
         100dvh - var(--catalog-top-app-bar-height) -
           var(--_pane-margin-block-end)
       );
-      transform: translateX(calc(100% - var(--_toc-handle-width)));
-      transition: transform 0.28s cubic-bezier(0.2, 0, 0, 1),
-        box-shadow 0.28s cubic-bezier(0.2, 0, 0, 1);
+      transform: translateX(100%);
+      transition: transform 0.16s cubic-bezier(0.2, 0, 0, 1),
+        box-shadow 0.16s ease;
       box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
-      /* one-time hint on load: after a 2s pause, the panel glides out ~6mm,
-         lingers for a beat, then eases back in, so the user notices it. */
-      animation: toc-peek 1.9s ease-in-out 2s 1 both;
+      /* one-time, snappy hint on load: after a short pause the panel darts out
+         then springs back, so the user notices it's there. */
+      animation: toc-peek 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 1.2s 1;
+    }
+
+    /* invisible hover trigger pinned to the right edge of the viewport */
+    .toc-edge {
+      position: fixed;
+      z-index: 10;
+      top: var(--catalog-top-app-bar-height);
+      right: 0;
+      width: 16px;
+      height: calc(
+        100dvh - var(--catalog-top-app-bar-height) -
+          var(--_pane-margin-block-end)
+      );
     }
 
     @keyframes toc-peek {
-      0% {
-        transform: translateX(calc(100% - var(--_toc-handle-width)));
-        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
-      }
-      /* glide out (emphasized decelerate) */
-      32% {
-        transform: translateX(calc(100% - var(--_toc-handle-width) - 6mm));
-        box-shadow: -8px 0 28px rgba(0, 0, 0, 0.22);
-      }
-      /* linger */
-      60% {
-        transform: translateX(calc(100% - var(--_toc-handle-width) - 6mm));
-        box-shadow: -8px 0 28px rgba(0, 0, 0, 0.22);
-      }
-      /* settle back in */
+      0%,
       100% {
-        transform: translateX(calc(100% - var(--_toc-handle-width)));
-        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
+        transform: translateX(100%);
+      }
+      55% {
+        transform: translateX(calc(100% - 16mm));
       }
     }
 
@@ -283,29 +285,11 @@ export class NavDrawer extends SignalElement(LitElement) {
       }
     }
 
-    /* grip indicator shown in the visible left-edge sliver */
-    .pane.toc::before {
-      content: '';
-      position: absolute;
-      inset-inline-start: 4px;
-      top: 50%;
-      width: 4px;
-      height: 56px;
-      margin-block-start: -28px;
-      border-radius: 2px;
-      background-color: var(--md-sys-color-outline-variant);
-      transition: opacity 0.2s;
-    }
-
+    .panes:has(.toc-edge:hover) .pane.toc,
     .pane.toc:hover,
     .pane.toc:focus-within {
       transform: translateX(0);
       box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
-    }
-
-    .pane.toc:hover::before,
-    .pane.toc:focus-within::before {
-      opacity: 0;
     }
 
     .toc .scroll-wrapper {
@@ -345,6 +329,7 @@ export class NavDrawer extends SignalElement(LitElement) {
       z-index: 12;
       background-color: var(--md-sys-color-surface-container);
       overflow: hidden;
+      transition: background-color 0.4s ease;
     }
 
     .scroll-wrapper {
@@ -367,7 +352,8 @@ export class NavDrawer extends SignalElement(LitElement) {
     }
 
     @media (max-width: 900px) {
-      .pane.toc {
+      .pane.toc,
+      .toc-edge {
         display: none;
       }
     }

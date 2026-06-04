@@ -170,6 +170,7 @@ export class TopAppBar extends SignalElement(LitElement) {
       background-color: var(--md-sys-color-surface-container);
       color: var(--md-sys-color-on-surface);
       z-index: 12;
+      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
     .default-content {

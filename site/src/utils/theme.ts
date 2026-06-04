@@ -21,11 +21,28 @@ export type ColorMode = 'light' | 'dark' | 'auto';
  * @param isDark Whether or not the theme should be in dark mode.
  */
 function applyThemeFromColor(color: string, isDark: boolean) {
+  enableThemeTransition();
   const theme = themeFromSourceColor(color, isDark);
   applyMaterialTheme(document, theme);
   // Dispatches event to communicate with components pages' JS to update the
   // theme in the playground preview.
   window.dispatchEvent(new Event('theme-changed'));
+}
+
+let themeTransitionTimer = 0;
+
+/**
+ * Briefly enables a global color transition so that theme/colour changes
+ * cross-fade rather than snapping. The `theme-transition` class is removed
+ * shortly after so it doesn't interfere with normal hover transitions.
+ */
+export function enableThemeTransition() {
+  const el = document.documentElement;
+  el.classList.add('theme-transition');
+  window.clearTimeout(themeTransitionTimer);
+  themeTransitionTimer = window.setTimeout(() => {
+    el.classList.remove('theme-transition');
+  }, 450);
 }
 
 /**

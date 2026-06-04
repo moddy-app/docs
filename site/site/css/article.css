@@ -266,10 +266,9 @@ span[data-lang-content] {
    <main>. Here the blockquotes are nested inside `.article-body`, so those
    rules never match. Mirror the exact same rules, scoped to `.article-body`. */
 .article-body blockquote {
-  /* match main's `main > :not(...)`: capped width, centered */
+  /* left-aligned with the body text, full width */
   margin-block: var(--catalog-spacing-l, 16px);
-  margin-inline: auto;
-  max-width: min(100%, 980px);
+  margin-inline: 0;
 }
 
 .article-body > blockquote {
@@ -285,7 +284,7 @@ span[data-lang-content] {
 }
 
 .article-body blockquote .content > *:first-child {
-  margin-block-start: 4px;
+  margin-block-start: 0;
 }
 
 .article-body blockquote .content > *:last-child {
