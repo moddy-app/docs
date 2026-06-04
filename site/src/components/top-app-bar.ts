@@ -170,6 +170,8 @@ export class TopAppBar extends SignalElement(LitElement) {
       background-color: var(--md-sys-color-surface-container);
       color: var(--md-sys-color-on-surface);
       z-index: 12;
+      /* same elevation/shadow as the TOC overlay */
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
       transition: background-color 0.4s ease, color 0.4s ease;
     }
 

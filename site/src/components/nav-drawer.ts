@@ -165,6 +165,8 @@ export class NavDrawer extends SignalElement(LitElement) {
       --_pane-margin-inline-end: var(--catalog-spacing-l);
       --_pane-margin-block-end: var(--catalog-spacing-l);
       --_toc-pane-width: 250px;
+      /* transparent gap kept between the revealed TOC and the page edge */
+      --_toc-gap: 5mm;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
@@ -248,21 +250,23 @@ export class NavDrawer extends SignalElement(LitElement) {
           var(--_pane-margin-block-end)
       );
       transform: translateX(100%);
-      transition: transform 0.16s cubic-bezier(0.2, 0, 0, 1),
-        box-shadow 0.16s ease;
+      transition: transform 0.34s cubic-bezier(0.2, 0, 0, 1),
+        box-shadow 0.34s ease;
       box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
-      /* one-time, snappy hint on load: after a short pause the panel darts out
-         then springs back, so the user notices it's there. */
-      animation: toc-peek 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 1.2s 1;
+      /* one-time hint on load: after a short pause the panel glides out then
+         eases back, so the user notices it's there. */
+      animation: toc-peek 1.1s cubic-bezier(0.32, 0.72, 0, 1) 1.2s 1;
     }
 
-    /* invisible hover trigger pinned to the right edge of the viewport */
+    /* invisible hover trigger pinned to the right edge of the viewport. It is
+       wide enough to bridge the revealed panel's gap so the hover is never lost
+       between the edge and the panel. */
     .toc-edge {
       position: fixed;
       z-index: 10;
       top: var(--catalog-top-app-bar-height);
       right: 0;
-      width: 16px;
+      width: calc(var(--_toc-gap) + 14px);
       height: calc(
         100dvh - var(--catalog-top-app-bar-height) -
           var(--_pane-margin-block-end)
@@ -288,7 +292,7 @@ export class NavDrawer extends SignalElement(LitElement) {
     .panes:has(.toc-edge:hover) .pane.toc,
     .pane.toc:hover,
     .pane.toc:focus-within {
-      transform: translateX(0);
+      transform: translateX(calc(-1 * var(--_toc-gap)));
       box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
     }
 
