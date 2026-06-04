@@ -64,13 +64,18 @@ hasToc: true
         {% if author.id == authorId %}
           <div class="article-author-block">
             <a href="/authors/{{ author.id }}/" class="article-author-link">
-              {% if author.avatar %}
-                <img class="article-author-avatar" src="{{ author.avatar }}" alt="{{ author.username }}" />
-              {% else %}
-                <div class="article-author-avatar article-author-avatar--placeholder" style="background: {{ author.banner_color or '#6750a4' }};">
-                  {{ author.username | first | upper }}
-                </div>
-              {% endif %}
+              <div class="article-author-avatar-wrapper">
+                {% if author.avatar %}
+                  <img class="article-author-avatar" src="{{ author.avatar }}" alt="{{ author.username }}" />
+                {% else %}
+                  <div class="article-author-avatar article-author-avatar--placeholder" style="background: {{ author.banner_color or '#6750a4' }};">
+                    {{ author.username | first | upper }}
+                  </div>
+                {% endif %}
+                {% if author.avatar_decoration %}
+                  <img src="{{ author.avatar_decoration }}" alt="" role="presentation" class="article-author-decoration" />
+                {% endif %}
+              </div>
               <div class="article-author-info">
                 <span class="article-author-name">{{ author.username }}</span>
                 {% if author.post %}

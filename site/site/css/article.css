@@ -201,12 +201,26 @@ nav-drawer {
   color: var(--md-sys-color-primary, #6750a4);
 }
 
+.article-author-avatar-wrapper {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
 .article-author-avatar {
   width: 42px;
   height: 42px;
   border-radius: 50%;
   object-fit: cover;
-  flex-shrink: 0;
+}
+
+.article-author-decoration {
+  position: absolute;
+  inset: -6px;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  pointer-events: none;
 }
 
 .article-author-avatar--placeholder {
