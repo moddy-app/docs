@@ -110,7 +110,11 @@ nav-drawer {
   --catalog-drawer-width: 0px;
 }
 
-@media (min-width: 1501px) {
+/* The sidebar is empty, so its width is 0 and it no longer provides the left
+   margin the layout assumes. Force the start margin to equal the end margin
+   (spacing-l) on every screen above mobile so the page sits symmetrically.
+   Below 600px the drawer collapses both margins to 0, so leave it alone. */
+@media (min-width: 601px) {
   nav-drawer {
     --_pane-margin-inline-start: var(--catalog-spacing-l);
   }
