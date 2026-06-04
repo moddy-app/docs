@@ -242,7 +242,7 @@ export class NavDrawer extends SignalElement(LitElement) {
       box-sizing: border-box;
       width: var(--_toc-pane-width);
       position: fixed;
-      z-index: 11;
+      z-index: 13;
       top: var(--catalog-top-app-bar-height);
       right: 0;
       height: calc(
@@ -253,6 +253,8 @@ export class NavDrawer extends SignalElement(LitElement) {
       transition: transform 0.34s cubic-bezier(0.2, 0, 0, 1),
         box-shadow 0.34s ease;
       box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
+      /* clip the shadow so it doesn't bleed above/below the content area */
+      clip-path: inset(0 -40px 0 -40px);
       /* one-time hint on load: after a short pause the panel glides out then
          eases back, so the user notices it's there. */
       animation: toc-peek 1.1s cubic-bezier(0.32, 0.72, 0, 1) 1.2s 1;
@@ -294,6 +296,7 @@ export class NavDrawer extends SignalElement(LitElement) {
     .pane.toc:focus-within {
       transform: translateX(calc(-1 * var(--_toc-gap)));
       box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
+      clip-path: inset(0 -40px 0 -40px);
     }
 
     .toc .scroll-wrapper {
