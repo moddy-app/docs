@@ -255,6 +255,10 @@ export class TopAppBar extends SignalElement(LitElement) {
       visibility: hidden;
     }
 
+    md-menu:not(:defined) {
+      display: none;
+    }
+
     md-icon-button * {
       display: block;
     }
