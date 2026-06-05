@@ -12,6 +12,7 @@ permalink: "/authors/{{ author.id }}/"
 {% block head %}
   <link rel="stylesheet" href="/css/md-layout.css" />
   <link rel="stylesheet" href="/css/article.css" />
+  <link rel="stylesheet" href="/css/home-page.css" />
 {% endblock %}
 
 {% block content %}
@@ -28,8 +29,10 @@ permalink: "/authors/{{ author.id }}/"
           {% endif %}
         </div>
       {% else %}
-        <div class="author-avatar author-avatar--placeholder">
-          {{ author.username | truncate(1, true, '') }}
+        <div class="author-avatar-wrapper">
+          <div class="author-avatar author-avatar--placeholder" style="background: {{ author.banner_color or '#6750a4' }};">
+            {{ author.username | truncate(1, true, '') }}
+          </div>
         </div>
       {% endif %}
       <div class="author-info">
@@ -59,18 +62,39 @@ permalink: "/authors/{{ author.id }}/"
   </header>
 
   <section class="author-articles">
-    <h2>
+    <h2 class="author-articles-title">
       <span data-lang-content="fr">Articles</span>
       <span data-lang-content="en">Articles</span>
     </h2>
-    <div class="article-list">
+    <div class="home-articles-grid">
       {% set hasArticles = false %}
       {% for article in articles %}
         {% if author.id in article.authors %}
           {% set hasArticles = true %}
           {% if article.seo_level != 3 %}
             <a href="/articles/{{ article.id }}/" class="article-card">
+              {% if article.banner %}
+                <div class="article-card-banner">
+                  <img src="{{ article.banner }}" alt="" role="presentation" />
+                </div>
+              {% elif article.banner_gradient %}
+                <div class="article-card-banner article-card-banner--gradient" style="background: {{ article.banner_gradient }};"></div>
+              {% endif %}
               <div class="article-card-body">
+                {% if article.labels and article.labels.length > 0 %}
+                  <div class="article-card-labels">
+                    {% for labelId in article.labels %}
+                      {% for label in labels %}
+                        {% if label.id == labelId %}
+                          <span class="article-label" style="--label-color: {{ label.color }};">
+                            <span data-lang-content="fr">{{ label.name.fr }}</span>
+                            <span data-lang-content="en">{{ label.name.en }}</span>
+                          </span>
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
                 <h3 class="article-card-title">{{ article.title }}</h3>
                 {% if article.chapeau %}
                   <p class="article-card-chapeau">
@@ -78,7 +102,9 @@ permalink: "/authors/{{ author.id }}/"
                     <span data-lang-content="en">{% if article.chapeau.en %}{{ article.chapeau.en }}{% endif %}</span>
                   </p>
                 {% endif %}
-                <time datetime="{{ article.date }}">{{ article.date }}</time>
+                <div class="article-card-meta">
+                  <time datetime="{{ article.date }}">{{ article.date }}</time>
+                </div>
               </div>
             </a>
           {% endif %}

@@ -435,7 +435,7 @@ span[data-lang-content] {
 
 .collection-page,
 .author-page {
-  max-width: 800px;
+  max-width: none;
   padding: 24px;
   /* md-layout's `main > * { overflow-x: auto }` would clip the avatar
      decoration that overflows upward (the straw). Keep it visible. */
@@ -659,7 +659,7 @@ span[data-lang-content] {
   height: 16px;
 }
 
-.author-articles h2 {
+.author-articles-title {
   font-size: 1.25rem;
   margin: 0 0 16px;
 }
