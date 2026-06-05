@@ -25,12 +25,16 @@
   font-size: 1rem;
   color: var(--md-sys-color-on-surface-variant, #49454f);
   margin: 0;
-  max-width: 620px;
   line-height: 1.6;
 }
 
 .home-subtitle a {
   color: var(--md-sys-color-primary, #6750a4);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.home-subtitle a:hover {
   text-decoration: underline;
 }
 
