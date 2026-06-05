@@ -50,17 +50,14 @@ export class TopAppBar extends SignalElement(LitElement) {
             </md-icon-button>
             <a
               href="/"
+              id="home-link"
               class="logo-link"
               title="Home"
               aria-label="Home">
               ${moddyLogo}
+              <md-focus-ring for="home-link"></md-focus-ring>
             </a>
           </section>
-
-          <a href="/" id="home-link">
-            Moddy Docs
-            <md-focus-ring for="home-link"></md-focus-ring>
-          </a>
 
           <a id="skip-to-main" href="#main-content" tabindex="0">
             Skip to main content
@@ -170,12 +167,14 @@ export class TopAppBar extends SignalElement(LitElement) {
       background-color: var(--md-sys-color-surface-container);
       color: var(--md-sys-color-on-surface);
       z-index: 12;
+      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
     .default-content {
       width: 100%;
       display: flex;
       align-items: center;
+      gap: 8px;
     }
 
     md-icon-button:not(:defined) {
@@ -204,13 +203,12 @@ export class TopAppBar extends SignalElement(LitElement) {
       display: flex;
       align-items: center;
       padding: 0;
-      margin-top: -3px;
-      height: 32px;
+      margin-inline-start: 6px;
     }
 
     .logo-link svg {
-      width: 32px;
-      height: 32px;
+      height: 1.35em;
+      width: auto;
       color: var(--md-sys-color-primary);
     }
 
@@ -241,16 +239,6 @@ export class TopAppBar extends SignalElement(LitElement) {
     #skip-to-main:focus-visible {
       opacity: 1;
       pointer-events: auto;
-    }
-
-    @media (max-width: 1500px) {
-      .start .logo-link {
-        display: none;
-      }
-
-      .start .menu-button {
-        display: flex;
-      }
     }
   `;
 }

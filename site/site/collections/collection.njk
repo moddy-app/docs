@@ -1,0 +1,67 @@
+---
+pagination:
+  data: labels
+  size: 1
+  alias: label
+permalink: "/collections/{{ label.id }}/"
+---
+{% extends 'default.html' %}
+
+{% set pageTitle = label.name.fr %}
+
+{% block head %}
+  <link rel="stylesheet" href="/css/md-layout.css" />
+  <link rel="stylesheet" href="/css/article.css" />
+{% endblock %}
+
+{% block content %}
+<div class="collection-page">
+
+  <header class="collection-header">
+    <div class="collection-badge" style="--label-color: {{ label.color }};">
+      {{ label.name.fr }}
+    </div>
+    <h1 class="collection-title">
+      <span data-lang-content="fr">{{ label.name.fr }}</span>
+      <span data-lang-content="en">{{ label.name.en }}</span>
+    </h1>
+  </header>
+
+  <div class="article-list">
+    {% set hasArticles = false %}
+    {% for article in articles %}
+      {% if label.id in article.labels %}
+        {% set hasArticles = true %}
+        {% if article.seo_level != 3 %}
+          <a href="/articles/{{ article.id }}/" class="article-card">
+            {% if article.banner %}
+              <div class="article-card-banner">
+                <img src="{{ article.banner }}" alt="" role="presentation" />
+              </div>
+            {% endif %}
+            <div class="article-card-body">
+              <h2 class="article-card-title">{{ article.title }}</h2>
+              {% if article.chapeau %}
+                <p class="article-card-chapeau">
+                  <span data-lang-content="fr">{% if article.chapeau.fr %}{{ article.chapeau.fr }}{% endif %}</span>
+                  <span data-lang-content="en">{% if article.chapeau.en %}{{ article.chapeau.en }}{% endif %}</span>
+                </p>
+              {% endif %}
+              <div class="article-card-meta">
+                <time datetime="{{ article.date }}">{{ article.date }}</time>
+              </div>
+            </div>
+          </a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    {% if not hasArticles %}
+      <p class="empty-state">
+        <span data-lang-content="fr">Aucun article dans cette collection.</span>
+        <span data-lang-content="en">No articles in this collection.</span>
+      </p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

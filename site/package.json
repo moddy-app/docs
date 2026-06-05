@@ -34,14 +34,14 @@
         "site",
         "lib",
         "eleventy-helpers",
-        "eleventy.config.cjs"
+        "eleventy.config.cjs",
+        "../content/**/*"
       ],
       "output": [
         "_dev"
       ],
       "dependencies": [
-        "build:dev:ts",
-        "build:copy-docs"
+        "build:dev:ts"
       ]
     },
     "build:dev:ts": {
@@ -79,14 +79,14 @@
         "site",
         "build",
         "eleventy-helpers",
-        "eleventy.config.cjs"
+        "eleventy.config.cjs",
+        "../content/**/*"
       ],
       "output": [
         "_prod/"
       ],
       "dependencies": [
-        "build:prod:ts",
-        "build:copy-docs"
+        "build:prod:ts"
       ]
     },
     "build:prod:ts": {

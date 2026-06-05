@@ -2,5 +2,28 @@
   "buildCommand": "cd site && npm run build:prod",
   "outputDirectory": "site/_prod",
   "installCommand": "cd site && npm install --legacy-peer-deps",
-  "framework": null
+  "framework": null,
+  "redirects": [
+    {
+      "source": "/articles",
+      "destination": "/articles/",
+      "permanent": true
+    },
+    {
+      "source": "/collections",
+      "destination": "/collections/",
+      "permanent": true
+    },
+    {
+      "source": "/authors",
+      "destination": "/authors/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/:id((?!articles|collections|authors|about|legal|css|js|fonts|images)[^/]+)",
+      "destination": "/_redirects/:id"
+    }
+  ]
 }

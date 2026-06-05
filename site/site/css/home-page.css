@@ -4,8 +4,53 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
- h1,
-.subtitle {
-  text-align: left;
-  margin-block-start: 0;
+.home-page {
+  padding: 24px;
+  max-width: none;
+  overflow: visible;
+}
+
+.home-header {
+  margin-bottom: 32px;
+}
+
+.home-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  margin: 0 0 12px;
+  line-height: 1.15;
+}
+
+.home-subtitle {
+  font-size: 1rem;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  margin: 0;
+  max-width: 560px;
+}
+
+.home-articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.article-card-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.article-card-banner--gradient {
+  height: 160px;
+}
+
+@media (max-width: 600px) {
+  .home-page {
+    padding: 16px;
+  }
+
+  .home-articles-grid {
+    grid-template-columns: 1fr;
+  }
 }

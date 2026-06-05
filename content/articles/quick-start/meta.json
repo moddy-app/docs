@@ -1,0 +1,16 @@
+{
+  "title": "Quick Start",
+  "id": "quick-start",
+  "authors": ["1164597199594852395"],
+  "date": "2024-01-01",
+  "chapeau": {
+    "fr": "Tout ce qu'il faut savoir pour démarrer avec Moddy.",
+    "en": "Everything you need to know to get started with Moddy."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #0d47a1 0%, #42a5f5 50%, #bbdefb 100%)",
+  "banner_focus": { "x": 50, "y": 50 },
+  "seo_level": 1,
+  "labels": ["about"],
+  "nav_order": 2
+}
