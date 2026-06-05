@@ -514,20 +514,20 @@ nav-drawer {
 
 .author-avatar-wrapper {
   position: relative;
-  width: 90px;
-  min-width: 90px;
-  height: 90px;
-  min-height: 90px;
+  width: 96px;
+  min-width: 96px;
+  height: 96px;
+  min-height: 96px;
   flex-shrink: 0;
   overflow: visible;
 }
 
 .author-avatar {
   display: block;
-  width: 90px;
-  height: 90px;
-  min-width: 90px;
-  min-height: 90px;
+  width: 96px;
+  height: 96px;
+  min-width: 96px;
+  min-height: 96px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   object-fit: cover;
@@ -538,10 +538,10 @@ nav-drawer {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 90px;
-  height: 90px;
-  min-width: 90px;
-  min-height: 90px;
+  width: 96px;
+  height: 96px;
+  min-width: 96px;
+  min-height: 96px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   background: var(--md-sys-color-primary-container, #eaddff);
