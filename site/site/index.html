@@ -93,7 +93,10 @@
                 {% for labelId in article.labels %}
                   {% for label in labels %}
                     {% if label.id == labelId %}
-                      <span class="article-label" style="--label-color: {{ label.color }};">
+                      <span class="article-label" style="--label-color: {{ label.color }};"
+                            role="link" tabindex="0"
+                            onclick="event.stopPropagation();window.location='/collections/{{ label.id }}/';"
+                            onkeydown="if(event.key==='Enter'||event.key===' '){event.stopPropagation();window.location='/collections/{{ label.id }}/';}">
                         <span data-lang-content="fr">{{ label.name.fr }}</span>
                         <span data-lang-content="en">{{ label.name.en }}</span>
                       </span>

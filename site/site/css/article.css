@@ -566,6 +566,7 @@ div[data-lang-content] {
 
 .article-label:hover {
   background: color-mix(in srgb, var(--label-color, #4caf50) 25%, transparent);
+  cursor: pointer;
 }
 
 /* ─── Collection page ────────────────────────────────────────────────────── */
