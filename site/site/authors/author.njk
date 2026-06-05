@@ -95,7 +95,10 @@ permalink: "/authors/{{ author.id }}/"
                     {% endfor %}
                   </div>
                 {% endif %}
-                <h3 class="article-card-title">{{ article.title }}</h3>
+                <h3 class="article-card-title">
+                  <span data-lang-content="fr">{{ article.titleLocalized.fr }}</span>
+                  <span data-lang-content="en">{{ article.titleLocalized.en }}</span>
+                </h3>
                 {% if article.chapeau %}
                   <p class="article-card-chapeau">
                     <span data-lang-content="fr">{% if article.chapeau.fr %}{{ article.chapeau.fr }}{% endif %}</span>

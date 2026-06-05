@@ -50,7 +50,10 @@ hasToc: true
   </div>
 
   {# ── Title ── #}
-  <h1 class="article-title">{{ article.title }}</h1>
+  <h1 class="article-title">
+    <span data-lang-content="fr">{{ article.titleLocalized.fr }}</span>
+    <span data-lang-content="en">{{ article.titleLocalized.en }}</span>
+  </h1>
 
   {# ── Date | Chapeau ── #}
   <div class="article-dateline">

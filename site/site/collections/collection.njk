@@ -58,7 +58,10 @@ permalink: "/collections/{{ label.id }}/"
                   {% endfor %}
                 </div>
               {% endif %}
-              <h2 class="article-card-title">{{ article.title }}</h2>
+              <h2 class="article-card-title">
+                <span data-lang-content="fr">{{ article.titleLocalized.fr }}</span>
+                <span data-lang-content="en">{{ article.titleLocalized.en }}</span>
+              </h2>
               {% if article.chapeau %}
                 <p class="article-card-chapeau">
                   <span data-lang-content="fr">{% if article.chapeau.fr %}{{ article.chapeau.fr }}{% endif %}</span>

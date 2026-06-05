@@ -74,7 +74,7 @@
         <a
           href="/articles/{{ article.id }}/"
           class="article-card{% if cardIndex >= 6 %} article-card--initially-hidden{% endif %}"
-          data-title="{{ article.title | lower }}"
+          data-title="{{ article.titleLocalized.fr | lower }} {{ article.titleLocalized.en | lower }}"
           data-labels="{{ article.labels | join(',') }}"
           data-authors="{{ article.authors | join(',') }}"
           data-date="{{ article.date }}">
@@ -100,7 +100,10 @@
                 {% endfor %}
               </div>
             {% endif %}
-            <h2 class="article-card-title">{{ article.title }}</h2>
+            <h2 class="article-card-title">
+              <span data-lang-content="fr">{{ article.titleLocalized.fr }}</span>
+              <span data-lang-content="en">{{ article.titleLocalized.en }}</span>
+            </h2>
             {% if article.chapeau and (article.chapeau.fr or article.chapeau.en) %}
               <p class="article-card-chapeau">
                 <span data-lang-content="fr">{{ article.chapeau.fr }}</span>

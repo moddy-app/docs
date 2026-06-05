@@ -28,8 +28,16 @@ module.exports = async function () {
     const assetsDir = path.join(articleDir, 'assets');
     const hasAssets = fs.existsSync(assetsDir);
 
+    // Support optional title_translations: { fr, en } in meta.json.
+    // Falls back to the plain title string for both languages.
+    const titleLocalized = meta.title_translations || {
+      fr: meta.title,
+      en: meta.title,
+    };
+
     articles.push({
       ...meta,
+      titleLocalized,
       rawContent,
       hasAssets,
       assetsPath: hasAssets ? `/articles/${meta.id}/assets/` : null,
