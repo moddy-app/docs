@@ -22,7 +22,7 @@ Moddy is an open source project distributed under the **[Moddy Community License
 
 By using Moddy services (Discord bot, website, API, or any other associated service), you unconditionally accept these ToS as well as our Privacy Policy.
 
-The use of Moddy's source code, whether for consultation, modification, or redistribution, also implies acceptance of these ToS in addition to the CC BY-NC-SA license.
+The use of Moddy's source code, whether for consultation, modification, or redistribution, also implies acceptance of these ToS in addition to the [Moddy Community License (MCL)](/articles/license/).
 
 ### Legal capacity
 
@@ -283,7 +283,7 @@ It is forbidden to:
 
 - Use the name "Moddy" or logos without prior written authorization
 - Use the source code for commercial purposes without authorization
-- Not comply with the CC BY-NC-SA license attribution conditions
+- Not comply with the [MCL](/articles/license/) attribution conditions
 - Extract or reuse a substantial part of the databases
 
 ### User content

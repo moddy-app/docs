@@ -22,7 +22,7 @@ Moddy est un projet open source distribué sous la **[Moddy Community License (M
 
 En utilisant les services Moddy (bot Discord, site web, API ou tout autre service associé), vous acceptez sans réserve les présentes CGU ainsi que notre Politique de Confidentialité.
 
-L'utilisation du code source de Moddy, que ce soit à des fins de consultation, de modification ou de redistribution, implique également l'acceptation des présentes CGU en complément de la licence CC BY-NC-SA.
+L'utilisation du code source de Moddy, que ce soit à des fins de consultation, de modification ou de redistribution, implique également l'acceptation des présentes CGU en complément de la [Moddy Community License (MCL)](/articles/license/).
 
 ### Capacité juridique
 
@@ -283,7 +283,7 @@ Il est interdit de :
 
 - Utiliser le nom « Moddy » ou les logos sans autorisation écrite préalable
 - Utiliser le code source à des fins commerciales sans autorisation
-- Ne pas respecter les conditions d'attribution de la licence CC BY-NC-SA
+- Ne pas respecter les conditions d'attribution de la [MCL](/articles/license/)
 - Extraire ou réutiliser une partie substantielle des bases de données
 
 ### Contenu des utilisateurs
