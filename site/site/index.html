@@ -15,15 +15,69 @@
       <span data-lang-content="en">Documentation</span>
     </h1>
     <p class="home-subtitle">
-      <span data-lang-content="fr">Tout ce qu'il faut savoir pour utiliser, installer et configurer <strong>Moddy</strong>.</span>
-      <span data-lang-content="en">Everything you need to know to use, install, and configure <strong>Moddy</strong>.</span>
+      <span data-lang-content="fr">Vous trouverez ici tout ce qu'il vous faut pour apprendre à utiliser Moddy, l'installer, le configurer et contribuer au projet open-source. Si vous avez des questions ou des demandes, vous pouvez ouvrir un ticket sur le <a href="https://moddy.app/support">serveur support</a> ou nous contacter par email à <a href="mailto:hello@moddy.app">hello@moddy.app</a>.</span>
+      <span data-lang-content="en">Here you'll find everything you need to learn how to use Moddy, install it, configure it, and contribute to the open-source project. If you have any questions or requests, you can open a ticket on the <a href="https://moddy.app/support">support server</a> or contact us by email at <a href="mailto:hello@moddy.app">hello@moddy.app</a>.</span>
     </p>
   </header>
 
-  <div class="home-articles-grid">
+  <div class="home-search-bar">
+    <input
+      type="search"
+      id="home-search"
+      class="home-search-input"
+      autocomplete="off"
+      placeholder="Rechercher un article…"
+      data-placeholder-fr="Rechercher un article…"
+      data-placeholder-en="Search articles…"
+      aria-label="Search articles"
+    />
+  </div>
+
+  <div class="home-filters" id="home-filters">
+    <div class="home-filters-group">
+      <span class="home-filters-label" data-lang-content="fr">Labels :</span>
+      <span class="home-filters-label" data-lang-content="en">Labels:</span>
+      {% for label in labels %}
+        <button
+          class="home-filter-chip"
+          data-filter-type="label"
+          data-filter-value="{{ label.id }}"
+          style="--label-color: {{ label.color }};"
+          aria-pressed="false">
+          <span data-lang-content="fr">{{ label.name.fr }}</span>
+          <span data-lang-content="en">{{ label.name.en }}</span>
+        </button>
+      {% endfor %}
+    </div>
+    <div class="home-filters-group">
+      <span class="home-filters-label" data-lang-content="fr">Auteurs :</span>
+      <span class="home-filters-label" data-lang-content="en">Authors:</span>
+      {% for author in authors %}
+        <button
+          class="home-filter-chip home-filter-chip--author"
+          data-filter-type="author"
+          data-filter-value="{{ author.id }}"
+          aria-pressed="false">
+          {% if author.avatar %}
+            <img src="{{ author.avatar }}" alt="{{ author.username }}" class="home-filter-chip-avatar" />
+          {% endif %}
+          {{ author.username }}
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="home-articles-grid" id="home-articles-grid">
+    {% set cardIndex = 0 %}
     {% for article in articles %}
       {% if article.seo_level < 3 %}
-        <a href="/articles/{{ article.id }}/" class="article-card">
+        <a
+          href="/articles/{{ article.id }}/"
+          class="article-card{% if cardIndex >= 6 %} article-card--initially-hidden{% endif %}"
+          data-title="{{ article.title | lower }}"
+          data-labels="{{ article.labels | join(',') }}"
+          data-authors="{{ article.authors | join(',') }}"
+          data-date="{{ article.date }}">
           {% if article.banner %}
             <div class="article-card-banner">
               <img src="{{ article.banner }}" alt="" role="presentation" />
@@ -58,8 +112,16 @@
             </div>
           </div>
         </a>
+        {% set cardIndex = cardIndex + 1 %}
       {% endif %}
     {% endfor %}
+  </div>
+
+  <div class="home-see-all" id="home-see-all">
+    <button class="home-see-all-btn" id="home-see-all-btn" aria-expanded="false">
+      <span data-lang-content="fr">Voir tout</span>
+      <span data-lang-content="en">See all</span>
+    </button>
   </div>
 
 </div>

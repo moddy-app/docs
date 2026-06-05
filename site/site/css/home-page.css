@@ -11,7 +11,7 @@
 }
 
 .home-header {
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .home-title {
@@ -25,8 +25,105 @@
   font-size: 1rem;
   color: var(--md-sys-color-on-surface-variant, #49454f);
   margin: 0;
-  max-width: 560px;
+  max-width: 620px;
+  line-height: 1.6;
 }
+
+.home-subtitle a {
+  color: var(--md-sys-color-primary, #6750a4);
+  text-decoration: underline;
+}
+
+/* ─── Search bar ─────────────────────────────────────────────────────────── */
+
+.home-search-bar {
+  margin-bottom: 16px;
+}
+
+.home-search-input {
+  width: 100%;
+  max-width: 480px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 20%, transparent);
+  background: var(--md-sys-color-surface-container-low, #f7f2fa);
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  font-size: 0.95rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.home-search-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.home-search-input:focus {
+  border-color: var(--md-sys-color-primary, #6750a4);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary, #6750a4) 15%, transparent);
+}
+
+/* ─── Filters ────────────────────────────────────────────────────────────── */
+
+.home-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.home-filters-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-filters-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.home-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 20%, transparent);
+  background: transparent;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.home-filter-chip:hover {
+  background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 6%, transparent);
+}
+
+.home-filter-chip[aria-pressed="true"] {
+  background: var(--md-sys-color-secondary-container, #e8def8);
+  color: var(--md-sys-color-on-secondary-container, #1d192b);
+  border-color: transparent;
+}
+
+.home-filter-chip-avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ─── Articles grid ──────────────────────────────────────────────────────── */
 
 .home-articles-grid {
   display: grid;
@@ -34,9 +131,65 @@
   gap: 20px;
 }
 
+.article-card--initially-hidden {
+  display: none;
+}
+
+.article-card--search-hidden {
+  display: none;
+}
+
 .article-card-banner--gradient {
   height: 160px;
 }
+
+/* ─── See all button ─────────────────────────────────────────────────────── */
+
+.home-see-all {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.home-see-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 20%, transparent);
+  background: transparent;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.home-see-all-btn:hover {
+  background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 6%, transparent);
+  border-color: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 35%, transparent);
+}
+
+.home-see-all[hidden] {
+  display: none;
+}
+
+/* ─── No results state ───────────────────────────────────────────────────── */
+
+.home-no-results {
+  display: none;
+  grid-column: 1 / -1;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  font-style: italic;
+  padding: 24px 0;
+}
+
+.home-no-results.visible {
+  display: block;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
 
 @media (max-width: 600px) {
   .home-page {
@@ -45,5 +198,9 @@
 
   .home-articles-grid {
     grid-template-columns: 1fr;
+  }
+
+  .home-search-input {
+    max-width: 100%;
   }
 }
