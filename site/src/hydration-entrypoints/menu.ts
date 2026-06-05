@@ -5,4 +5,5 @@
  */
 
 import '@material/web/menu/menu.js';
+import '@material/web/menu/menu-item.js';
 import '../components/theme-changer.js';
