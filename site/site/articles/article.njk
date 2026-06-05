@@ -15,11 +15,17 @@ hasToc: true
   <link rel="stylesheet" href="/css/article.css" />
   <link rel="stylesheet" href="/css/md-layout.css" />
   <link rel="stylesheet" href="/css/syntax-highlight.css" />
+  {% if article.banner or article.banner_gradient %}
   <style>
     /* Tell nav-drawer's content pane to use the expanded top radius on load.
-       r_ext = r_banner + banner_margin = 52 + 40 = 92px */
+       r_ext = r_banner + banner_margin
+       desktop: 52 + 40 = 92px — mobile: 36 + 16 = 52px */
     nav-drawer { --expanded-top-radius: 92px; }
+    @media (max-width: 768px) {
+      nav-drawer { --expanded-top-radius: 52px; }
+    }
   </style>
+  {% endif %}
   {% if article.seo_level >= 2 %}
     <meta name="robots" content="noindex{% if article.seo_level == 3 %}, nofollow{% endif %}" />
   {% endif %}
