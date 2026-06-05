@@ -29,10 +29,24 @@ export class TopAppBar extends SignalElement(LitElement) {
   @state() private menuOpen = false;
   @state() private currentLang = 'fr';
   @query('theme-changer') private themeChanger!: HTMLElement;
+  private _langObserver?: MutationObserver;
 
   override connectedCallback() {
     super.connectedCallback();
     this.currentLang = document.documentElement.dataset.lang || 'fr';
+    this._langObserver = new MutationObserver(() => {
+      const lang = document.documentElement.dataset.lang || 'fr';
+      if (lang !== this.currentLang) this.currentLang = lang;
+    });
+    this._langObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-lang'],
+    });
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this._langObserver?.disconnect();
   }
 
   render() {

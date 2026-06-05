@@ -273,6 +273,91 @@ span[data-lang-content] {
   color: var(--md-sys-color-on-surface-variant, #49454f);
 }
 
+/* ── Legal notice ── */
+
+.article-legal-notice {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  padding: var(--catalog-spacing-l, 16px);
+  padding-inline: calc(24px + var(--catalog-spacing-l, 16px));
+  border-radius: var(--catalog-shape-l, 16px);
+  background-color: var(--md-sys-color-secondary-container, #e8def8);
+  color: var(--md-sys-color-on-secondary-container, #1d192b);
+  display: flex;
+  gap: var(--catalog-spacing-s, 8px);
+  align-items: flex-start;
+}
+
+.article-legal-notice-icon {
+  flex-shrink: 0;
+  display: flex;
+  margin-top: 2px;
+}
+
+.article-legal-notice-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.article-legal-notice-body {
+  flex-grow: 1;
+}
+
+.article-legal-notice-text {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.article-legal-notice-text:last-child {
+  margin-bottom: 0;
+}
+
+.article-legal-notice-action {
+  margin-top: 8px;
+}
+
+/* data-lang-content="fr" is a div here — override the generic rule so it
+   renders as block (display: revert would give block on a div) */
+div[data-lang-content] {
+  display: none;
+}
+
+:root[data-lang="fr"] div[data-lang-content="fr"],
+:root:not([data-lang]) div[data-lang-content="fr"] {
+  display: block;
+}
+
+:root[data-lang="en"] div[data-lang-content="en"] {
+  display: block;
+}
+
+.article-legal-notice-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-on-secondary-container, #1d192b) 30%, transparent);
+  background: transparent;
+  color: var(--md-sys-color-on-secondary-container, #1d192b);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.article-legal-notice-btn:hover {
+  background: color-mix(in srgb, var(--md-sys-color-on-secondary-container, #1d192b) 10%, transparent);
+}
+
+@media (max-width: 768px) {
+  .article-legal-notice {
+    padding-inline: 16px;
+  }
+}
+
 /* ── Article body ── */
 
 /* `display: block` is required: md-layout.css has
