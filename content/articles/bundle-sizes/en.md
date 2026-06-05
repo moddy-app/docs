@@ -1,20 +1,4 @@
-<!-- catalog-only-start --><!-- ---
-name: Bundle Sizes
-title: Bundle Sizes
-order: 5
-hasToc: false
------><!-- catalog-only-end -->
-
 # Sizes
-
-<!-- go/mwc-size -->
-
-<!--*
-# Document freshness: For more information, see go/fresh-source.
-freshness: { owner: 'lizmitchell' reviewed: '2025-11-23' }
-*-->
-
-<!-- [TOC] -->
 
 This doc tracks important size metrics for Material Web Components.
 

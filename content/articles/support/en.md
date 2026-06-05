@@ -1,25 +1,6 @@
-<!-- catalog-only-start --><!-- ---
-name: Support
-title: Support
-order: 4
------><!-- catalog-only-end -->
-
 # Support
 
-<!-- go/mwc-support -->
-
-<!--*
-# Document freshness: For more information, see go/fresh-source.
-freshness: { owner: 'lizmitchell' reviewed: '2025-11-23' }
-*-->
-
-<!-- [TOC] -->
-
-<!--#include file="../googlers/support.md" -->
-
 ## Browsers
-
-<!-- go/mwc-browsers -->
 
 MWC aims to support the latest two major versions of browsers at the time of
 each release.
@@ -37,8 +18,6 @@ Safari* | 16.4 +
 [`ElementInternals` polyfill](https://www.npmjs.com/package/element-internals-polyfill).*
 
 ## FAQ
-
-<!-- go/mwc-faq -->
 
 *If you have a question that isn't listed here, consider asking it so we can
 include it!*
@@ -115,11 +94,11 @@ for more info on how to generate a set of dark theme tokens.
     ```
 
 -   Use the
-    [Material theme builder Figma plugin](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder)<!-- {.external} -->
+    [Material theme builder Figma plugin](https://www.figma.com/community/plugin/1034969338659738588/Material-Theme-Builder)
     to generate a color scheme.
 
 -   Use the
-    [`material-color-utilities` library](https://www.npmjs.com/package/@material/material-color-utilities)<!-- {.external} -->
+    [`material-color-utilities` library](https://www.npmjs.com/package/@material/material-color-utilities)
     to generate color schemes at runtime.
 
 ### How do I customize an `<md-*>` element that is inside another component?

@@ -1,0 +1,143 @@
+---
+pagination:
+  data: articles
+  size: 1
+  alias: article
+permalink: "/articles/{{ article.id }}/"
+hasToc: true
+---
+{% extends 'default.html' %}
+
+{% set pageTitle = article.title %}
+{% set name = article.title %}
+
+{% block head %}
+  <link rel="stylesheet" href="/css/article.css" />
+  <link rel="stylesheet" href="/css/md-layout.css" />
+  <link rel="stylesheet" href="/css/syntax-highlight.css" />
+  <style>
+    /* Tell nav-drawer's content pane to use the expanded top radius on load.
+       r_ext = r_banner + banner_margin = 52 + 40 = 92px */
+    nav-drawer { --expanded-top-radius: 92px; }
+  </style>
+  {% if article.seo_level >= 2 %}
+    <meta name="robots" content="noindex{% if article.seo_level == 3 %}, nofollow{% endif %}" />
+  {% endif %}
+  {% if article.theme_color %}
+    <meta name="page-theme-color" content="{{ article.theme_color }}" />
+  {% endif %}
+{% endblock %}
+
+{%- set renderedContent = article.rawContent.en | renderMarkdown -%}
+
+{% block toc %}
+{{ renderedContent | toc | filterToc | safe }}
+{% endblock %}
+
+{% block content %}
+<div class="article-page">
+  {# ── Banner ── #}
+  <div class="article-banner"
+    {% if article.banner %}
+      style="--banner-focus-x: {{ article.banner_focus.x if article.banner_focus else 50 }}%; --banner-focus-y: {{ article.banner_focus.y if article.banner_focus else 50 }}%;"
+    {% elif article.banner_gradient %}
+      style="background: {{ article.banner_gradient }};"
+    {% endif %}
+  >
+    {% if article.banner %}
+      <img src="{{ article.banner }}" alt="{{ article.title }}" />
+    {% endif %}
+  </div>
+
+  {# ── Title ── #}
+  <h1 class="article-title">
+    <span data-lang-content="fr">{{ article.titleLocalized.fr }}</span>
+    <span data-lang-content="en">{{ article.titleLocalized.en }}</span>
+  </h1>
+
+  {# ── Date | Chapeau ── #}
+  <div class="article-dateline">
+    <time class="article-date-text" datetime="{{ article.date }}">{{ article.date }}</time>
+    {% if article.chapeau and (article.chapeau.fr or article.chapeau.en) %}
+      <span class="article-dateline-sep">|</span>
+      <span data-lang-content="fr">{{ article.chapeau.fr }}</span>
+      <span data-lang-content="en">{{ article.chapeau.en }}</span>
+    {% endif %}
+  </div>
+
+  {# ── Author ── #}
+  {% if article.authors | length %}
+    {% for authorId in article.authors %}
+      {% for author in authors %}
+        {% if author.id == authorId %}
+          <div class="article-author-block">
+            <a href="/authors/{{ author.id }}/" class="article-author-link">
+              <div class="article-author-avatar-wrapper">
+                {% if author.avatar %}
+                  <img class="article-author-avatar" src="{{ author.avatar }}" alt="{{ author.username }}" />
+                {% else %}
+                  <div class="article-author-avatar article-author-avatar--placeholder" style="background: {{ author.banner_color or '#6750a4' }};">
+                    {{ author.username | first | upper }}
+                  </div>
+                {% endif %}
+                {% if author.avatar_decoration %}
+                  <img src="{{ author.avatar_decoration }}" alt="" role="presentation" class="article-author-decoration" />
+                {% endif %}
+              </div>
+              <div class="article-author-info">
+                <span class="article-author-name">{{ author.username }}</span>
+                {% if author.post %}
+                  <span class="article-author-role">{{ author.post }}</span>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+
+  {# ── Legal notice (articles with the 'legal' label) ── #}
+  {% if "legal" in article.labels %}
+  <div class="article-content-column">
+  <div class="article-legal-notice">
+    <span class="article-legal-notice-icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4Zm-1 6h2v2h-2V7Zm0 4h2v6h-2v-6Z"/></svg>
+    </span>
+    <div class="article-legal-notice-body">
+      <p class="article-legal-notice-text">
+        <span data-lang-content="fr">Ce document est un texte juridique. En cas de divergence entre les versions linguistiques, <strong>seule la version anglaise fait foi</strong>.</span>
+        <span data-lang-content="en">This is a legal document. In the event of any discrepancy between language versions, <strong>only the English version shall prevail</strong>.</span>
+      </p>
+      <div class="article-legal-notice-action" data-lang-content="fr">
+        <button
+          class="article-legal-notice-btn"
+          onclick="document.documentElement.dataset.lang='en';try{localStorage.setItem('moddy-lang','en')}catch(e){}">
+          Lire en anglais
+        </button>
+      </div>
+    </div>
+  </div>
+  </div>
+  {% endif %}
+
+  {# ── Article body ── #}
+  <div class="article-body">
+    {{ renderedContent | mdMarkdown | safe }}
+  </div>
+
+  {# Date formatting script lives inside .article-page so it keeps the UA
+     `script { display: none }` (md-layout's `main > *` would force it visible). #}
+  <script>
+  (function() {
+    var el = document.querySelector('.article-date-text[datetime]');
+    if (!el) return;
+    var lang = document.documentElement.getAttribute('data-lang') || 'fr';
+    var d = new Date(el.getAttribute('datetime') + 'T00:00:00');
+    el.textContent = d.toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+  })();
+  </script>
+</div>
+{% endblock %}

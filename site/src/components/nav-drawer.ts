@@ -114,15 +114,15 @@ export class NavDrawer extends SignalElement(LitElement) {
       return nothing;
     }
 
-    return html` <div
-      class="pane toc"
-      ?inert=${showModal || inertContentSignal.value}>
-      <div class="scroll-wrapper">
-        <p>On this page:</p>
-        <h2>${this.pageTitle}</h2>
-        <slot name="toc"></slot>
-      </div>
-    </div>`;
+    return html`
+      <div class="toc-edge" aria-hidden="true"></div>
+      <div class="pane toc" ?inert=${showModal || inertContentSignal.value}>
+        <div class="scroll-wrapper">
+          <p>On this page:</p>
+          <h2>${this.pageTitle}</h2>
+          <slot name="toc"></slot>
+        </div>
+      </div>`;
   }
 
   /**
@@ -139,6 +139,41 @@ export class NavDrawer extends SignalElement(LitElement) {
     // Listen for page resizes to mark the drawer as collapsible.
     queryResult.addEventListener('change', (e) => {
       this.isCollapsible = e.matches;
+    });
+
+    this.setupBannerRadiusScroll();
+  }
+
+  private setupBannerRadiusScroll() {
+    const expandedStr = getComputedStyle(this).getPropertyValue(
+      '--expanded-top-radius'
+    );
+    if (!expandedStr || !expandedStr.trim()) return;
+
+    const expanded = parseFloat(expandedStr);
+    const normal = 28; // --catalog-shape-xl fallback
+    const scrollRange = 100;
+
+    const contentPane = this.shadowRoot?.querySelector(
+      '.pane.content-pane'
+    ) as HTMLElement | null;
+    const scrollWrapper = contentPane?.querySelector(
+      '.scroll-wrapper'
+    ) as HTMLElement | null;
+    if (!contentPane || !scrollWrapper) return;
+
+    contentPane.style.setProperty('--_pane-top-radius', `${expanded}px`);
+
+    let ticking = false;
+    scrollWrapper.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const t = Math.min(scrollWrapper.scrollTop / scrollRange, 1);
+        const r = expanded + (normal - expanded) * t;
+        contentPane.style.setProperty('--_pane-top-radius', `${r}px`);
+        ticking = false;
+      });
     });
   }
 
@@ -165,6 +200,8 @@ export class NavDrawer extends SignalElement(LitElement) {
       --_pane-margin-inline-end: var(--catalog-spacing-l);
       --_pane-margin-block-end: var(--catalog-spacing-l);
       --_toc-pane-width: 250px;
+      /* transparent gap kept between the revealed TOC and the page edge */
+      --_toc-gap: 5mm;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
@@ -192,7 +229,10 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     .pane {
       box-sizing: border-box;
-      overflow: auto;
+      /* The pane clips (rounded). The inner .scroll-wrapper is what scrolls,
+         so its scrollbar is clipped by this rounded overflow at the corners
+         — works with overlay scrollbars too, unlike webkit track margins. */
+      overflow: hidden;
       width: 100%;
       /* Explicit height to make overflow work */
       height: calc(
@@ -201,6 +241,8 @@ export class NavDrawer extends SignalElement(LitElement) {
       );
       background-color: var(--md-sys-color-surface);
       border-radius: var(--catalog-shape-xl);
+      /* cross-fade the surface colour on theme changes */
+      transition: background-color 0.4s ease;
     }
 
     .pane,
@@ -224,12 +266,74 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     .pane.content-pane {
       flex-grow: 1;
+      border-top-left-radius: var(--_pane-top-radius, var(--catalog-shape-xl));
+      border-top-right-radius: var(--_pane-top-radius, var(--catalog-shape-xl));
     }
 
+    /* The TOC is fully tucked off the right edge (no permanent sliver) so the
+       content pane takes the full width. An invisible hover strip pinned to the
+       right edge (.toc-edge) reveals it: hovering the edge — or the panel, or
+       focusing into it — slides the whole panel in as a single unit. The
+       revealed panel sits flush against the right edge, covering the edge strip,
+       so the cursor stays over it the whole time — no open/close flicker. The
+       document clips horizontal overflow (see global.css) so the off-screen
+       panel never produces a scrollbar. */
     .pane.toc {
-      width: auto;
       box-sizing: border-box;
       width: var(--_toc-pane-width);
+      position: fixed;
+      z-index: 13;
+      top: var(--catalog-top-app-bar-height);
+      right: 0;
+      height: calc(
+        100dvh - var(--catalog-top-app-bar-height) -
+          var(--_pane-margin-block-end)
+      );
+      transform: translateX(100%);
+      transition: transform 0.34s cubic-bezier(0.2, 0, 0, 1),
+        box-shadow 0.34s ease;
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
+      /* one-time hint on load: after a short pause the panel glides out then
+         eases back, so the user notices it's there. */
+      animation: toc-peek 1.1s cubic-bezier(0.32, 0.72, 0, 1) 1.2s 1;
+    }
+
+    /* invisible hover trigger pinned to the right edge of the viewport. It is
+       wide enough to bridge the revealed panel's gap so the hover is never lost
+       between the edge and the panel. */
+    .toc-edge {
+      position: fixed;
+      z-index: 10;
+      top: var(--catalog-top-app-bar-height);
+      right: 0;
+      width: calc(var(--_toc-gap) + 14px);
+      height: calc(
+        100dvh - var(--catalog-top-app-bar-height) -
+          var(--_pane-margin-block-end)
+      );
+    }
+
+    @keyframes toc-peek {
+      0%,
+      100% {
+        transform: translateX(100%);
+      }
+      55% {
+        transform: translateX(calc(100% - 16mm));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pane.toc {
+        animation: none;
+      }
+    }
+
+    .panes:has(.toc-edge:hover) .pane.toc,
+    .pane.toc:hover,
+    .pane.toc:focus-within {
+      transform: translateX(calc(-1 * var(--_toc-gap)));
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
     }
 
     .toc .scroll-wrapper {
@@ -269,16 +373,21 @@ export class NavDrawer extends SignalElement(LitElement) {
       z-index: 12;
       background-color: var(--md-sys-color-surface-container);
       overflow: hidden;
+      transition: background-color 0.4s ease;
     }
 
     .scroll-wrapper {
-      overflow-y: auto;
-      max-height: 100%;
-      border-radius: inherit;
       box-sizing: border-box;
     }
 
+    aside .scroll-wrapper {
+      overflow-y: auto;
+      max-height: 100%;
+    }
+
     .pane .scroll-wrapper {
+      overflow-y: auto;
+      height: 100%;
       padding-block: var(--catalog-spacing-xl);
     }
 
@@ -291,7 +400,8 @@ export class NavDrawer extends SignalElement(LitElement) {
     }
 
     @media (max-width: 900px) {
-      .pane.toc {
+      .pane.toc,
+      .toc-edge {
         display: none;
       }
     }
@@ -359,29 +469,22 @@ export class NavDrawer extends SignalElement(LitElement) {
       }
     }
 
-    /* On desktop, make the scrollbars less blocky so you can see the border
-     * radius of the pane. On most mobile platforms, these scrollbars are hidden
-     * by default. It'll still unfortunately render on top of the border radius.
-     */
     @media (pointer: fine) {
       :host {
         --_scrollbar-width: 8px;
       }
 
       .scroll-wrapper {
-        /* firefox */
         scrollbar-color: var(--md-sys-color-primary) transparent;
         scrollbar-width: thin;
       }
 
       .content {
-        /* adjust for the scrollbar width */
         padding-inline-end: calc(
           var(--catalog-spacing-xl) - var(--_scrollbar-width)
         );
       }
 
-      /* Chromium + Safari */
       .scroll-wrapper::-webkit-scrollbar {
         background-color: transparent;
         width: var(--_scrollbar-width);
@@ -411,12 +514,10 @@ export class NavDrawer extends SignalElement(LitElement) {
 
       @media (pointer: fine) {
         .scroll-wrapper {
-          /* firefox */
           scrollbar-color: CanvasText transparent;
         }
 
         .scroll-wrapper::-webkit-scrollbar-thumb {
-          /* Chromium + Safari */
           background-color: CanvasText;
         }
       }

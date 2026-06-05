@@ -13,9 +13,14 @@
  */
 
 import {
+  applyMaterialTheme,
+  themeFromSourceColor,
+} from '../utils/material-color-helpers.js';
+import {
   changeColor,
   changeColorAndMode,
   changeColorMode,
+  enableThemeTransition,
   getCurrentMode,
   getCurrentSeedColor,
   getCurrentThemeString,
@@ -131,7 +136,36 @@ function applySmoothScrolling() {
   });
 }
 
+/**
+ * Applies a per-page color theme when the page declares one via
+ * `<meta name="page-theme-color" content="#rrggbb">` (set from an article's
+ * `theme_color` metadata). This is applied as a separate, non-persisted
+ * override layer on top of the user's saved theme: the base theme is applied
+ * first (inline, before paint), then this swaps in the page's color, so the
+ * change cross-fades. Pages without the meta keep the user's theme, so
+ * navigating to them fades back to it.
+ */
+function applyPageThemeColor() {
+  const color = document
+    .querySelector('meta[name="page-theme-color"]')
+    ?.getAttribute('content')
+    ?.trim();
+
+  if (!color) {
+    return;
+  }
+
+  const isDark = isModeDark(getCurrentMode() ?? 'auto', false);
+  enableThemeTransition();
+  const theme = themeFromSourceColor(color, isDark);
+  // Use a distinct stylesheet name so it layers over (and never overwrites)
+  // the user's persisted 'material-theme'.
+  applyMaterialTheme(document, theme, 'page-theme');
+  window.dispatchEvent(new Event('theme-changed'));
+}
+
 applyColorThemeListeners();
 initializeTheme();
 determinePageNavigationAutoMode();
+applyPageThemeColor();
 applySmoothScrolling();
