@@ -1,0 +1,134 @@
+---
+pagination:
+  data: authors
+  size: 1
+  alias: author
+permalink: "/authors/{{ author.id }}/"
+---
+{% extends 'default.html' %}
+
+{% set pageTitle = author.username %}
+
+{% block head %}
+  <link rel="stylesheet" href="/css/md-layout.css" />
+  <link rel="stylesheet" href="/css/article.css" />
+  <link rel="stylesheet" href="/css/home-page.css" />
+{% endblock %}
+
+{% block content %}
+<div class="author-page">
+
+  <header class="author-header">
+    <div class="author-profile">
+      {# Avatar + decoration — keep exact positioning intact #}
+      {% if author.avatar_svg %}
+        <div class="author-avatar-wrapper">
+          <div class="author-avatar author-avatar--svg">
+            {{ author.avatar_svg | safe }}
+          </div>
+        </div>
+      {% elif author.avatar %}
+        <div class="author-avatar-wrapper">
+          <img src="{{ author.avatar }}" alt="{{ author.username }}" class="author-avatar" />
+          {% if author.avatar_decoration %}
+            <img src="{{ author.avatar_decoration }}" alt="" role="presentation" class="author-avatar-decoration" />
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="author-avatar-wrapper">
+          <div class="author-avatar author-avatar--placeholder" style="background: {{ author.banner_color or '#6750a4' }};">
+            {{ author.username | truncate(1, true, '') }}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="author-info">
+        <h1 class="author-name">{{ author.username }}</h1>
+        {% if author.post %}
+          <p class="author-post">{{ author.post }}</p>
+        {% endif %}
+        {% if author.bio %}
+          <p class="author-bio">{{ author.bio }}</p>
+        {% endif %}
+        {% if author.links and author.links.length > 0 %}
+          <div class="author-links">
+            {% for link in author.links %}
+              <a href="{{ link.url }}" class="author-link" target="_blank" rel="noopener">
+                {% if link.icon %}
+                  <span class="author-link-icon">{{ link.icon | safe }}</span>
+                {% endif %}
+                <span>{{ link.name }}</span>
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <section class="author-articles">
+    <h2 class="author-articles-title">
+      <span data-lang-content="fr">Articles</span>
+      <span data-lang-content="en">Articles</span>
+    </h2>
+    <div class="home-articles-grid">
+      {% set hasArticles = false %}
+      {% for article in articles %}
+        {% if author.id in article.authors %}
+          {% set hasArticles = true %}
+          {% if article.seo_level != 3 %}
+            <a href="/articles/{{ article.id }}/" class="article-card">
+              {% if article.banner %}
+                <div class="article-card-banner">
+                  <img src="{{ article.banner }}" alt="" role="presentation" />
+                </div>
+              {% elif article.banner_gradient %}
+                <div class="article-card-banner article-card-banner--gradient" style="background: {{ article.banner_gradient }};"></div>
+              {% endif %}
+              <div class="article-card-body">
+                {% if article.labels and article.labels.length > 0 %}
+                  <div class="article-card-labels">
+                    {% for labelId in article.labels %}
+                      {% for label in labels %}
+                        {% if label.id == labelId %}
+                          <span class="article-label" style="--label-color: {{ label.color }};"
+                                role="link" tabindex="0"
+                                onclick="event.stopPropagation();window.location='/collections/{{ label.id }}/';"
+                                onkeydown="if(event.key==='Enter'||event.key===' '){event.stopPropagation();window.location='/collections/{{ label.id }}/';}">
+                            <span data-lang-content="fr">{{ label.name.fr }}</span>
+                            <span data-lang-content="en">{{ label.name.en }}</span>
+                          </span>
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                <h3 class="article-card-title">
+                  <span data-lang-content="fr">{{ article.titleLocalized.fr }}</span>
+                  <span data-lang-content="en">{{ article.titleLocalized.en }}</span>
+                </h3>
+                {% if article.chapeau %}
+                  <p class="article-card-chapeau">
+                    <span data-lang-content="fr">{% if article.chapeau.fr %}{{ article.chapeau.fr }}{% endif %}</span>
+                    <span data-lang-content="en">{% if article.chapeau.en %}{{ article.chapeau.en }}{% endif %}</span>
+                  </p>
+                {% endif %}
+                <div class="article-card-meta">
+                  <time datetime="{{ article.date }}">{{ article.date }}</time>
+                </div>
+              </div>
+            </a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      {% if not hasArticles %}
+        <p class="empty-state">
+          <span data-lang-content="fr">Aucun article publié.</span>
+          <span data-lang-content="en">No articles published.</span>
+        </p>
+      {% endif %}
+    </div>
+  </section>
+
+</div>
+{% endblock %}

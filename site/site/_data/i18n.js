@@ -1,0 +1,37 @@
+module.exports = {
+  supportedLangs: ['fr', 'en'],
+  defaultLang: 'fr',
+
+  ui: {
+    fr: {
+      siteTitle: 'Moddy Docs',
+      home: 'Accueil',
+      articles: 'Articles',
+      collections: 'Collections',
+      authors: 'Auteurs',
+      searchPlaceholder: 'Rechercher…',
+      langSwitchLabel: 'Langue',
+      readMore: 'Lire la suite',
+      by: 'Par',
+      publishedOn: 'Publié le',
+      labels: 'Labels',
+      backToArticles: '← Retour aux articles',
+      noContent: 'Contenu non disponible dans cette langue.',
+    },
+    en: {
+      siteTitle: 'Moddy Docs',
+      home: 'Home',
+      articles: 'Articles',
+      collections: 'Collections',
+      authors: 'Authors',
+      searchPlaceholder: 'Search…',
+      langSwitchLabel: 'Language',
+      readMore: 'Read more',
+      by: 'By',
+      publishedOn: 'Published on',
+      labels: 'Labels',
+      backToArticles: '← Back to articles',
+      noContent: 'Content not available in this language.',
+    },
+  },
+};

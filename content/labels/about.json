@@ -1,0 +1,9 @@
+{
+  "id": "about",
+  "name": {
+    "fr": "About",
+    "en": "About"
+  },
+  "color": "#EF5DE0",
+  "nav_order": 1
+}

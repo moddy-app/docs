@@ -4,22 +4,53 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// Mirrors markdown-it's built-in fence renderer so we can call options.highlight.
+function defaultFenceRenderer(tokens, idx, options) {
+  const token = tokens[idx];
+  const info = token.info ? token.info.trim() : '';
+  const langName = info ? info.split(/\s+/g)[0] : '';
+
+  let highlighted;
+  if (options.highlight) {
+    highlighted = options.highlight(token.content, langName, '') || escapeHtml(token.content);
+  } else {
+    highlighted = escapeHtml(token.content);
+  }
+
+  if (highlighted.startsWith('<pre')) {
+    return highlighted + '\n';
+  }
+
+  const langClass = langName ? ` class="language-${langName}"` : '';
+  return `<pre${langClass}><code${langClass}>${highlighted}</code></pre>\n`;
+}
+
+function defaultCodeBlockRenderer(tokens, idx) {
+  return `<pre><code>${escapeHtml(tokens[idx].content)}</code></pre>\n`;
+}
+
 /**
  * Renders a copy-code-button component around the original markdown code block
  * if the codeblock is not empty.
- *
- * @param originalRule The original markown-it rule to modilfy.
- * @return A modified markdownit render rule that injects a copy-code-button island
  */
-function renderCode(originalRule) {
+function renderCode(originalRule, fallback) {
   return (...args) => {
     const [tokens, idx] = args;
-    // Escape quotes and apostrophes so that they don't break the HTML.
     const codeblockContent = tokens[idx].content
       .replaceAll('"', '&quot;')
       .replaceAll("'", "&apos;");
 
-    const originalHTMLContent = originalRule(...args);
+    const originalHTMLContent = typeof originalRule === 'function'
+      ? originalRule(...args)
+      : fallback(...args);
 
     if (codeblockContent.length === 0) {
       return originalHTMLContent;
@@ -44,8 +75,14 @@ function renderCode(originalRule) {
  */
 function copyCodeButtonPlugin(markdownIt) {
   markdownIt.use(() => {
-    markdownIt.renderer.rules.code_block = renderCode(markdownIt.renderer.rules.code_block);
-    markdownIt.renderer.rules.fence = renderCode(markdownIt.renderer.rules.fence);
+    markdownIt.renderer.rules.code_block = renderCode(
+      markdownIt.renderer.rules.code_block,
+      defaultCodeBlockRenderer
+    );
+    markdownIt.renderer.rules.fence = renderCode(
+      markdownIt.renderer.rules.fence,
+      defaultFenceRenderer
+    );
   });
 }
 

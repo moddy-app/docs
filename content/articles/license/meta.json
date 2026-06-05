@@ -1,0 +1,23 @@
+{
+  "title": "Moddy Community License (MCL)",
+  "id": "license",
+  "authors": [
+    "1"
+  ],
+  "date": "2026-01-01",
+  "chapeau": {
+    "fr": "La licence open source du projet Moddy.",
+    "en": "The open source license of the Moddy project."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #37474f 0%, #78909c 50%, #cfd8dc 100%)",
+  "banner_focus": {
+    "x": 50,
+    "y": 50
+  },
+  "seo_level": 1,
+  "labels": [
+    "legal"
+  ],
+  "nav_order": 3
+}

@@ -1,0 +1,9 @@
+{
+  "id": "change-logs",
+  "name": {
+    "fr": "Changelogs",
+    "en": "Changelogs"
+  },
+  "color": "#5DEF89",
+  "nav_order": 3
+}

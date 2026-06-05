@@ -13,9 +13,14 @@
  */
 
 import {
+  applyMaterialTheme,
+  themeFromSourceColor,
+} from '../utils/material-color-helpers.js';
+import {
   changeColor,
   changeColorAndMode,
   changeColorMode,
+  enableThemeTransition,
   getCurrentMode,
   getCurrentSeedColor,
   getCurrentThemeString,
@@ -24,15 +29,28 @@ import {
 } from '../utils/theme.js';
 
 /**
+ * Clears the per-page theme overlay so the user's own theme takes full effect
+ * after a manual color/mode change.
+ */
+function clearPageTheme() {
+  const sheet = (globalThis as unknown as Record<string, CSSStyleSheet | undefined>)['page-theme'];
+  if (sheet) {
+    sheet.replaceSync('');
+  }
+}
+
+/**
  * Applies theme-based event listeners such as changing color, mode, and
  * listening to system mode changes.
  */
 function applyColorThemeListeners() {
   document.body.addEventListener('change-color', (event) => {
+    clearPageTheme();
     changeColor(event.color);
   });
 
   document.body.addEventListener('change-mode', (event) => {
+    clearPageTheme();
     changeColorMode(event.mode);
   });
 
@@ -57,7 +75,7 @@ function applyColorThemeListeners() {
 function initializeTheme() {
   if (!getCurrentThemeString()) {
     // Generates a primary color close to GM3 baseline primary color.
-    changeColorAndMode('#ECAA2E', 'auto');
+    changeColorAndMode('#373737', 'auto');
   }
 }
 
@@ -131,7 +149,36 @@ function applySmoothScrolling() {
   });
 }
 
+/**
+ * Applies a per-page color theme when the page declares one via
+ * `<meta name="page-theme-color" content="#rrggbb">` (set from an article's
+ * `theme_color` metadata). This is applied as a separate, non-persisted
+ * override layer on top of the user's saved theme: the base theme is applied
+ * first (inline, before paint), then this swaps in the page's color, so the
+ * change cross-fades. Pages without the meta keep the user's theme, so
+ * navigating to them fades back to it.
+ */
+function applyPageThemeColor() {
+  const color = document
+    .querySelector('meta[name="page-theme-color"]')
+    ?.getAttribute('content')
+    ?.trim();
+
+  if (!color) {
+    return;
+  }
+
+  const isDark = isModeDark(getCurrentMode() ?? 'auto', false);
+  enableThemeTransition();
+  const theme = themeFromSourceColor(color, isDark);
+  // Use a distinct stylesheet name so it layers over (and never overwrites)
+  // the user's persisted 'material-theme'.
+  applyMaterialTheme(document, theme, 'page-theme');
+  window.dispatchEvent(new Event('theme-changed'));
+}
+
 applyColorThemeListeners();
 initializeTheme();
 determinePageNavigationAutoMode();
+applyPageThemeColor();
 applySmoothScrolling();

@@ -1,0 +1,887 @@
+/* ─── Language switching ─────────────────────────────────────────────────── */
+
+[data-lang-content] {
+  display: none;
+}
+
+:root[data-lang="fr"] [data-lang-content="fr"],
+:root:not([data-lang]) [data-lang-content="fr"] {
+  display: revert;
+}
+
+:root[data-lang="en"] [data-lang-content="en"] {
+  display: revert;
+}
+
+/* Inline spans use inline display */
+span[data-lang-content] {
+  display: none;
+}
+
+:root[data-lang="fr"] span[data-lang-content="fr"],
+:root:not([data-lang]) span[data-lang-content="fr"] {
+  display: inline;
+}
+
+:root[data-lang="en"] span[data-lang-content="en"] {
+  display: inline;
+}
+
+/* ─── Language switcher ──────────────────────────────────────────────────── */
+
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-inline-start: auto;
+  padding: 4px 8px;
+}
+
+.lang-switcher__btn {
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 2px 6px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  transition: background 0.15s;
+}
+
+.lang-switcher__btn:hover {
+  background: var(--md-sys-color-surface-variant, #e7e0ec);
+}
+
+.lang-switcher__btn[aria-pressed="true"] {
+  background: var(--md-sys-color-primary-container, #eaddff);
+  color: var(--md-sys-color-on-primary-container, #21005d);
+}
+
+/* ─── Article page ────────────────────────────────────────────────────────── */
+
+.article-page {
+  width: 100%;
+  /* override md-layout.css `main > * { max-width: min(100%, 980px) }` so the
+     banner can span the full pane content width */
+  max-width: none;
+  /* md-layout.css also sets `main > * { overflow-x: auto }`, which clips the
+     banner's negative-margin overflow into a square corner. Keep it visible. */
+  overflow: visible;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Banner ──
+   The banner is centered inside the article container (the rounded pane) with
+   an equal margin on the top, left and right. That margin is the distance
+   between the pane edge and the banner. Per the requested formula:
+       r_banner = r_container - margin
+   The pane has 28px of padding around its content and a 28px corner radius, so
+   to leave an equal `--_banner-margin` gap on all three sides the banner pulls
+   itself outward into that padding with negative margins. */
+.article-banner {
+  --_container-radius: var(--catalog-shape-xl, 28px);
+  --_pad: var(--catalog-spacing-xl, 28px);
+  /* the pane reserves 8px of the right padding for the scrollbar, so the right
+     padding is 8px smaller than the left — compensate so the banner keeps an
+     equal gap on both sides */
+  --_pad-right: calc(var(--catalog-spacing-xl, 28px) - 8px);
+  --_banner-margin: 40px;
+  aspect-ratio: 1300 / 445;
+  /* very rounded corners, decoupled from the margin */
+  border-radius: 52px;
+  overflow: hidden;
+  margin-top: calc(-1 * (var(--_pad) - var(--_banner-margin)));
+  margin-left: calc(-1 * (var(--_pad) - var(--_banner-margin)));
+  margin-right: calc(-1 * (var(--_pad-right) - var(--_banner-margin)));
+  margin-bottom: 20px;
+}
+
+.article-banner img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: var(--banner-focus-x, 50%) var(--banner-focus-y, 50%);
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .article-banner {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* Mobile: portrait crop with smaller margin and softer corners.
+   Same concentric-radius system as desktop, just scaled down. */
+@media (max-width: 768px) {
+  nav-drawer {
+    --expanded-top-radius: 52px;
+  }
+
+  .article-banner {
+    --_banner-margin: 16px;
+    --_pad-right: var(--_pad);
+    aspect-ratio: 455 / 520;
+    border-radius: 36px;
+    margin-top: calc(-1 * (var(--_pad) - var(--_banner-margin)));
+    margin-left: calc(-1 * (var(--_pad) - var(--_banner-margin)));
+    margin-right: calc(-1 * (var(--_pad) - var(--_banner-margin)));
+  }
+}
+
+/* ── Title ── */
+
+.article-title {
+  max-width: 1200px;
+  margin: 0 auto 18px;
+  padding: 0 24px;
+  font-size: 3.3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+/* ── Dateline (date | chapeau) ── */
+
+.article-dateline {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  padding: 0 24px;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.article-date-text {
+  font-weight: 700;
+}
+
+/* the page summary (chapeau) reads as an italic standfirst */
+.article-dateline [data-lang-content] {
+  font-style: italic;
+}
+
+.article-dateline-sep {
+  margin: 0 8px;
+  opacity: 0.5;
+}
+
+/* ── Author block ── */
+
+.article-author-block {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  padding: 0 24px;
+}
+
+/* light separator under the author, aligned with the text content */
+.article-author-block::after {
+  content: "";
+  display: block;
+  margin-top: 16px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
+}
+
+.article-author-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* the global a:hover underline would underline the whole link (name + role);
+   keep the link itself undecorated and underline only the name */
+.article-author-link:hover,
+.article-author-link:focus-visible {
+  text-decoration: none;
+}
+
+.article-author-role {
+  text-decoration: none;
+}
+
+.article-author-link:hover .article-author-name {
+  text-decoration: underline;
+  color: var(--md-sys-color-primary, #6750a4);
+}
+
+.article-author-avatar-wrapper {
+  position: relative;
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  min-height: 38px;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.article-author-avatar {
+  display: block;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.article-author-decoration {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  pointer-events: none;
+  object-fit: contain;
+  /* md-layout.css rounds every img (border-radius: 22px); that rounded
+     corner was clipping the straw. Keep the decoration unclipped. */
+  border-radius: 0;
+  min-height: 0;
+  overflow: visible;
+}
+
+.article-author-avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.article-author-avatar--svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.article-author-avatar--svg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.article-author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.article-author-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  transition: color 0.15s;
+}
+
+.article-author-role {
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+/* ── Legal notice ── */
+
+/* matches the same column used by article title / dateline / author block */
+.article-content-column {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  padding: 0 24px;
+}
+
+.article-legal-notice {
+  padding: var(--catalog-spacing-l, 16px);
+  border-radius: var(--catalog-shape-l, 16px);
+  background-color: var(--md-sys-color-secondary-container, #e8def8);
+  color: var(--md-sys-color-on-secondary-container, #1d192b);
+  display: flex;
+  gap: var(--catalog-spacing-s, 8px);
+  align-items: flex-start;
+}
+
+.article-legal-notice-icon {
+  flex-shrink: 0;
+  display: flex;
+  margin-top: 2px;
+}
+
+.article-legal-notice-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.article-legal-notice-body {
+  flex-grow: 1;
+}
+
+.article-legal-notice-text {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.article-legal-notice-text:last-child {
+  margin-bottom: 0;
+}
+
+.article-legal-notice-action {
+  margin-top: 8px;
+}
+
+/* data-lang-content="fr" is a div here — override the generic rule so it
+   renders as block (display: revert would give block on a div) */
+div[data-lang-content] {
+  display: none;
+}
+
+:root[data-lang="fr"] div[data-lang-content="fr"],
+:root:not([data-lang]) div[data-lang-content="fr"] {
+  display: block;
+}
+
+:root[data-lang="en"] div[data-lang-content="en"] {
+  display: block;
+}
+
+.article-legal-notice-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: none;
+  background: color-mix(in srgb, var(--md-sys-color-on-secondary-container, #1d192b) 12%, transparent);
+  color: var(--md-sys-color-on-secondary-container, #1d192b);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.article-legal-notice-btn:hover {
+  background: color-mix(in srgb, var(--md-sys-color-on-secondary-container, #1d192b) 20%, transparent);
+}
+
+@media (max-width: 768px) {
+  .article-legal-notice {
+    padding-inline: 16px;
+  }
+}
+
+/* ── Article body ── */
+
+/* `display: block` is required: md-layout.css has
+   `div:has(> table) { display: flex }` to center table-wrapper divs, and since
+   .article-body is a div that directly contains a table, it wrongly matched
+   and laid all content out horizontally. */
+.article-body {
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  font-size: 1.075rem;
+  line-height: 1.7;
+}
+
+.article-body > :first-child {
+  margin-block-start: 0;
+}
+
+.article-body h1:first-of-type {
+  display: none;
+}
+
+/* Keep wide elements (tables, code, images) from overflowing the body. */
+.article-body > * {
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.article-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Callouts / blockquotes ──
+   md-layout.css styles these with `main > blockquote` selectors, which only
+   match the doc pages where the markdown elements are direct children of
+   <main>. Here the blockquotes are nested inside `.article-body`, so those
+   rules never match. Mirror the exact same rules, scoped to `.article-body`. */
+
+.article-body hr {
+  border: none;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
+  margin-block: var(--catalog-spacing-l, 16px);
+}
+.article-body blockquote {
+  /* left-aligned with the body text, full width */
+  margin-block: var(--catalog-spacing-l, 16px);
+  margin-inline: 0;
+}
+
+.article-body > blockquote {
+  padding: var(--catalog-spacing-l, 16px);
+  border-radius: var(--catalog-shape-l, 16px);
+  background-color: var(--md-sys-color-secondary-container);
+  display: flex;
+  gap: var(--catalog-spacing-s, 8px);
+}
+
+.article-body > blockquote .content {
+  flex-grow: 1;
+}
+
+.article-body blockquote .content > *:first-child,
+.article-body blockquote > *:first-child {
+  margin-block-start: 0;
+}
+
+.article-body blockquote .content > *:last-child,
+.article-body blockquote > *:last-child {
+  margin-block-end: 0;
+}
+
+.article-body blockquote,
+.article-body blockquote a {
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.article-body blockquote a {
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.article-body blockquote.important {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.article-body blockquote.important,
+.article-body blockquote.important a {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.article-body blockquote.warning {
+  background-color: var(--md-sys-color-error-container);
+}
+
+.article-body blockquote.warning,
+.article-body blockquote.warning a {
+  color: var(--md-sys-color-on-error-container);
+}
+
+/* ── Code blocks in article body ── */
+
+.article-body pre {
+  background: var(--md-sys-color-surface-container, #ece6f0);
+  border: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
+  border-radius: 16px;
+  padding: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 16px 0;
+  font-family: 'Google Sans Mono', Menlo, Monaco, 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.article-body pre code {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.article-body :not(pre) > code {
+  font-family: 'Google Sans Mono', Menlo, Monaco, 'Courier New', monospace;
+  font-size: 0.875em;
+  background: var(--md-sys-color-surface-container, #ece6f0);
+  border: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* ── Responsive tweaks ── */
+
+@media (max-width: 768px) {
+  .article-title {
+    font-size: 2.1rem;
+    padding: 0 16px;
+  }
+
+  .article-dateline {
+    padding: 0 16px;
+    font-size: 0.9rem;
+  }
+
+  .article-author-block {
+    padding: 0 16px;
+  }
+
+  .article-body {
+    padding: 0 16px;
+  }
+}
+
+/* ─── Article card labels ────────────────────────────────────────────────── */
+
+.article-card-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+/* ─── Article labels (used in various contexts) ──────────────────────────── */
+
+.article-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.article-label {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: color-mix(in srgb, var(--label-color, #4caf50) 15%, transparent);
+  color: var(--label-color, #4caf50);
+  border: 1px solid color-mix(in srgb, var(--label-color, #4caf50) 40%, transparent);
+  transition: background 0.15s;
+}
+
+.article-label:hover {
+  background: color-mix(in srgb, var(--label-color, #4caf50) 25%, transparent);
+  cursor: pointer;
+}
+
+/* ─── Collection page ────────────────────────────────────────────────────── */
+
+.collection-page,
+.author-page {
+  max-width: none;
+  padding: 24px;
+  /* md-layout's `main > * { overflow-x: auto }` would clip the avatar
+     decoration that overflows upward (the straw). Keep it visible. */
+  overflow: visible;
+}
+
+.collection-header {
+  position: relative;
+  margin-bottom: 32px;
+  padding: 28px;
+  background-color: var(--md-sys-color-surface-container-low, #f7f2fa);
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.collection-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--label-color, #4caf50) 15%, transparent);
+  color: var(--label-color, #4caf50);
+  border: 1px solid color-mix(in srgb, var(--label-color, #4caf50) 40%, transparent);
+  margin-bottom: 0;
+}
+
+.collection-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .collection-header {
+    padding: 20px;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* ─── Article list / cards ───────────────────────────────────────────────── */
+
+.article-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.article-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 15%, transparent);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.article-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border-color: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 35%, transparent);
+  text-decoration: none;
+}
+
+.article-card:hover .article-card-title {
+  text-decoration: underline;
+}
+
+.article-card-banner {
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+}
+
+.article-card-banner img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.article-card-body {
+  padding: 16px 20px;
+}
+
+.article-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.article-card-chapeau {
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  margin: 0 0 8px;
+}
+
+.article-card-meta {
+  font-size: 0.8rem;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.empty-state {
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  font-style: italic;
+  padding: 24px 0;
+}
+
+/* ─── Author page ────────────────────────────────────────────────────────── */
+
+.author-header {
+  position: relative;
+  margin-bottom: 36px;
+  padding: 32px;
+  background-color: var(--md-sys-color-surface-container-low, #f7f2fa);
+  border-radius: 28px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+}
+
+.author-profile {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.author-avatar-wrapper {
+  position: relative;
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+  min-height: 100px;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.author-avatar {
+  display: block;
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  min-height: 100px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 4px var(--md-sys-color-surface-container-low, #f7f2fa);
+}
+
+.author-avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  min-height: 100px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: var(--md-sys-color-primary-container, #eaddff);
+  color: var(--md-sys-color-on-primary-container, #21005d);
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.author-avatar--svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  min-height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.author-avatar--svg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.author-avatar-decoration {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  pointer-events: none;
+  object-fit: contain;
+  /* md-layout.css rounds every img (border-radius: 22px); keep the
+     decoration unclipped so the straw isn't cut. */
+  border-radius: 0;
+  min-height: 0;
+  overflow: visible;
+}
+
+.author-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.author-name {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.02em;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.author-post {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--md-sys-color-primary, #6750a4) 10%, transparent);
+  color: var(--md-sys-color-primary, #6750a4);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.author-bio {
+  margin: 4px 0;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  font-size: 0.975rem;
+  line-height: 1.65;
+  max-width: 720px;
+  font-weight: 450;
+}
+
+.author-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.author-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline, #79747e) 30%, transparent);
+  background: var(--md-sys-color-surface, #fffbfe);
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.author-link:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary, #6750a4) 8%, transparent);
+  color: var(--md-sys-color-primary, #6750a4);
+  border-color: var(--md-sys-color-primary, #6750a4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.author-link:active {
+  transform: translateY(0);
+}
+
+.author-link-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 600px) {
+  .author-header {
+    padding: 24px;
+  }
+
+  .author-profile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .author-info {
+    align-items: center;
+  }
+
+  .author-post {
+    align-self: center;
+  }
+
+  .author-links {
+    justify-content: center;
+  }
+}
+
+.author-articles-title {
+  font-size: 1.25rem;
+  margin: 0 0 16px;
+}
