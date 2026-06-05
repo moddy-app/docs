@@ -462,36 +462,29 @@ export class NavDrawer extends SignalElement(LitElement) {
       }
     }
 
-    /* On desktop, make the scrollbars less blocky so you can see the border
-     * radius of the pane. On most mobile platforms, these scrollbars are hidden
-     * by default. It'll still unfortunately render on top of the border radius.
-     */
     @media (pointer: fine) {
       :host {
-        --_scrollbar-width: 8px;
+        --_scrollbar-width: 6px;
       }
 
       .scroll-wrapper {
-        /* firefox */
-        scrollbar-color: var(--md-sys-color-primary) transparent;
+        scrollbar-color: color-mix(in srgb, var(--md-sys-color-on-surface) 25%, transparent) transparent;
         scrollbar-width: thin;
       }
 
       .content {
-        /* adjust for the scrollbar width */
         padding-inline-end: calc(
           var(--catalog-spacing-xl) - var(--_scrollbar-width)
         );
       }
 
-      /* Chromium + Safari */
       .scroll-wrapper::-webkit-scrollbar {
         background-color: transparent;
         width: var(--_scrollbar-width);
       }
 
       .scroll-wrapper::-webkit-scrollbar-thumb {
-        background-color: var(--md-sys-color-primary);
+        background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 25%, transparent);
         border-radius: calc(var(--_scrollbar-width) / 2);
       }
     }
