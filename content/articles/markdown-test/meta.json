@@ -8,7 +8,7 @@
   "banner_gradient": "linear-gradient(135deg, #004d40 0%, #26a69a 50%, #b2dfdb 100%)",
   "banner_focus": { "x": 50, "y": 50 },
   "theme_color": "#00796b",
-  "seo_level": 3,
+  "seo_level": 2,
   "labels": ["about"],
   "nav_order": 99
 }
