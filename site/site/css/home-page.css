@@ -97,7 +97,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px;
+  padding: 6px;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 20%, transparent);
   background: transparent;
