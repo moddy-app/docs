@@ -58,7 +58,9 @@
           data-filter-type="author"
           data-filter-value="{{ author.id }}"
           aria-pressed="false">
-          {% if author.avatar %}
+          {% if author.avatar_svg %}
+            <span class="home-filter-chip-avatar home-filter-chip-avatar--svg">{{ author.avatar_svg | safe }}</span>
+          {% elif author.avatar %}
             <img src="{{ author.avatar }}" alt="{{ author.username }}" class="home-filter-chip-avatar" />
           {% endif %}
           {{ author.username }}
