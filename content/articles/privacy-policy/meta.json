@@ -1,7 +1,9 @@
 {
   "title": "Privacy Policy",
   "id": "privacy-policy",
-  "authors": ["1"],
+  "authors": [
+    "1"
+  ],
   "date": "2025-12-29",
   "chapeau": {
     "fr": "Notre politique de confidentialité et de protection des données.",
@@ -9,8 +11,14 @@
   },
   "banner": null,
   "banner_gradient": "linear-gradient(135deg, #1a237e 0%, #5c6bc0 50%, #c5cae9 100%)",
-  "banner_focus": { "x": 50, "y": 50 },
+  "banner_focus": {
+    "x": 50,
+    "y": 50
+  },
   "seo_level": 1,
-  "labels": ["legal"],
-  "nav_order": 2
+  "labels": [
+    "legal"
+  ],
+  "nav_order": 2,
+  "theme_color": "#3F42FF"
 }

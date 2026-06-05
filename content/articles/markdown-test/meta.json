@@ -1,14 +1,24 @@
 {
   "title": "Markdown Test",
   "id": "markdown-test",
-  "authors": ["1164597199594852395"],
+  "authors": [
+    "1164597199594852395"
+  ],
   "date": "2024-01-01",
-  "chapeau": { "fr": "Page de test du rendu Markdown.", "en": "Markdown rendering test page." },
+  "chapeau": {
+    "fr": "Page de test du rendu Markdown.",
+    "en": "Markdown rendering test page."
+  },
   "banner": null,
   "banner_gradient": "linear-gradient(135deg, #004d40 0%, #26a69a 50%, #b2dfdb 100%)",
-  "banner_focus": { "x": 50, "y": 50 },
-  "theme_color": "#00796b",
+  "banner_focus": {
+    "x": 50,
+    "y": 50
+  },
+  "theme_color": "#EF5DE0",
   "seo_level": 2,
-  "labels": ["about"],
+  "labels": [
+    "about"
+  ],
   "nav_order": 99
 }
