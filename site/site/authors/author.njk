@@ -18,9 +18,7 @@ permalink: "/authors/{{ author.id }}/"
 {% block content %}
 <div class="author-page">
 
-  <header class="author-header" style="{% if author.banner_color %}--author-banner-color: {{ author.banner_color }};{% endif %}">
-    <div class="author-banner-bg"></div>
-
+  <header class="author-header">
     <div class="author-profile">
       {# Avatar + decoration — keep exact positioning intact #}
       {% if author.avatar %}
@@ -43,11 +41,6 @@ permalink: "/authors/{{ author.id }}/"
         {% if author.post %}
           <p class="author-post">{{ author.post }}</p>
         {% endif %}
-      </div>
-    </div>
-
-    {% if author.bio or (author.links and author.links.length > 0) %}
-      <div class="author-details">
         {% if author.bio %}
           <p class="author-bio">{{ author.bio }}</p>
         {% endif %}
@@ -64,7 +57,7 @@ permalink: "/authors/{{ author.id }}/"
           </div>
         {% endif %}
       </div>
-    {% endif %}
+    </div>
   </header>
 
   <section class="author-articles">
