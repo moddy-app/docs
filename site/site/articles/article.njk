@@ -15,7 +15,7 @@ hasToc: true
   <link rel="stylesheet" href="/css/article.css" />
   <link rel="stylesheet" href="/css/md-layout.css" />
   <link rel="stylesheet" href="/css/syntax-highlight.css" />
-  {% if article.banner %}
+  {% if article.banner or article.banner_gradient %}
   <style>
     /* Tell nav-drawer's content pane to use the expanded top radius on load.
        r_ext = r_banner + banner_margin
