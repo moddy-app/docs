@@ -19,5 +19,9 @@
   "labels": [
     "legal"
   ],
-  "nav_order": 1
+  "nav_order": 1,
+  "title_translations": {
+    "fr": "Conditions Générales d'Utilisation",
+    "en": "Terms of Service"
+  }
 }

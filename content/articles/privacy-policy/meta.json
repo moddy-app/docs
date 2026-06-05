@@ -19,5 +19,9 @@
   "labels": [
     "legal"
   ],
-  "nav_order": 2
+  "nav_order": 2,
+  "title_translations": {
+    "fr": "Politique de Confidentialité",
+    "en": "Privacy Policy"
+  }
 }
