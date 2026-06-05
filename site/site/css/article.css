@@ -302,6 +302,12 @@ nav-drawer {
    match the doc pages where the markdown elements are direct children of
    <main>. Here the blockquotes are nested inside `.article-body`, so those
    rules never match. Mirror the exact same rules, scoped to `.article-body`. */
+
+.article-body hr {
+  border: none;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
+  margin-block: var(--catalog-spacing-l, 16px);
+}
 .article-body blockquote {
   /* left-aligned with the body text, full width */
   margin-block: var(--catalog-spacing-l, 16px);
