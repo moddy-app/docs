@@ -483,7 +483,8 @@ export class NavDrawer extends SignalElement(LitElement) {
       }
 
       .pane::-webkit-scrollbar-track {
-        margin-block: var(--catalog-shape-xl, 28px);
+        margin-top: var(--expanded-top-radius, 28px);
+        margin-bottom: var(--catalog-shape-xl, 28px);
       }
 
       .pane::-webkit-scrollbar-thumb {
