@@ -243,6 +243,11 @@ nav-drawer {
   height: 120%;
   pointer-events: none;
   object-fit: contain;
+  /* md-layout.css rounds every img (border-radius: 22px); that rounded
+     corner was clipping the straw. Keep the decoration unclipped. */
+  border-radius: 0;
+  min-height: 0;
+  overflow: visible;
 }
 
 .article-author-avatar--placeholder {
@@ -584,6 +589,11 @@ nav-drawer {
   height: 120%;
   pointer-events: none;
   object-fit: contain;
+  /* md-layout.css rounds every img (border-radius: 22px); keep the
+     decoration unclipped so the straw isn't cut. */
+  border-radius: 0;
+  min-height: 0;
+  overflow: visible;
 }
 
 .author-info {
