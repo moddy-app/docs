@@ -210,8 +210,10 @@ nav-drawer {
 }
 
 .article-author-avatar {
+  display: block;
   width: 42px;
   height: 42px;
+  aspect-ratio: 1;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -512,8 +514,10 @@ nav-drawer {
 }
 
 .author-avatar {
+  display: block;
   width: 80px;
   height: 80px;
+  aspect-ratio: 1;
   border-radius: 50%;
   object-fit: cover;
   box-sizing: border-box;

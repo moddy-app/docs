@@ -376,7 +376,6 @@ export class NavDrawer extends SignalElement(LitElement) {
     .scroll-wrapper {
       overflow-y: auto;
       max-height: 100%;
-      border-radius: inherit;
       box-sizing: border-box;
     }
 
@@ -464,11 +463,11 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     @media (pointer: fine) {
       :host {
-        --_scrollbar-width: 6px;
+        --_scrollbar-width: 8px;
       }
 
       .scroll-wrapper {
-        scrollbar-color: color-mix(in srgb, var(--md-sys-color-on-surface) 25%, transparent) transparent;
+        scrollbar-color: var(--md-sys-color-primary) transparent;
         scrollbar-width: thin;
       }
 
@@ -484,7 +483,7 @@ export class NavDrawer extends SignalElement(LitElement) {
       }
 
       .scroll-wrapper::-webkit-scrollbar-thumb {
-        background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 25%, transparent);
+        background-color: var(--md-sys-color-primary);
         border-radius: calc(var(--_scrollbar-width) / 2);
       }
     }
