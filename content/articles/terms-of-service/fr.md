@@ -14,7 +14,7 @@ Contact : hello@moddy.app
 Support : [moddy.app/support](https://moddy.app/support)
 
 **Projet Open Source :**  
-Moddy est un projet open source distribué sous la licence **Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA)**. Le code source est accessible publiquement et peut être consulté, modifié et redistribué conformément aux termes de cette licence et des présentes CGU.
+Moddy est un projet open source distribué sous la **[Moddy Community License (MCL)](/articles/license/)**. Le code source est accessible publiquement et peut être consulté, modifié et redistribué conformément aux termes de cette licence et des présentes CGU.
 
 ## Acceptation des conditions
 
@@ -107,11 +107,12 @@ En utilisant Moddy, vous vous engagez à :
 
 L'utilisation du code source de Moddy est soumise aux conditions suivantes :
 
-- Respect de la licence CC BY-NC-SA (Attribution, Non-Commercial, ShareAlike)
+- Respect de la [Moddy Community License (MCL)](/articles/license/)
 - Respect des présentes CGU pour toute utilisation, modification ou redistribution du code
-- Attribution appropriée au projet original
+- Attribution appropriée à Moddy (dans le code source et dans un emplacement accessible aux utilisateurs finaux)
 - Interdiction d'utilisation commerciale sans autorisation écrite préalable
-- Partage des modifications sous la même licence
+- Inclusion d'une copie de la MCL dans toute redistribution
+- Interdiction de revendiquer la propriété du Logiciel original ou d'en dénaturer l'origine
 
 ### Utilisations interdites
 
@@ -234,20 +235,24 @@ Des remboursements peuvent être accordés au cas par cas en cas de :
 
 ### Licence Open Source
 
-Le code source de Moddy est distribué sous la licence **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)**.
+Le code source de Moddy est distribué sous la **[Moddy Community License (MCL) v1.0](/articles/license/)**.
 
 Cette licence vous autorise à :
 
-- **Partager** : copier et redistribuer le code dans tout format
-- **Adapter** : remixer, transformer et créer à partir du code
+- **Utiliser** le Logiciel à des fins personnelles ou dans le cadre de projets non commerciaux
+- **Modifier** le Logiciel et créer des œuvres dérivées à des fins personnelles ou non commerciales
+- **Redistribuer** le Logiciel ou des œuvres dérivées, sous réserve du respect des conditions ci-dessous
 
 Sous les conditions suivantes :
 
-- **Attribution** : vous devez créditer l'œuvre originale, fournir un lien vers la licence et indiquer si des modifications ont été apportées
-- **Non-Commercial** : vous ne pouvez pas utiliser le code à des fins commerciales sans autorisation écrite préalable
-- **ShareAlike** : si vous modifiez ou transformez le code, vous devez distribuer vos contributions sous la même licence CC BY-NC-SA
+- **Attribution obligatoire** : vous devez créditer Moddy de manière appropriée, inclure un lien vers le dépôt d'origine et indiquer si des modifications ont été apportées — ce crédit doit figurer dans le code source et dans un emplacement accessible aux utilisateurs finaux
+- **Non-association** : le crédit accordé à Moddy n'implique aucune forme d'approbation, de partenariat ou d'affiliation
+- **Non-commercial** : vous ne pouvez pas utiliser le Logiciel à des fins commerciales sans autorisation écrite préalable
+- **Notice de licence** : une copie de la MCL doit être incluse dans toute redistribution
 
-Pour plus de détails sur cette licence : [https://creativecommons.org/licenses/by-nc-sa/4.0/](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+Il vous est **interdit** de vendre le Logiciel, d'en revendiquer la propriété ou de le redistribuer sans crédit approprié.
+
+Texte complet de la licence : [docs.moddy.app/articles/license/](/articles/license/)
 
 ### Éléments exclus de la licence Open Source
 
@@ -517,6 +522,6 @@ Rejoignez notre serveur pour les annonces, le support communautaire et les actua
 
 ---
 
-> **En utilisant les services Moddy (bot Discord, site web et services associés) ou en utilisant le code source de Moddy, vous reconnaissez avoir lu, compris et accepté l'intégralité des présentes Conditions Générales d'Utilisation ainsi que la licence CC BY-NC-SA.**
+> **En utilisant les services Moddy (bot Discord, site web et services associés) ou en utilisant le code source de Moddy, vous reconnaissez avoir lu, compris et accepté l'intégralité des présentes Conditions Générales d'Utilisation ainsi que la [Moddy Community License (MCL)](/articles/license/).**
 
 **Date d'entrée en vigueur : December 31, 2025**
