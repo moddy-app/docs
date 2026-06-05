@@ -32,7 +32,8 @@ hasToc: true
 {%- set renderedContentFr = (article.rawContent.fr if article.rawContent.fr else article.rawContent.en) | renderMarkdown -%}
 
 {% block toc %}
-{{ renderedContent | toc | filterToc | safe }}
+<div data-lang-content="fr">{{ renderedContentFr | toc | filterToc | safe }}</div>
+<div data-lang-content="en">{{ renderedContent | toc | filterToc | safe }}</div>
 {% endblock %}
 
 {% block content %}
