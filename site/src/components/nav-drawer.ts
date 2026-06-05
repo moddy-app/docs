@@ -266,8 +266,8 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     .pane.content-pane {
       flex-grow: 1;
-      border-top-left-radius: var(--_pane-top-radius, var(--catalog-shape-xl));
-      border-top-right-radius: var(--_pane-top-radius, var(--catalog-shape-xl));
+      border-top-left-radius: var(--_pane-top-radius, var(--expanded-top-radius, var(--catalog-shape-xl)));
+      border-top-right-radius: var(--_pane-top-radius, var(--expanded-top-radius, var(--catalog-shape-xl)));
     }
 
     /* The TOC is fully tucked off the right edge (no permanent sliver) so the
