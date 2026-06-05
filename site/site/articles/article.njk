@@ -15,6 +15,7 @@ hasToc: true
   <link rel="stylesheet" href="/css/article.css" />
   <link rel="stylesheet" href="/css/md-layout.css" />
   <link rel="stylesheet" href="/css/syntax-highlight.css" />
+  {% if article.banner %}
   <style>
     /* Tell nav-drawer's content pane to use the expanded top radius on load.
        r_ext = r_banner + banner_margin
@@ -24,6 +25,7 @@ hasToc: true
       nav-drawer { --expanded-top-radius: 52px; }
     }
   </style>
+  {% endif %}
   {% if article.seo_level >= 2 %}
     <meta name="robots" content="noindex{% if article.seo_level == 3 %}, nofollow{% endif %}" />
   {% endif %}
