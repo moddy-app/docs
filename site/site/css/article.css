@@ -507,7 +507,7 @@ nav-drawer {
 .author-profile {
   display: flex;
   align-items: flex-end;
-  gap: 16px;
+  gap: 8px;
   padding: 0 16px;
   margin-bottom: 12px;
 }
