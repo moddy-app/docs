@@ -16,7 +16,11 @@ function init() {
 
   if (!grid) return;
 
-  const cards = Array.from(grid.querySelectorAll<HTMLAnchorElement>('.article-card'));
+  // Non-null assertion: grid is confirmed non-null above and captured here so
+  // TypeScript keeps the narrowing inside nested functions.
+  const articleGrid = grid;
+
+  const cards = Array.from(articleGrid.querySelectorAll<HTMLAnchorElement>('.article-card'));
   const initiallyHidden = cards.filter(c => c.classList.contains('article-card--initially-hidden'));
 
   let showAll = false;
@@ -63,14 +67,14 @@ function init() {
     }
 
     // update "no results" message
-    let noResults = grid.querySelector<HTMLElement>('.home-no-results');
+    let noResults = articleGrid.querySelector<HTMLElement>('.home-no-results');
     if (!noResults) {
       noResults = document.createElement('p');
       noResults.className = 'home-no-results';
       noResults.innerHTML =
         '<span data-lang-content="fr">Aucun article ne correspond à votre recherche.</span>' +
         '<span data-lang-content="en">No articles match your search.</span>';
-      grid.appendChild(noResults);
+      articleGrid.appendChild(noResults);
       // apply current lang to new element
       const lang = document.documentElement.dataset.lang || 'fr';
       applyLangToElement(noResults, lang);
