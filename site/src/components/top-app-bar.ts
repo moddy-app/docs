@@ -207,7 +207,7 @@ export class TopAppBar extends SignalElement(LitElement) {
     }
 
     .logo-link svg {
-      height: 1.2em;
+      height: 1.35em;
       width: auto;
       color: var(--md-sys-color-primary);
     }
