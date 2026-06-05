@@ -628,18 +628,18 @@ div[data-lang-content] {
 }
 
 .author-banner-bg {
-  height: 120px;
+  height: 140px;
   border-radius: 20px;
   background: var(--author-banner-color, var(--md-sys-color-primary-container, #eaddff));
-  margin-bottom: -40px;
+  margin-bottom: -52px;
 }
 
 .author-profile {
   display: flex;
   align-items: flex-end;
-  gap: 8px;
-  padding: 0 16px;
-  margin-bottom: 12px;
+  gap: 16px;
+  padding: 0 20px;
+  margin-bottom: 0;
 }
 
 .author-avatar-wrapper {
@@ -699,24 +699,37 @@ div[data-lang-content] {
 }
 
 .author-info {
-  padding-bottom: 4px;
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 6px;
 }
 
 .author-name {
-  font-size: 1.5rem;
+  font-size: 1.85rem;
   font-weight: 700;
-  margin: 0 0 4px;
+  margin: 0 0 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .author-post {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   color: var(--md-sys-color-on-surface-variant, #49454f);
   margin: 0;
 }
 
+.author-details {
+  padding: 14px 20px 0;
+}
+
 .author-bio {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   color: var(--md-sys-color-on-surface-variant, #49454f);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 560px;
 }
 
 .author-links {

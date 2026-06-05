@@ -20,7 +20,9 @@ permalink: "/authors/{{ author.id }}/"
 
   <header class="author-header" style="{% if author.banner_color %}--author-banner-color: {{ author.banner_color }};{% endif %}">
     <div class="author-banner-bg"></div>
+
     <div class="author-profile">
+      {# Avatar + decoration — keep exact positioning intact #}
       {% if author.avatar %}
         <div class="author-avatar-wrapper">
           <img src="{{ author.avatar }}" alt="{{ author.username }}" class="author-avatar" />
@@ -35,6 +37,7 @@ permalink: "/authors/{{ author.id }}/"
           </div>
         </div>
       {% endif %}
+
       <div class="author-info">
         <h1 class="author-name">{{ author.username }}</h1>
         {% if author.post %}
@@ -43,20 +46,23 @@ permalink: "/authors/{{ author.id }}/"
       </div>
     </div>
 
-    {% if author.bio %}
-      <p class="author-bio">{{ author.bio }}</p>
-    {% endif %}
-
-    {% if author.links and author.links.length > 0 %}
-      <div class="author-links">
-        {% for link in author.links %}
-          <a href="{{ link.url }}" class="author-link" target="_blank" rel="noopener">
-            {% if link.icon %}
-              <span class="author-link-icon">{{ link.icon | safe }}</span>
-            {% endif %}
-            <span>{{ link.name }}</span>
-          </a>
-        {% endfor %}
+    {% if author.bio or (author.links and author.links.length > 0) %}
+      <div class="author-details">
+        {% if author.bio %}
+          <p class="author-bio">{{ author.bio }}</p>
+        {% endif %}
+        {% if author.links and author.links.length > 0 %}
+          <div class="author-links">
+            {% for link in author.links %}
+              <a href="{{ link.url }}" class="author-link" target="_blank" rel="noopener">
+                {% if link.icon %}
+                  <span class="author-link-icon">{{ link.icon | safe }}</span>
+                {% endif %}
+                <span>{{ link.name }}</span>
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
     {% endif %}
   </header>
