@@ -29,15 +29,28 @@ import {
 } from '../utils/theme.js';
 
 /**
+ * Clears the per-page theme overlay so the user's own theme takes full effect
+ * after a manual color/mode change.
+ */
+function clearPageTheme() {
+  const sheet = (globalThis as unknown as Record<string, CSSStyleSheet | undefined>)['page-theme'];
+  if (sheet) {
+    sheet.replaceSync('');
+  }
+}
+
+/**
  * Applies theme-based event listeners such as changing color, mode, and
  * listening to system mode changes.
  */
 function applyColorThemeListeners() {
   document.body.addEventListener('change-color', (event) => {
+    clearPageTheme();
     changeColor(event.color);
   });
 
   document.body.addEventListener('change-mode', (event) => {
+    clearPageTheme();
     changeColorMode(event.mode);
   });
 
