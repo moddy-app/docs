@@ -532,7 +532,16 @@ div[data-lang-content] {
 }
 
 .collection-header {
+  position: relative;
   margin-bottom: 32px;
+  padding: 28px;
+  background-color: var(--md-sys-color-surface-container-low, #f7f2fa);
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
 }
 
 .collection-badge {
@@ -544,13 +553,21 @@ div[data-lang-content] {
   background: color-mix(in srgb, var(--label-color, #4caf50) 15%, transparent);
   color: var(--label-color, #4caf50);
   border: 1px solid color-mix(in srgb, var(--label-color, #4caf50) 40%, transparent);
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 
 .collection-title {
   font-size: 2rem;
   font-weight: 700;
   margin: 0;
+}
+
+@media (max-width: 600px) {
+  .collection-header {
+    padding: 20px;
+    align-items: center;
+    text-align: center;
+  }
 }
 
 /* ─── Article list / cards ───────────────────────────────────────────────── */
