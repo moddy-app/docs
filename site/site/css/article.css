@@ -397,6 +397,15 @@ span[data-lang-content] {
   }
 }
 
+/* ─── Article card labels ────────────────────────────────────────────────── */
+
+.article-card-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
 /* ─── Article labels (used in various contexts) ──────────────────────────── */
 
 .article-labels {
@@ -467,15 +476,25 @@ span[data-lang-content] {
   display: block;
   text-decoration: none;
   color: inherit;
-  border: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
-  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 15%, transparent);
+  border-radius: 20px;
   overflow: hidden;
   transition: box-shadow 0.2s, border-color 0.2s;
 }
 
 .article-card:hover {
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  border-color: var(--md-sys-color-primary, #6750a4);
+  border-color: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 35%, transparent);
+  text-decoration: none;
+}
+
+.article-card:hover .article-card-title {
+  text-decoration: underline;
+}
+
+.article-card-banner {
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
 }
 
 .article-card-banner img {
@@ -521,7 +540,7 @@ span[data-lang-content] {
 
 .author-banner-bg {
   height: 120px;
-  border-radius: 12px;
+  border-radius: 20px;
   background: var(--author-banner-color, var(--md-sys-color-primary-container, #eaddff));
   margin-bottom: -40px;
 }
