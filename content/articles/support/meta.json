@@ -1,10 +1,12 @@
 {
   "title": "Support",
   "id": "support",
-  "authors": [],
+  "authors": ["1164597199594852395"],
   "date": "2024-01-01",
-  "chapeau": { "fr": "", "en": "" },
+  "chapeau": { "fr": "Besoin d'aide ? Contactez notre équipe.", "en": "Need help? Contact our team." },
   "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #e65100 0%, #ff9800 50%, #ffe0b2 100%)",
+  "banner_focus": { "x": 50, "y": 50 },
   "seo_level": 1,
   "labels": ["about"],
   "nav_order": 4

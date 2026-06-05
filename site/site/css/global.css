@@ -80,6 +80,13 @@ body {
   font-size: var(--catalog-body-l-font-size);
 }
 
+/* The TOC overlay is tucked off the right edge until hovered; clip horizontal
+   overflow so its off-screen part never produces a horizontal scrollbar. The
+   page itself never scrolls horizontally (panes scroll internally). */
+html {
+  overflow-x: clip;
+}
+
 /* Prevent FOUC by hiding undefined custom elements */
 nav-drawer:not(:defined),
 top-app-bar:not(:defined),
@@ -96,6 +103,24 @@ catalog-component-header-title:defined {
   visibility: visible;
 }
 
+/* Text selection uses the active theme's primary color */
+::selection {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* When the theme/colour changes (per-page theme or the colour picker), the
+   `theme-transition` class is briefly added to <html> so colours cross-fade
+   instead of snapping. It's removed right after so it never slows down hover
+   states. */
+:root.theme-transition,
+:root.theme-transition *,
+:root.theme-transition *::before,
+:root.theme-transition *::after {
+  transition: background-color 0.4s ease, color 0.4s ease,
+    border-color 0.4s ease, fill 0.4s ease, outline-color 0.4s ease !important;
+}
+
 a {
   color: var(--md-sys-color-primary);
   text-decoration: none;
@@ -104,6 +129,20 @@ a {
 a:hover,
 a:focus-visible {
   text-decoration: underline;
+}
+
+nav-drawer {
+  --catalog-drawer-width: 0px;
+}
+
+/* The sidebar is empty, so its width is 0 and it no longer provides the left
+   margin the layout assumes. Force the start margin to equal the end margin
+   (spacing-l) on every screen above mobile so the page sits symmetrically.
+   Below 600px the drawer collapses both margins to 0, so leave it alone. */
+@media (min-width: 601px) {
+  nav-drawer {
+    --_pane-margin-inline-start: var(--catalog-spacing-l);
+  }
 }
 
 nav-drawer md-list.nav md-list-item[href][selected] {

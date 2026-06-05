@@ -1,13 +1,16 @@
 {
   "title": "v1.0 Moddy Changelog",
   "id": "v1-changelog",
-  "authors": ["123456789012345678"],
+  "authors": ["1164597199594852395"],
   "date": "2024-01-15",
   "chapeau": {
     "fr": "Voici le changelog de la v1.0 de Moddy.",
     "en": "Here is the changelog for Moddy v1.0."
   },
   "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #2e7d32 0%, #4caf50 50%, #a5d6a7 100%)",
+  "banner_focus": { "x": 50, "y": 50 },
+  "theme_color": "#2e7d32",
   "seo_level": 3,
   "labels": ["change-logs"]
 }
