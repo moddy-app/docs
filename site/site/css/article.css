@@ -197,6 +197,17 @@ nav-drawer {
   color: inherit;
 }
 
+/* the global a:hover underline would underline the whole link (name + role);
+   keep the link itself undecorated and underline only the name */
+.article-author-link:hover,
+.article-author-link:focus-visible {
+  text-decoration: none;
+}
+
+.article-author-role {
+  text-decoration: none;
+}
+
 .article-author-link:hover .article-author-name {
   text-decoration: underline;
   color: var(--md-sys-color-primary, #6750a4);
@@ -204,20 +215,20 @@ nav-drawer {
 
 .article-author-avatar-wrapper {
   position: relative;
-  width: 48px;
-  min-width: 48px;
-  height: 48px;
-  min-height: 48px;
+  width: 52px;
+  min-width: 52px;
+  height: 52px;
+  min-height: 52px;
   flex-shrink: 0;
   overflow: visible;
 }
 
 .article-author-avatar {
   display: block;
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  min-height: 48px;
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  min-height: 52px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   object-fit: cover;
@@ -228,8 +239,8 @@ nav-drawer {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 120%;
-  height: 120%;
+  width: 111%;
+  height: 111%;
   pointer-events: none;
   object-fit: contain;
 }
@@ -418,6 +429,9 @@ nav-drawer {
 .author-page {
   max-width: 800px;
   padding: 24px;
+  /* md-layout's `main > * { overflow-x: auto }` would clip the avatar
+     decoration that overflows upward (the straw). Keep it visible. */
+  overflow: visible;
 }
 
 .collection-header {
@@ -523,20 +537,20 @@ nav-drawer {
 
 .author-avatar-wrapper {
   position: relative;
-  width: 100px;
-  min-width: 100px;
-  height: 100px;
-  min-height: 100px;
+  width: 108px;
+  min-width: 108px;
+  height: 108px;
+  min-height: 108px;
   flex-shrink: 0;
   overflow: visible;
 }
 
 .author-avatar {
   display: block;
-  width: 100px;
-  height: 100px;
-  min-width: 100px;
-  min-height: 100px;
+  width: 108px;
+  height: 108px;
+  min-width: 108px;
+  min-height: 108px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   object-fit: cover;
@@ -547,10 +561,10 @@ nav-drawer {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100px;
-  height: 100px;
-  min-width: 100px;
-  min-height: 100px;
+  width: 108px;
+  height: 108px;
+  min-width: 108px;
+  min-height: 108px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   background: var(--md-sys-color-primary-container, #eaddff);
@@ -566,8 +580,8 @@ nav-drawer {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 120%;
-  height: 120%;
+  width: 111%;
+  height: 111%;
   pointer-events: none;
   object-fit: contain;
 }

@@ -157,16 +157,19 @@ export class NavDrawer extends SignalElement(LitElement) {
     const contentPane = this.shadowRoot?.querySelector(
       '.pane.content-pane'
     ) as HTMLElement | null;
-    if (!contentPane) return;
+    const scrollWrapper = contentPane?.querySelector(
+      '.scroll-wrapper'
+    ) as HTMLElement | null;
+    if (!contentPane || !scrollWrapper) return;
 
     contentPane.style.setProperty('--_pane-top-radius', `${expanded}px`);
 
     let ticking = false;
-    contentPane.addEventListener('scroll', () => {
+    scrollWrapper.addEventListener('scroll', () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        const t = Math.min(contentPane.scrollTop / scrollRange, 1);
+        const t = Math.min(scrollWrapper.scrollTop / scrollRange, 1);
         const r = expanded + (normal - expanded) * t;
         contentPane.style.setProperty('--_pane-top-radius', `${r}px`);
         ticking = false;
@@ -226,7 +229,10 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     .pane {
       box-sizing: border-box;
-      overflow: hidden auto;
+      /* The pane clips (rounded). The inner .scroll-wrapper is what scrolls,
+         so its scrollbar is clipped by this rounded overflow at the corners
+         — works with overlay scrollbars too, unlike webkit track margins. */
+      overflow: hidden;
       width: 100%;
       /* Explicit height to make overflow work */
       height: calc(
@@ -380,6 +386,8 @@ export class NavDrawer extends SignalElement(LitElement) {
     }
 
     .pane .scroll-wrapper {
+      overflow-y: auto;
+      height: 100%;
       padding-block: var(--catalog-spacing-xl);
     }
 
@@ -466,7 +474,7 @@ export class NavDrawer extends SignalElement(LitElement) {
         --_scrollbar-width: 8px;
       }
 
-      .pane {
+      .scroll-wrapper {
         scrollbar-color: var(--md-sys-color-primary) transparent;
         scrollbar-width: thin;
       }
@@ -477,17 +485,12 @@ export class NavDrawer extends SignalElement(LitElement) {
         );
       }
 
-      .pane::-webkit-scrollbar {
+      .scroll-wrapper::-webkit-scrollbar {
         background-color: transparent;
         width: var(--_scrollbar-width);
       }
 
-      .pane::-webkit-scrollbar-track {
-        margin-top: var(--expanded-top-radius, 28px);
-        margin-bottom: var(--catalog-shape-xl, 28px);
-      }
-
-      .pane::-webkit-scrollbar-thumb {
+      .scroll-wrapper::-webkit-scrollbar-thumb {
         background-color: var(--md-sys-color-primary);
         border-radius: calc(var(--_scrollbar-width) / 2);
       }
@@ -510,11 +513,11 @@ export class NavDrawer extends SignalElement(LitElement) {
       }
 
       @media (pointer: fine) {
-        .pane {
+        .scroll-wrapper {
           scrollbar-color: CanvasText transparent;
         }
 
-        .pane::-webkit-scrollbar-thumb {
+        .scroll-wrapper::-webkit-scrollbar-thumb {
           background-color: CanvasText;
         }
       }
