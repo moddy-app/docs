@@ -192,31 +192,32 @@ nav-drawer {
 .article-author-link {
   display: inline-flex;
   align-items: center;
-  gap: 18px;
+  gap: 10px;
   text-decoration: none;
   color: inherit;
 }
 
 .article-author-link:hover .article-author-name {
+  text-decoration: underline;
   color: var(--md-sys-color-primary, #6750a4);
 }
 
 .article-author-avatar-wrapper {
   position: relative;
-  width: 42px;
-  min-width: 42px;
-  height: 42px;
-  min-height: 42px;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
   flex-shrink: 0;
   overflow: visible;
 }
 
 .article-author-avatar {
   display: block;
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
-  min-height: 42px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   object-fit: cover;
@@ -227,8 +228,8 @@ nav-drawer {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 120%;
-  height: 120%;
+  width: 150%;
+  height: 150%;
   pointer-events: none;
   object-fit: contain;
 }
@@ -522,20 +523,20 @@ nav-drawer {
 
 .author-avatar-wrapper {
   position: relative;
-  width: 96px;
-  min-width: 96px;
-  height: 96px;
-  min-height: 96px;
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+  min-height: 100px;
   flex-shrink: 0;
   overflow: visible;
 }
 
 .author-avatar {
   display: block;
-  width: 96px;
-  height: 96px;
-  min-width: 96px;
-  min-height: 96px;
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  min-height: 100px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   object-fit: cover;
@@ -546,10 +547,10 @@ nav-drawer {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 96px;
-  height: 96px;
-  min-width: 96px;
-  min-height: 96px;
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+  min-height: 100px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   background: var(--md-sys-color-primary-container, #eaddff);
@@ -565,8 +566,8 @@ nav-drawer {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 140%;
-  height: 140%;
+  width: 160%;
+  height: 160%;
   pointer-events: none;
   object-fit: contain;
 }

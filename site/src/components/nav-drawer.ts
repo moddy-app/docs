@@ -482,6 +482,10 @@ export class NavDrawer extends SignalElement(LitElement) {
         width: var(--_scrollbar-width);
       }
 
+      .pane::-webkit-scrollbar-track {
+        margin-block: var(--catalog-shape-xl, 28px);
+      }
+
       .pane::-webkit-scrollbar-thumb {
         background-color: var(--md-sys-color-primary);
         border-radius: calc(var(--_scrollbar-width) / 2);
