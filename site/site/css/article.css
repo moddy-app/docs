@@ -320,11 +320,13 @@ nav-drawer {
   flex-grow: 1;
 }
 
-.article-body blockquote .content > *:first-child {
+.article-body blockquote .content > *:first-child,
+.article-body blockquote > *:first-child {
   margin-block-start: 0;
 }
 
-.article-body blockquote .content > *:last-child {
+.article-body blockquote .content > *:last-child,
+.article-body blockquote > *:last-child {
   margin-block-end: 0;
 }
 
