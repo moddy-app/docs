@@ -75,7 +75,7 @@ function applyColorThemeListeners() {
 function initializeTheme() {
   if (!getCurrentThemeString()) {
     // Generates a primary color close to GM3 baseline primary color.
-    changeColorAndMode('#ECAA2E', 'auto');
+    changeColorAndMode('#373737', 'auto');
   }
 }
 
