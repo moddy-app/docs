@@ -79,16 +79,40 @@ module.exports = function (eleventyConfig) {
   // install code syntax highlighting
   eleventyConfig.addPlugin(syntaxHighlight);
 
+  // Set up Prism directly on the custom md instance so highlighting is
+  // guaranteed before copyCodeButtonPlugin wraps the fence rule.
+  let prismHighlight;
+  try {
+    const Prism = require('prismjs');
+    // Auto-load language definitions on demand
+    prismHighlight = function (str, lang) {
+      const escape = (s) =>
+        s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      if (lang && !Prism.languages[lang]) {
+        try { require(`prismjs/components/prism-${lang}`); } catch (_) {}
+      }
+      if (lang && Prism.languages[lang]) {
+        const highlighted = Prism.highlight(str, Prism.languages[lang], lang);
+        return `<pre class="language-${lang}"><code class="language-${lang}">${highlighted}</code></pre>`;
+      }
+      const cls = lang ? ` class="language-${lang}"` : '';
+      return `<pre${cls}><code${cls}>${escape(str)}</code></pre>`;
+    };
+  } catch (_) {
+    // prismjs unavailable — plain rendering
+  }
+
   const md = markdownIt({
     html: true,
     breaks: false, // 2 newlines for paragraph break instead of 1
     linkify: true,
+    highlight: prismHighlight,
   });
 
   // permalink markdown plugin
   permalinks(md);
 
-  // copy code button plugin
+  // copy code button plugin (wraps fence AFTER highlight is set)
   copyCodeButtonPlugin(md);
 
   eleventyConfig.setLibrary('md', md);

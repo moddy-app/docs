@@ -21,7 +21,13 @@ permalink: "/authors/{{ author.id }}/"
   <header class="author-header">
     <div class="author-profile">
       {# Avatar + decoration — keep exact positioning intact #}
-      {% if author.avatar %}
+      {% if author.avatar_svg %}
+        <div class="author-avatar-wrapper">
+          <div class="author-avatar author-avatar--svg">
+            {{ author.avatar_svg | safe }}
+          </div>
+        </div>
+      {% elif author.avatar %}
         <div class="author-avatar-wrapper">
           <img src="{{ author.avatar }}" alt="{{ author.username }}" class="author-avatar" />
           {% if author.avatar_decoration %}
@@ -85,7 +91,10 @@ permalink: "/authors/{{ author.id }}/"
                     {% for labelId in article.labels %}
                       {% for label in labels %}
                         {% if label.id == labelId %}
-                          <span class="article-label" style="--label-color: {{ label.color }};">
+                          <span class="article-label" style="--label-color: {{ label.color }};"
+                                role="link" tabindex="0"
+                                onclick="event.stopPropagation();window.location='/collections/{{ label.id }}/';"
+                                onkeydown="if(event.key==='Enter'||event.key===' '){event.stopPropagation();window.location='/collections/{{ label.id }}/';}">
                             <span data-lang-content="fr">{{ label.name.fr }}</span>
                             <span data-lang-content="en">{{ label.name.en }}</span>
                           </span>

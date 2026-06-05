@@ -19,10 +19,6 @@ permalink: "/collections/{{ label.id }}/"
 <div class="collection-page">
 
   <header class="collection-header">
-    <span class="collection-badge" style="--label-color: {{ label.color }};">
-      <span data-lang-content="fr">{{ label.name.fr }}</span>
-      <span data-lang-content="en">{{ label.name.en }}</span>
-    </span>
     <h1 class="collection-title">
       <span data-lang-content="fr">{{ label.name.fr }}</span>
       <span data-lang-content="en">{{ label.name.en }}</span>
@@ -49,7 +45,10 @@ permalink: "/collections/{{ label.id }}/"
                   {% for labelId in article.labels %}
                     {% for lbl in labels %}
                       {% if lbl.id == labelId %}
-                        <span class="article-label" style="--label-color: {{ lbl.color }};">
+                        <span class="article-label" style="--label-color: {{ lbl.color }};"
+                              role="link" tabindex="0"
+                              onclick="event.stopPropagation();window.location='/collections/{{ lbl.id }}/';"
+                              onkeydown="if(event.key==='Enter'||event.key===' '){event.stopPropagation();window.location='/collections/{{ lbl.id }}/';}">
                           <span data-lang-content="fr">{{ lbl.name.fr }}</span>
                           <span data-lang-content="en">{{ lbl.name.en }}</span>
                         </span>

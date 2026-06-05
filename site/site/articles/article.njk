@@ -29,9 +29,11 @@ hasToc: true
 {% endblock %}
 
 {%- set renderedContent = article.rawContent.en | renderMarkdown -%}
+{%- set renderedContentFr = (article.rawContent.fr if article.rawContent.fr else article.rawContent.en) | renderMarkdown -%}
 
 {% block toc %}
-{{ renderedContent | toc | filterToc | safe }}
+<div data-lang-content="fr">{{ renderedContentFr | toc | filterToc | safe }}</div>
+<div data-lang-content="en">{{ renderedContent | toc | filterToc | safe }}</div>
 {% endblock %}
 
 {% block content %}
@@ -73,7 +75,11 @@ hasToc: true
           <div class="article-author-block">
             <a href="/authors/{{ author.id }}/" class="article-author-link">
               <div class="article-author-avatar-wrapper">
-                {% if author.avatar %}
+                {% if author.avatar_svg %}
+                  <div class="article-author-avatar article-author-avatar--svg">
+                    {{ author.avatar_svg | safe }}
+                  </div>
+                {% elif author.avatar %}
                   <img class="article-author-avatar" src="{{ author.avatar }}" alt="{{ author.username }}" />
                 {% else %}
                   <div class="article-author-avatar article-author-avatar--placeholder" style="background: {{ author.banner_color or '#6750a4' }};">
@@ -122,7 +128,10 @@ hasToc: true
   {% endif %}
 
   {# ── Article body ── #}
-  <div class="article-body">
+  <div class="article-body" data-lang-content="fr">
+    {{ renderedContentFr | mdMarkdown | safe }}
+  </div>
+  <div class="article-body" data-lang-content="en">
     {{ renderedContent | mdMarkdown | safe }}
   </div>
 

@@ -227,3 +227,20 @@ h6 {
 .toc ol li {
   margin-block: var(--catalog-spacing-m);
 }
+
+/* ─── Language switching (global) ───────────────────────────────────────── */
+
+[data-lang-content] { display: none; }
+
+:root[data-lang="fr"] [data-lang-content="fr"],
+:root:not([data-lang]) [data-lang-content="fr"] { display: revert; }
+
+:root[data-lang="en"] [data-lang-content="en"] { display: revert; }
+
+span[data-lang-content] { display: none; }
+
+:root[data-lang="fr"] span[data-lang-content="fr"],
+:root:not([data-lang]) span[data-lang-content="fr"] { display: inline; }
+
+:root[data-lang="en"] span[data-lang-content="en"] { display: inline; }
+

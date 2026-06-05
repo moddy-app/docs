@@ -125,6 +125,20 @@
   border-radius: 50%;
   object-fit: cover;
   display: block;
+  flex-shrink: 0;
+}
+
+.home-filter-chip-avatar--svg {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-filter-chip-avatar--svg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 /* ─── Articles grid ──────────────────────────────────────────────────────── */

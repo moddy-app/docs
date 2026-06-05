@@ -127,8 +127,18 @@ function init() {
         if (isActive) activeLabels.delete(value);
         else activeLabels.add(value);
       } else if (type === 'author') {
-        if (isActive) activeAuthors.delete(value);
-        else activeAuthors.add(value);
+        if (isActive) {
+          activeAuthors.delete(value);
+        } else {
+          // Single-selection: deselect all other author chips
+          filterChips.forEach(c => {
+            if (c.dataset.filterType === 'author' && c !== chip) {
+              c.setAttribute('aria-pressed', 'false');
+            }
+          });
+          activeAuthors.clear();
+          activeAuthors.add(value);
+        }
       }
 
       applyFilters();
