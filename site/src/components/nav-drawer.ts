@@ -157,19 +157,16 @@ export class NavDrawer extends SignalElement(LitElement) {
     const contentPane = this.shadowRoot?.querySelector(
       '.pane.content-pane'
     ) as HTMLElement | null;
-    const scrollWrapper = contentPane?.querySelector(
-      '.scroll-wrapper'
-    ) as HTMLElement | null;
-    if (!contentPane || !scrollWrapper) return;
+    if (!contentPane) return;
 
     contentPane.style.setProperty('--_pane-top-radius', `${expanded}px`);
 
     let ticking = false;
-    scrollWrapper.addEventListener('scroll', () => {
+    contentPane.addEventListener('scroll', () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        const t = Math.min(scrollWrapper.scrollTop / scrollRange, 1);
+        const t = Math.min(contentPane.scrollTop / scrollRange, 1);
         const r = expanded + (normal - expanded) * t;
         contentPane.style.setProperty('--_pane-top-radius', `${r}px`);
         ticking = false;
@@ -229,7 +226,7 @@ export class NavDrawer extends SignalElement(LitElement) {
 
     .pane {
       box-sizing: border-box;
-      overflow: clip;
+      overflow: hidden auto;
       width: 100%;
       /* Explicit height to make overflow work */
       height: calc(
@@ -374,9 +371,12 @@ export class NavDrawer extends SignalElement(LitElement) {
     }
 
     .scroll-wrapper {
+      box-sizing: border-box;
+    }
+
+    aside .scroll-wrapper {
       overflow-y: auto;
       max-height: 100%;
-      box-sizing: border-box;
     }
 
     .pane .scroll-wrapper {
@@ -466,7 +466,7 @@ export class NavDrawer extends SignalElement(LitElement) {
         --_scrollbar-width: 8px;
       }
 
-      .scroll-wrapper {
+      .pane {
         scrollbar-color: var(--md-sys-color-primary) transparent;
         scrollbar-width: thin;
       }
@@ -477,12 +477,12 @@ export class NavDrawer extends SignalElement(LitElement) {
         );
       }
 
-      .scroll-wrapper::-webkit-scrollbar {
+      .pane::-webkit-scrollbar {
         background-color: transparent;
         width: var(--_scrollbar-width);
       }
 
-      .scroll-wrapper::-webkit-scrollbar-thumb {
+      .pane::-webkit-scrollbar-thumb {
         background-color: var(--md-sys-color-primary);
         border-radius: calc(var(--_scrollbar-width) / 2);
       }
@@ -505,13 +505,11 @@ export class NavDrawer extends SignalElement(LitElement) {
       }
 
       @media (pointer: fine) {
-        .scroll-wrapper {
-          /* firefox */
+        .pane {
           scrollbar-color: CanvasText transparent;
         }
 
-        .scroll-wrapper::-webkit-scrollbar-thumb {
-          /* Chromium + Safari */
+        .pane::-webkit-scrollbar-thumb {
           background-color: CanvasText;
         }
       }
