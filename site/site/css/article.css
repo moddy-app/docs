@@ -407,6 +407,19 @@ div[data-lang-content] {
   height: auto;
 }
 
+/* Badge artwork is small, transparent, and must retain its native shape.
+   The generic documentation image rule gives images a large minimum height and
+   `object-fit: cover`, which is appropriate for illustrations but distorts the
+   badge glyphs used in the catalogue. */
+.article-body table img {
+  display: inline-block;
+  min-height: 0;
+  max-width: none;
+  object-fit: contain;
+  border-radius: 0;
+  vertical-align: middle;
+}
+
 /* ── Callouts / blockquotes ──
    md-layout.css styles these with `main > blockquote` selectors, which only
    match the doc pages where the markdown elements are direct children of
@@ -527,6 +540,66 @@ div[data-lang-content] {
 
   .article-body {
     padding: 0 16px;
+  }
+
+  /* Tables containing badge descriptions have three long columns. Transform
+     them into compact Material-style cards on narrow screens so their text is
+     never clipped or hidden behind horizontal scrolling. */
+  .article-body table {
+    display: block;
+    width: 100%;
+    overflow: visible;
+    border-spacing: 0;
+  }
+
+  .article-body table thead {
+    display: none;
+  }
+
+  .article-body table tbody {
+    display: grid;
+    gap: 12px;
+  }
+
+  .article-body table tr {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    column-gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
+    border-radius: 16px;
+    background: var(--md-sys-color-surface-container-low, #f7f2fa);
+  }
+
+  .article-body table td {
+    display: block;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .article-body table td:first-child {
+    grid-row: 1 / span 2;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .article-body table td:first-child img {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .article-body table td:nth-child(2) {
+    font-weight: 500;
+  }
+
+  .article-body table td:nth-child(3) {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    font-size: 0.93em;
   }
 }
 

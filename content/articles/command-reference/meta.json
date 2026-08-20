@@ -1,0 +1,24 @@
+{
+  "title": "Command reference",
+  "id": "command-reference",
+  "authors": [
+    "1177298939880415342"
+  ],
+  "date": "2026-08-20",
+  "chapeau": {
+    "fr": "Une vue rapide des commandes publiques et de configuration de Moddy.",
+    "en": "A quick reference for Moddy's public and configuration commands."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #006C4C 0%, #80F8C0 100%)",
+  "seo_level": 1,
+  "labels": [
+    "features",
+    "start-here"
+  ],
+  "nav_order": 25,
+  "title_translations": {
+    "fr": "Référence des commandes",
+    "en": "Command reference"
+  }
+}

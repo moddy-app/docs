@@ -61,7 +61,12 @@
           {% if author.avatar_svg %}
             <span class="home-filter-chip-avatar home-filter-chip-avatar--svg">{{ author.avatar_svg | safe }}</span>
           {% elif author.avatar %}
-            <img src="{{ author.avatar }}" alt="{{ author.username }}" class="home-filter-chip-avatar" />
+            <span class="home-filter-chip-avatar-wrapper">
+              <img src="{{ author.avatar }}" alt="{{ author.username }}" class="home-filter-chip-avatar" />
+              {% if author.avatar_decoration %}
+                <img src="{{ author.avatar_decoration }}" alt="" role="presentation" class="home-filter-chip-avatar-decoration" />
+              {% endif %}
+            </span>
           {% endif %}
           {{ author.username }}
         </button>

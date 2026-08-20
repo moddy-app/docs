@@ -1,0 +1,13 @@
+{
+  "title": "Server modules",
+  "id": "server-modules",
+  "authors": ["1177298939880415342"],
+  "date": "2026-08-20",
+  "chapeau": {"fr": "Référence complète des modules configurables de Moddy.", "en": "A complete reference for Moddy's configurable server modules."},
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #005B4F 0%, #00A896 50%, #B8F2E6 100%)",
+  "seo_level": 1,
+  "labels": ["features", "automation", "moderation"],
+  "nav_order": 21,
+  "title_translations": {"fr": "Modules de serveur", "en": "Server modules"}
+}

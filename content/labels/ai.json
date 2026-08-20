@@ -1,0 +1,6 @@
+{
+  "id": "ai",
+  "name": { "fr": "IA et outils", "en": "AI and tools" },
+  "color": "#8B5000",
+  "nav_order": 6
+}

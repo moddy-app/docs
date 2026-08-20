@@ -119,6 +119,14 @@
   border-color: transparent;
 }
 
+.home-filter-chip-avatar-wrapper {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  overflow: visible;
+}
+
 .home-filter-chip-avatar {
   width: 18px;
   height: 18px;
@@ -126,6 +134,16 @@
   object-fit: cover;
   display: block;
   flex-shrink: 0;
+}
+
+.home-filter-chip-avatar-decoration {
+  position: absolute;
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  object-fit: contain;
+  pointer-events: none;
+  border-radius: 0;
 }
 
 .home-filter-chip-avatar--svg {

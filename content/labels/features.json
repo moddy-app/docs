@@ -1,0 +1,6 @@
+{
+  "id": "features",
+  "name": { "fr": "Fonctionnalités", "en": "Features" },
+  "color": "#006C4C",
+  "nav_order": 3
+}

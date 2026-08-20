@@ -1,0 +1,24 @@
+{
+  "title": "AI AutoMod",
+  "id": "automod-ai",
+  "authors": [
+    "1177298939880415342"
+  ],
+  "date": "2026-08-20",
+  "chapeau": {
+    "fr": "Mettre en place une modération automatique progressive et contrôlable.",
+    "en": "Set up progressive, controllable automatic moderation."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #8B5000 0%, #FFDDB9 100%)",
+  "seo_level": 1,
+  "labels": [
+    "moderation",
+    "ai"
+  ],
+  "nav_order": 50,
+  "title_translations": {
+    "fr": "AutoMod IA",
+    "en": "AI AutoMod"
+  }
+}

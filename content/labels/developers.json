@@ -1,0 +1,6 @@
+{
+  "id": "developers",
+  "name": { "fr": "Développement", "en": "Development" },
+  "color": "#5B5F97",
+  "nav_order": 7
+}

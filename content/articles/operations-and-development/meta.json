@@ -1,0 +1,23 @@
+{
+  "title": "Operations and development",
+  "id": "operations-and-development",
+  "authors": [
+    "1177298939880415342"
+  ],
+  "date": "2026-08-20",
+  "chapeau": {
+    "fr": "Comprendre l’architecture, l’auto-hébergement et le développement Moddy.",
+    "en": "Understand Moddy architecture, self-hosting, and development."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #5B5F97 0%, #DFE0FF 100%)",
+  "seo_level": 1,
+  "labels": [
+    "developers"
+  ],
+  "nav_order": 90,
+  "title_translations": {
+    "fr": "Exploitation et développement",
+    "en": "Operations and development"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "title": "AI and language tools",
+  "id": "ai-tools",
+  "authors": [
+    "1177298939880415342"
+  ],
+  "date": "2026-08-20",
+  "chapeau": {
+    "fr": "Traduction, amélioration de texte et transcription vocale.",
+    "en": "Translation, text improvement, and voice transcription."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #8B5000 0%, #FFDDB9 100%)",
+  "seo_level": 1,
+  "labels": [
+    "ai",
+    "features"
+  ],
+  "nav_order": 80,
+  "title_translations": {
+    "fr": "IA et outils de langue",
+    "en": "AI and language tools"
+  }
+}

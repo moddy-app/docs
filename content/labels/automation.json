@@ -1,0 +1,6 @@
+{
+  "id": "automation",
+  "name": { "fr": "Automatisation", "en": "Automation" },
+  "color": "#00639B",
+  "nav_order": 5
+}

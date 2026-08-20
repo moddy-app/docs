@@ -1,0 +1,23 @@
+{
+  "title": "Moderation and security",
+  "id": "moderation-security",
+  "authors": [
+    "1177298939880415342"
+  ],
+  "date": "2026-08-20",
+  "chapeau": {
+    "fr": "Cas, sanctions, appels et protection de votre communauté.",
+    "en": "Cases, sanctions, appeals, and protection for your community."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #BA1A1A 0%, #FFB4AB 100%)",
+  "seo_level": 1,
+  "labels": [
+    "moderation"
+  ],
+  "nav_order": 40,
+  "title_translations": {
+    "fr": "Modération et sécurité",
+    "en": "Moderation and security"
+  }
+}

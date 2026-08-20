@@ -1,0 +1,24 @@
+{
+  "title": "Community automation",
+  "id": "community-automation",
+  "authors": [
+    "1177298939880415342"
+  ],
+  "date": "2026-08-20",
+  "chapeau": {
+    "fr": "Accueil, rôles, activité, starboard et réseaux entre serveurs.",
+    "en": "Welcome flows, roles, activity, starboard, and cross-server networks."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #00639B 0%, #B8EAFF 100%)",
+  "seo_level": 1,
+  "labels": [
+    "automation",
+    "features"
+  ],
+  "nav_order": 70,
+  "title_translations": {
+    "fr": "Automatiser votre communauté",
+    "en": "Community automation"
+  }
+}

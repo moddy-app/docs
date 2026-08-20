@@ -1,0 +1,24 @@
+{
+  "title": "AltGuard verification",
+  "id": "altguard",
+  "authors": [
+    "1177298939880415342"
+  ],
+  "date": "2026-08-20",
+  "chapeau": {
+    "fr": "Protégez l’accès à votre serveur grâce à une vérification contrôlée.",
+    "en": "Protect server access with controlled verification."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #4F378B 0%, #E9DDFF 100%)",
+  "seo_level": 1,
+  "labels": [
+    "moderation",
+    "automation"
+  ],
+  "nav_order": 60,
+  "title_translations": {
+    "fr": "Vérification AltGuard",
+    "en": "AltGuard verification"
+  }
+}

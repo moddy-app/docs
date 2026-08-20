@@ -1,0 +1,23 @@
+{
+  "title": "Get started with Moddy",
+  "id": "getting-started",
+  "authors": [
+    "1177298939880415342"
+  ],
+  "date": "2026-08-20",
+  "chapeau": {
+    "fr": "Installez Moddy et préparez votre premier serveur.",
+    "en": "Install Moddy and prepare your first server."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #6750A4 0%, #D0BCFF 100%)",
+  "seo_level": 1,
+  "labels": [
+    "start-here"
+  ],
+  "nav_order": 10,
+  "title_translations": {
+    "fr": "Bien démarrer avec Moddy",
+    "en": "Get started with Moddy"
+  }
+}

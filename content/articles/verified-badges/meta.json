@@ -1,0 +1,13 @@
+{
+  "title": "Moddy badges",
+  "id": "verified-badges",
+  "authors": ["1177298939880415342"],
+  "date": "2026-08-20",
+  "chapeau": {"fr": "Comprendre les badges de vérification, de communauté et d’équipe Moddy.", "en": "Understand Moddy verification, community, and team badges."},
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #6750A4 0%, #B69DF8 50%, #E9DDFF 100%)",
+  "seo_level": 1,
+  "labels": ["about", "features"],
+  "nav_order": 35,
+  "title_translations": {"fr": "Les badges Moddy", "en": "Moddy badges"}
+}

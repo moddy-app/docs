@@ -1,0 +1,6 @@
+{
+  "id": "start-here",
+  "name": { "fr": "Prise en main", "en": "Getting started" },
+  "color": "#6750A4",
+  "nav_order": 2
+}

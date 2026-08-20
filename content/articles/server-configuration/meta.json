@@ -1,0 +1,24 @@
+{
+  "title": "Configure your server",
+  "id": "server-configuration",
+  "authors": [
+    "1177298939880415342"
+  ],
+  "date": "2026-08-20",
+  "chapeau": {
+    "fr": "Organisez les modules et l’identité de Moddy dans votre serveur.",
+    "en": "Organise modules and Moddy's identity in your server."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #00639B 0%, #9AD0FF 100%)",
+  "seo_level": 1,
+  "labels": [
+    "start-here",
+    "automation"
+  ],
+  "nav_order": 30,
+  "title_translations": {
+    "fr": "Configurer votre serveur",
+    "en": "Configure your server"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "id": "moderation",
+  "name": { "fr": "Modération", "en": "Moderation" },
+  "color": "#BA1A1A",
+  "nav_order": 4
+}

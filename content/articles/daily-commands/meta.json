@@ -1,0 +1,23 @@
+{
+  "title": "Everyday commands",
+  "id": "daily-commands",
+  "authors": [
+    "1177298939880415342"
+  ],
+  "date": "2026-08-20",
+  "chapeau": {
+    "fr": "Les commandes personnelles, pratiques et de recherche de Moddy.",
+    "en": "Moddy's personal, practical, and lookup commands."
+  },
+  "banner": null,
+  "banner_gradient": "linear-gradient(135deg, #006C4C 0%, #80F8C0 100%)",
+  "seo_level": 1,
+  "labels": [
+    "features"
+  ],
+  "nav_order": 20,
+  "title_translations": {
+    "fr": "Commandes du quotidien",
+    "en": "Everyday commands"
+  }
+}
